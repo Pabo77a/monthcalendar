@@ -71,7 +71,7 @@ namespace Pabo.MonthCalendar.Controls
       foreach (UIElement child in this.InternalChildren)
       {
 
-        if (col > 7)
+        if (col > Cols)
         {
           // if need to move on next row - do that
           col = 1;

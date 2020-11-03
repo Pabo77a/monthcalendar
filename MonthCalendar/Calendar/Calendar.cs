@@ -131,9 +131,9 @@ namespace Pabo.MonthCalendar
       if (day.Selected)
       {
         var left = (index == 0) || (index % 7 == 0) || !this.Days[index - 1].Selected ? 1 : 0;
-        var right = rightMost.IndexOf(index.ToString()) == 0 || !this.Days[index + 1].Selected ? 1 : 0;
+        var right = rightMost.IndexOf(index.ToString()) == 0 || index == 41 || !this.Days[index + 1].Selected ? 1 : 0;
         var top = (index <= 7) || !this.Days[index - 7].Selected ? 1 : 0;
-        var bottom = (index >= 36) || !this.Days[index + 7].Selected ? 1 : 0;
+        var bottom = (index >= 36) || index + 7 > 41 || !this.Days[index + 7].Selected ? 1 : 0;
 
         day.BorderThickness = new Thickness(left, top, right, bottom);
       }

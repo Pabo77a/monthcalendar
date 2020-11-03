@@ -16,6 +16,7 @@
                             Header="true"
                             Footer="true" 
                             Weekdays="True"
+                            Weeknumbers="True"
                             SelectionMode="Multiple"
                             Days="{Binding Path=Days, Mode=OneWay}" Margin="10,10,24,-10"
                             SelectionChanged="MonthCalendar_SelectionChanged"

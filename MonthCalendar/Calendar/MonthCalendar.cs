@@ -15,6 +15,7 @@ namespace Pabo.MonthCalendar
   [TemplatePart(Name = "PART_Footer", Type = typeof(Footer))]
   [TemplatePart(Name = "PART_Calendar", Type = typeof(Calendar))]
   [TemplatePart(Name = "PART_Weekdays", Type = typeof(Weekdays))]
+  [TemplatePart(Name = "PART_Weeknumbers", Type = typeof(Weeknumbers))]
   [ToolboxItem(true)]
   public class MonthCalendar : BaseControl
   {
@@ -25,6 +26,7 @@ namespace Pabo.MonthCalendar
     private Footer footer;
     private Calendar calendar;
     private Weekdays weekdays;
+    private Weeknumbers weeknumbers;
 
     private SelectionMode selectionMode;
 
@@ -66,6 +68,12 @@ namespace Pabo.MonthCalendar
                typeof(bool),
                typeof(MonthCalendar),
                new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+    public static readonly DependencyProperty WeeknumbersVisibleProperty = DependencyProperty.Register("Weeknumbers",
+               typeof(bool),
+               typeof(MonthCalendar),
+               new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
 
     public static readonly DependencyProperty FooterTextProperty = DependencyProperty.Register("FooterText",
                typeof(string),
@@ -159,6 +167,11 @@ namespace Pabo.MonthCalendar
       {
       }
 
+      this.weeknumbers = GetTemplateChild("PART_Weeknumbers") as Weeknumbers;
+      if (this.weeknumbers != null)
+      {
+      }
+
       this.Setup();
 
     }
@@ -176,6 +189,7 @@ namespace Pabo.MonthCalendar
       SetupFooter();
       SetupCalendar(); 
       SetupWeekdays();
+      SetupWeeknumbers();
     }
 
     private void SetupCalendar()
@@ -192,6 +206,14 @@ namespace Pabo.MonthCalendar
       if (this.weekdays != null)
       {
         this.weekdays.SetupDays();
+      }
+    }
+
+    private void SetupWeeknumbers()
+    {
+      if (this.weeknumbers != null)
+      {
+        this.weeknumbers.SetupWeeks(this.calendar.Days.First().Date);
       }
     }
 
@@ -295,6 +317,21 @@ namespace Pabo.MonthCalendar
       set
       {
         this.SetValue(WeekdaysVisibleProperty, value);
+      }
+    }
+
+    [Description("")]
+    [Category("Calendar")]
+    [Browsable(true)]
+    public bool Weeknumbers
+    {
+      get
+      {
+        return (bool)this.GetValue(WeeknumbersVisibleProperty);
+      }
+      set
+      {
+        this.SetValue(WeeknumbersVisibleProperty, value);
       }
     }
 
@@ -424,6 +461,7 @@ namespace Pabo.MonthCalendar
     {
       SetupHeader();
       SetupCalendar();
+      SetupWeeknumbers();
     }
 
     private static void OnMonthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -438,6 +476,7 @@ namespace Pabo.MonthCalendar
     {
       SetupHeader();
       SetupCalendar();
+      SetupWeeknumbers();
     }
 
     private static object OnCoerceMonthChanged(DependencyObject d, object value)
