@@ -1,28 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.ComponentModel;
-using System.Drawing;
 using Pabo.MonthCalendar.Common;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Globalization;
 using Pabo.MonthCalendar.Model;
-using System.Windows.Automation.Peers;
+using Pabo.MonthCalendar.Controls;
 using Point = System.Windows.Point;
-using System.Runtime.InteropServices.ComTypes;
 using Pabo.MonthCalendar.EventArgs;
 
 namespace Pabo.MonthCalendar

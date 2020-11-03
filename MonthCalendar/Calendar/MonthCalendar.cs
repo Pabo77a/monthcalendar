@@ -1,22 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.ComponentModel;
-using System.Drawing;
 using Pabo.MonthCalendar.Common;
-using System.Diagnostics;
 
 using Pabo.MonthCalendar.Model;
 
@@ -25,6 +14,7 @@ namespace Pabo.MonthCalendar
   [TemplatePart(Name = "PART_Header", Type = typeof(Header))]
   [TemplatePart(Name = "PART_Footer", Type = typeof(Footer))]
   [TemplatePart(Name = "PART_Calendar", Type = typeof(Calendar))]
+  [TemplatePart(Name = "PART_Weekdays", Type = typeof(Weekdays))]
   [ToolboxItem(true)]
   public class MonthCalendar : BaseControl
   {
@@ -34,6 +24,7 @@ namespace Pabo.MonthCalendar
     private Header header;
     private Footer footer;
     private Calendar calendar;
+    private Weekdays weekdays;
 
     private SelectionMode selectionMode;
 
@@ -67,6 +58,11 @@ namespace Pabo.MonthCalendar
                new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
     public static readonly DependencyProperty FooterVisibleProperty = DependencyProperty.Register("Footer",
+               typeof(bool),
+               typeof(MonthCalendar),
+               new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+    public static readonly DependencyProperty WeekdaysVisibleProperty = DependencyProperty.Register("Weekdays",
                typeof(bool),
                typeof(MonthCalendar),
                new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
@@ -158,6 +154,11 @@ namespace Pabo.MonthCalendar
       {
         this.calendar.SelectionChanged += Calendar_SelectionChanged;
       }
+      this.weekdays = GetTemplateChild("PART_Weekdays") as Weekdays;
+      if (this.weekdays != null)
+      {
+      }
+
       this.Setup();
 
     }
@@ -171,22 +172,42 @@ namespace Pabo.MonthCalendar
 
     private void Setup()
     {
+      SetupHeader();
+      SetupFooter();
+      SetupCalendar(); 
+      SetupWeekdays();
+    }
+
+    private void SetupCalendar()
+    {
+      if (this.calendar != null)
+      {
+        this.calendar.SetupDays(this.Year, this.Month, this.Days.Where(x => x.Date.Month == this.Month && x.Date.Year == this.Year).ToList());
+        this.calendar.SelectionMode = this.SelectionMode;
+      }
+    }
+
+    private void SetupWeekdays()
+    {
+      if (this.weekdays != null)
+      {
+        this.weekdays.SetupDays();
+      }
+    }
+
+    private void SetupHeader()
+    {
       if (this.header != null)
       {
         this.header.SetDate(this.Year, this.Month);
       }
+    }
+
+    private void SetupFooter()
+    {
       if (this.footer != null)
       {
         this.footer.Text = !string.IsNullOrEmpty(this.FooterText) ? this.FooterText : DateTime.Now.ToShortDateString();
-      }
-      if (this.header != null)
-      {
-        this.GetWeekDays();
-      }
-      if (this.calendar != null)
-      {
-        this.calendar.SetupDays(this.Year, this.Month, this.Days.Where(x => x.Date.Month == this.Month).ToList());
-        this.calendar.SelectionMode = this.SelectionMode;
       }
     }
 
@@ -259,6 +280,21 @@ namespace Pabo.MonthCalendar
       set
       {
         this.SetValue(FooterVisibleProperty, value);
+      }
+    }
+
+    [Description("")]
+    [Category("Calendar")]
+    [Browsable(true)]
+    public bool Weekdays
+    {
+      get
+      {
+        return (bool)this.GetValue(WeekdaysVisibleProperty);
+      }
+      set
+      {
+        this.SetValue(WeekdaysVisibleProperty, value);
       }
     }
 
@@ -356,7 +392,7 @@ namespace Pabo.MonthCalendar
 
     protected virtual void OnFooterTextChanged(object newValue, object oldValue)
     {
-      this.Setup();
+      SetupFooter();
     }
 
     protected virtual void OnSelectionModeChanged(object newValue, object oldValue)
@@ -386,7 +422,8 @@ namespace Pabo.MonthCalendar
 
     protected virtual void OnYearChanged(object newValue, object oldValue)
     {
-      this.Setup();
+      SetupHeader();
+      SetupCalendar();
     }
 
     private static void OnMonthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -399,7 +436,8 @@ namespace Pabo.MonthCalendar
 
     protected virtual void OnMonthChanged(object newValue, object oldValue)
     {
-      this.Setup();
+      SetupHeader();
+      SetupCalendar();
     }
 
     private static object OnCoerceMonthChanged(DependencyObject d, object value)

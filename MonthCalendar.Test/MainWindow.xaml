@@ -15,12 +15,11 @@
                             Year="2020" Month="8" 
                             Header="true"
                             Footer="true" 
+                            Weekdays="True"
                             SelectionMode="Multiple"
                             Days="{Binding Path=Days, Mode=OneWay}" Margin="10,10,24,-10"
                             SelectionChanged="MonthCalendar_SelectionChanged"
-                            MonthChanged="MonthCalendar_MonthChanged"                      
-      
-                            >
+                            MonthChanged="MonthCalendar_MonthChanged" >
     </calendar:MonthCalendar>
   </Grid>
 </Window>

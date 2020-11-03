@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Pabo.MonthCalendar.Model;
 
 namespace Pabo.MonthCalendar.EventArgs

@@ -1,9 +1,4 @@
-﻿using Pabo.MonthCalendar.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Automation.Peers;
+﻿using System.Windows;
 
 namespace Pabo.MonthCalendar.EventArgs
 {

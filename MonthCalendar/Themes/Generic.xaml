@@ -5,13 +5,14 @@
     xmlns:calendar="clr-namespace:Pabo.MonthCalendar"
     xmlns:common="clr-namespace:Pabo.MonthCalendar.Common"
     xmlns:converters="clr-namespace:Pabo.MonthCalendar.Converters"
+    xmlns:controls="clr-namespace:Pabo.MonthCalendar.Controls"
     xmlns:model="clr-namespace:Pabo.MonthCalendar.Model">
 
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="/Pabo.MonthCalendar;component/Resources/brush.scroll.left.xaml" />
     <ResourceDictionary Source="/Pabo.MonthCalendar;component/Resources/brush.scroll.right.xaml" />
   </ResourceDictionary.MergedDictionaries>
- 
+
 
   <!-- Header -->
   <Style TargetType="{x:Type calendar:Header}">
@@ -114,7 +115,7 @@
               </ItemsControl.ItemTemplate>
               <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                  <common:CalendarWrapPanel x:Name="PART_Panel"></common:CalendarWrapPanel>
+                  <controls:CalendarWrapPanel x:Name="PART_Panel" Rows="6" Cols="7"></controls:CalendarWrapPanel>
                 </ItemsPanelTemplate>
               </ItemsControl.ItemsPanel>
             </ItemsControl>
@@ -133,7 +134,7 @@
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type calendar:Footer}">
           <Grid>
-            <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Left" Margin="1,1,0,1"
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Margin="1,1,0,1"
                        x:Name="PART_Text" Text="{TemplateBinding Text}" FontWeight="Bold" Foreground="Black"></TextBlock>
             <Border BorderThickness="1 0 1 1" BorderBrush="Black"></Border>
           </Grid>
@@ -144,6 +145,32 @@
     </Setter>
   </Style>
 
+  <!-- Weekdays -->
+  <Style TargetType="{x:Type calendar:Weekdays}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type calendar:Weekdays}">
+          <Grid>
+            <ItemsControl x:Name="PART_Host" ItemsSource="{TemplateBinding Days}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type model:Weekday}">
+                  <Grid>
+                    <TextBlock Margin="0,10,0,10" Text="{Binding Name}" Foreground="Blue" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                  </Grid>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <controls:CalendarWrapPanel x:Name="PART_Panel" Rows="1" Cols="7"></controls:CalendarWrapPanel>
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+            </ItemsControl>
+            <Border BorderThickness="1,0,1,1" BorderBrush="black"  />
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
 
   <!-- MonthCalendar -->
   <Style TargetType="{x:Type calendar:MonthCalendar}">
@@ -156,6 +183,7 @@
           <Grid>
             <Grid.RowDefinitions>
               <RowDefinition Height="Auto" />
+              <RowDefinition Height="Auto"  />
               <RowDefinition Height="*" />
               <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -166,9 +194,13 @@
                                   Visibility="{TemplateBinding Header, Converter={StaticResource visibilityConverter}, ConverterParameter=Normal}">
 
             </monthcalendar:Header>
-            <calendar:Calendar x:Name="PART_Calendar" Grid.Row="1" />
+            <monthcalendar:Weekdays x:Name="PART_Weekdays" Grid.Row="1"
+                                  Visibility="{TemplateBinding Weekdays, Converter={StaticResource visibilityConverter}, ConverterParameter=Normal}">
 
-            <calendar:Footer x:Name="PART_Footer" Grid.Row="2"
+            </monthcalendar:Weekdays>
+            <calendar:Calendar x:Name="PART_Calendar" Grid.Row="2" />
+
+            <calendar:Footer x:Name="PART_Footer" Grid.Row="3"
                              Visibility="{TemplateBinding Footer, Converter={StaticResource visibilityConverter}, ConverterParameter=Normal}">
 
             </calendar:Footer>
