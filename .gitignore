@@ -3,3 +3,6 @@
 ################################################################################
 
 /MonthCalendar/obj
+/MonthCalendar/bin/Debug/netcoreapp3.1
+/MonthCalendar.Test/bin/Debug/netcoreapp3.1
+/MonthCalendar.Test/obj
