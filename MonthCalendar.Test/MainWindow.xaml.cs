@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using Pabo.MonthCalendar.Model;
+using Pabo.MonthCalendar.Properties;
 
 namespace MonthCalendar.Test
 {
@@ -23,6 +24,9 @@ namespace MonthCalendar.Test
   public partial class MainWindow : Window
   {
     List<DayItem> days = new List<DayItem>();
+
+    HeaderProperties headerProperties = new HeaderProperties();
+    FooterProperties footerProperties = new FooterProperties();
 
     public MainWindow()
     {
@@ -39,6 +43,9 @@ namespace MonthCalendar.Test
     }
 
     public List<DayItem> Days => days;
+
+    public HeaderProperties HeaderProperties => headerProperties;
+    public FooterProperties FooterProperties => footerProperties;
 
     private void MonthCalendar_SelectionChanged(object sender, Pabo.MonthCalendar.EventArgs.SelectionChangedEventArgs e)
     {

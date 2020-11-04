@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.ComponentModel;
+using Pabo.MonthCalendar.Properties;
 
 namespace Pabo.MonthCalendar
 {
@@ -24,9 +25,14 @@ namespace Pabo.MonthCalendar
                typeof(Footer),
                new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
+    public static readonly DependencyProperty PropertiesProperty = DependencyProperty.Register("Properties",
+               typeof(FooterProperties),
+               typeof(Footer),
+               new FrameworkPropertyMetadata(new FooterProperties(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
     #endregion
 
-    
+
     #region overrides
 
     public override void OnApplyTemplate()
@@ -55,11 +61,26 @@ namespace Pabo.MonthCalendar
       }
     }
 
+    [Description("")]
+    [Category("Header")]
+    [Browsable(true)]
+    internal FooterProperties Properties
+    {
+      get
+      {
+        return (FooterProperties)this.GetValue(PropertiesProperty);
+      }
+      set
+      {
+        this.SetValue(PropertiesProperty, value);
+      }
+    }
+
 
     #endregion
 
 
-  
 
-      }
+
+  }
 }

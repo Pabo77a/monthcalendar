@@ -7,8 +7,4 @@
     <AssemblyName>Pabo.MonthCalendar</AssemblyName>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-
 </Project>

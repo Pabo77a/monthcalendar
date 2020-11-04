@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.ComponentModel;
+using Pabo.MonthCalendar.Properties;
 
 namespace Pabo.MonthCalendar
 {
@@ -19,6 +20,8 @@ namespace Pabo.MonthCalendar
 
     private int month;
     private int year;
+
+    private HeaderProperties properties = new HeaderProperties();
 
     #endregion
 
@@ -38,6 +41,12 @@ namespace Pabo.MonthCalendar
                typeof(string),
                typeof(Header),
                new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+    public static readonly DependencyProperty PropertiesProperty = DependencyProperty.Register("Properties",
+               typeof(HeaderProperties),
+               typeof(Header),
+               new FrameworkPropertyMetadata(new HeaderProperties(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
 
     #endregion
 
@@ -110,7 +119,22 @@ namespace Pabo.MonthCalendar
         this.SetValue(TextProperty, value);
       }
     }
-        
+
+    [Description("")]
+    [Category("Header")]
+    [Browsable(true)]
+    internal HeaderProperties Properties
+    {
+      get
+      {
+        return (HeaderProperties)this.GetValue(PropertiesProperty);
+      }
+      set
+      {
+        this.SetValue(PropertiesProperty, value);
+      }
+    }
+
 
     #endregion
 

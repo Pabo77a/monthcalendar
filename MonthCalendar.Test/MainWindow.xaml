@@ -18,6 +18,8 @@
                             Weekdays="True"
                             Weeknumbers="True"
                             SelectionMode="Multiple"
+                            FooterProperties="{Binding FooterProperties, Mode=OneWay}"
+                            HeaderProperties="{Binding HeaderProperties, Mode=OneWay}"
                             Days="{Binding Path=Days, Mode=OneWay}" Margin="10,10,24,-10"
                             SelectionChanged="MonthCalendar_SelectionChanged"
                             MonthChanged="MonthCalendar_MonthChanged" >

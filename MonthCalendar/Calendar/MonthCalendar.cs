@@ -8,6 +8,7 @@ using System.ComponentModel;
 using Pabo.MonthCalendar.Common;
 
 using Pabo.MonthCalendar.Model;
+using Pabo.MonthCalendar.Properties;
 
 namespace Pabo.MonthCalendar
 {
@@ -85,6 +86,16 @@ namespace Pabo.MonthCalendar
                typeof(MonthCalendar),
                new FrameworkPropertyMetadata(MonthCalendarSelectionMode.Single, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSelectionModeChanged));
 
+
+    public static readonly DependencyProperty HeaderPropertiesProperty = DependencyProperty.Register("HeaderProperties",
+               typeof(HeaderProperties),
+               typeof(MonthCalendar),
+               new FrameworkPropertyMetadata(new HeaderProperties(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnHeaderPropertiesChanged));
+
+    public static readonly DependencyProperty FooterPropertiesProperty = DependencyProperty.Register("FooterProperties",
+               typeof(FooterProperties),
+               typeof(MonthCalendar),
+               new FrameworkPropertyMetadata(new FooterProperties(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnFooterPropertiesChanged));
 
 
     #endregion
@@ -293,6 +304,36 @@ namespace Pabo.MonthCalendar
     [Description("")]
     [Category("Calendar")]
     [Browsable(true)]
+    public HeaderProperties HeaderProperties
+    {
+      get
+      {
+        return (HeaderProperties)this.GetValue(HeaderPropertiesProperty);
+      }
+      set
+      {
+        this.SetValue(HeaderPropertiesProperty, value);
+      }
+    }
+
+    [Description("")]
+    [Category("Calendar")]
+    [Browsable(true)]
+    public FooterProperties FooterProperties
+    {
+      get
+      {
+        return (FooterProperties)this.GetValue(FooterPropertiesProperty);
+      }
+      set
+      {
+        this.SetValue(FooterPropertiesProperty, value);
+      }
+    }
+
+    [Description("")]
+    [Category("Calendar")]
+    [Browsable(true)]
     public bool Footer
     {
       get
@@ -431,6 +472,40 @@ namespace Pabo.MonthCalendar
     {
       SetupFooter();
     }
+
+    protected virtual void OnHeaderPropertiesChanged(object newValue, object oldValue)
+    {
+      if (this.header != null)
+      {
+        this.header.Properties = (HeaderProperties)newValue;
+      }
+    }
+
+    private static void OnFooterPropertiesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        calendar.OnFooterPropertiesChanged(e.NewValue, e.OldValue);
+    }
+
+
+    protected virtual void OnFooterPropertiesChanged(object newValue, object oldValue)
+    {
+      if (this.footer != null)
+      {
+        this.footer.Properties = (FooterProperties)newValue;
+      }
+    }
+
+    private static void OnHeaderPropertiesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        calendar.OnHeaderPropertiesChanged(e.NewValue, e.OldValue);
+    }
+
 
     protected virtual void OnSelectionModeChanged(object newValue, object oldValue)
     {
