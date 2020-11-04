@@ -13,12 +13,16 @@
     <ResourceDictionary Source="/Pabo.MonthCalendar;component/Resources/brush.scroll.right.xaml" />
   </ResourceDictionary.MergedDictionaries>
 
-
   <!-- Header -->
   <Style TargetType="{x:Type calendar:Header}">
     <Style.Resources>
       <converters:ColorToSolidColorBrushConverter x:Key="BrushConverter" />
     </Style.Resources>
+    <Setter Property="Background">
+      <Setter.Value>
+        <SolidColorBrush Color="Aquamarine"/>
+      </Setter.Value>
+    </Setter>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type calendar:Header}">
@@ -75,6 +79,9 @@
               <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type model:DayItem}" x:Name="foo">
                   <Grid>
+                    <Grid.Background>
+                      <SolidColorBrush Color="Orange" />
+                    </Grid.Background>
                     <Grid.RowDefinitions>
                       <RowDefinition Height="*"></RowDefinition>
                       <RowDefinition Height="*"></RowDefinition>
@@ -145,7 +152,7 @@
                        VerticalAlignment="Center" HorizontalAlignment="Left" Margin="1,1,0,1"
                        x:Name="PART_Text" Text="{TemplateBinding Text}" Foreground="{Binding TextColor, Converter={StaticResource BrushConverter}}"></TextBlock>
             <Border BorderThickness="1 0 1 1" BorderBrush="Black"></Border>
-            
+
           </Grid>
 
         </ControlTemplate>
@@ -156,15 +163,31 @@
 
   <!-- Weekdays -->
   <Style TargetType="{x:Type calendar:Weekdays}">
+    <Style.Resources>
+      <converters:ColorToSolidColorBrushConverter x:Key="BrushConverter" />
+    </Style.Resources>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type calendar:Weekdays}">
           <Grid>
-            <ItemsControl x:Name="PART_Host" ItemsSource="{TemplateBinding Days}">
+            <Rectangle>
+              <Rectangle.Fill>
+                <SolidColorBrush Color="White"/>
+              </Rectangle.Fill>
+            </Rectangle>
+            <ItemsControl DataContext="{TemplateBinding Properties}"
+                          Background="{Binding BackgroundColor, Converter={StaticResource BrushConverter}}"
+                          x:Name="PART_Host" ItemsSource="{TemplateBinding Days}">
               <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type model:Weekday}">
                   <Grid>
-                    <TextBlock Margin="0,10,0,10" Text="{Binding Name}" Foreground="Blue" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock Margin="0,10,0,10" Text="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                               Foreground="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Weekdays}},Path=Properties.TextColor, Converter={StaticResource BrushConverter}}" 
+                               FontSize="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Weekdays}},Path=Properties.FontSize}" 
+                               FontWeight="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Weekdays}},Path=Properties.FontWeight}" 
+                               FontStyle="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Weekdays}},Path=Properties.FontStyle}" 
+                               FontFamily="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Weekdays}},Path=Properties.FontFamily}" 
+                               TextDecorations="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Weekdays}},Path=Properties.TextDecoration}"/>
                   </Grid>
                 </DataTemplate>
               </ItemsControl.ItemTemplate>
@@ -183,15 +206,26 @@
 
   <!-- Weeknumbers -->
   <Style TargetType="{x:Type calendar:Weeknumbers}">
+    <Style.Resources>
+      <converters:ColorToSolidColorBrushConverter x:Key="BrushConverter" />
+    </Style.Resources>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type calendar:Weeknumbers}">
           <Grid>
-            <ItemsControl x:Name="PART_Host" ItemsSource="{TemplateBinding Weeks}">
+            <ItemsControl DataContext="{TemplateBinding Properties}"
+                          x:Name="PART_Host" Background="{Binding BackgroundColor, Converter={StaticResource BrushConverter}}" ItemsSource="{TemplateBinding Weeks}">
               <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type model:Week}">
                   <Grid>
-                    <TextBlock Margin="10,0,10,0" FontSize="16" Text="{Binding Weeknumber}" Foreground="Blue" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock Margin="10,0,10,0" Text="{Binding Weeknumber}" 
+                               Foreground="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Weeknumbers}},Path=Properties.TextColor, Converter={StaticResource BrushConverter}}" 
+                               FontSize="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Weeknumbers}},Path=Properties.FontSize}" 
+                               FontWeight="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Weeknumbers}},Path=Properties.FontWeight}" 
+                               FontStyle="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Weeknumbers}},Path=Properties.FontStyle}" 
+                               FontFamily="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Weeknumbers}},Path=Properties.FontFamily}" 
+                               TextDecorations="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Weeknumbers}},Path=Properties.TextDecoration}"
+                               VerticalAlignment="Center" HorizontalAlignment="Center"/>
                   </Grid>
                 </DataTemplate>
               </ItemsControl.ItemTemplate>
@@ -211,11 +245,13 @@
   <Style TargetType="{x:Type calendar:MonthCalendar}">
     <Style.Resources>
       <converters:BoolToVisibilityConverter x:Key="visibilityConverter" />
+      <converters:ColorToSolidColorBrushConverter x:Key="BrushConverter" />
     </Style.Resources>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type calendar:MonthCalendar}">
-          <Grid>
+          <Grid DataContext="{TemplateBinding WeekdaysProperties }"
+                Background="{Binding BackgroundColor, Converter={StaticResource BrushConverter}}">
             <Grid.RowDefinitions>
               <RowDefinition Height="Auto" />
               <RowDefinition Height="Auto"  />
@@ -231,17 +267,17 @@
 
             </monthcalendar:Header>
             <monthcalendar:Weekdays x:Name="PART_Weekdays" Grid.Row="1" Grid.Column="1"
-                                  Visibility="{TemplateBinding Weekdays, Converter={StaticResource visibilityConverter}, ConverterParameter=Normal}">
+                                    Visibility="{TemplateBinding Weekdays, Converter={StaticResource visibilityConverter}, ConverterParameter=Normal}">
 
             </monthcalendar:Weekdays>
-            
-            
+
+
             <calendar:Calendar x:Name="PART_Calendar" Grid.Row="2" Grid.Column="1" />
 
             <monthcalendar:Weeknumbers x:Name="PART_Weeknumbers" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top"
                                        Height="{Binding Path=ActualHeight, ElementName=PART_Calendar}"
-                                  Visibility="{TemplateBinding Weeknumbers, Converter={StaticResource visibilityConverter}, ConverterParameter=Normal}">
-          
+                                       Visibility="{TemplateBinding Weeknumbers, Converter={StaticResource visibilityConverter}, ConverterParameter=Normal}">
+
             </monthcalendar:Weeknumbers>
 
             <calendar:Footer x:Name="PART_Footer" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
@@ -249,6 +285,7 @@
 
             </calendar:Footer>
             <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1,1,1,1"></Border>
+
           </Grid>
 
         </ControlTemplate>

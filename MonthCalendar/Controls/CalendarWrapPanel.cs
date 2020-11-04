@@ -68,6 +68,11 @@ namespace Pabo.MonthCalendar.Controls
       var tileSize = GetTileSize((int)finalSize.Width, (int)finalSize.Height, Cols, Rows);
       double x = 0, y = 0;
       int col = 1;
+      int row = 1;
+
+      double remainderX = (int)finalSize.Width - Cols * tileSize.Width;
+      double remainderY = (int)finalSize.Height - Rows * tileSize.Height;
+
       foreach (UIElement child in this.InternalChildren)
       {
 
@@ -75,11 +80,20 @@ namespace Pabo.MonthCalendar.Controls
         {
           // if need to move on next row - do that
           col = 1;
+          row++;
           x = 0;
           y += tileSize.Height;
         }
         // arrange in square
-        child.Arrange(new Rect(new Point(x, y), tileSize));
+        var tmp = tileSize;
+        
+        // Add remainders to fill out space
+        if (col == Cols)
+          tmp.Width += remainderX;
+        if (row == Rows)
+          tmp.Height += remainderY;
+
+        child.Arrange(new Rect(new Point(x, y), tmp));
         x += tileSize.Width;
         col++;
       }

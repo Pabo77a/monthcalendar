@@ -9,6 +9,7 @@ using Pabo.MonthCalendar.Common;
 
 using Pabo.MonthCalendar.Model;
 using Pabo.MonthCalendar.Properties;
+using System.Windows.Media;
 
 namespace Pabo.MonthCalendar
 {
@@ -96,6 +97,17 @@ namespace Pabo.MonthCalendar
                typeof(FooterProperties),
                typeof(MonthCalendar),
                new FrameworkPropertyMetadata(new FooterProperties(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnFooterPropertiesChanged));
+
+    public static readonly DependencyProperty WeeknumberPropertiesProperty = DependencyProperty.Register("WeeknumberProperties",
+               typeof(WeeknumberProperties),
+               typeof(MonthCalendar),
+               new FrameworkPropertyMetadata(new WeeknumberProperties(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnWeeknumberPropertiesChanged));
+
+    public static readonly DependencyProperty WeekdaysPropertiesProperty = DependencyProperty.Register("WeekdaysProperties",
+               typeof(WeekdaysProperties),
+               typeof(MonthCalendar),
+               new FrameworkPropertyMetadata(new WeekdaysProperties(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnWeekdaysPropertiesChanged));
+
 
 
     #endregion
@@ -334,6 +346,36 @@ namespace Pabo.MonthCalendar
     [Description("")]
     [Category("Calendar")]
     [Browsable(true)]
+    public WeeknumberProperties WeeknumberProperties
+    {
+      get
+      {
+        return (WeeknumberProperties)this.GetValue(WeeknumberPropertiesProperty);
+      }
+      set
+      {
+        this.SetValue(WeeknumberPropertiesProperty, value);
+      }
+    }
+
+    [Description("")]
+    [Category("Calendar")]
+    [Browsable(true)]
+    public WeekdaysProperties WeekdaysProperties
+    {
+      get
+      {
+        return (WeekdaysProperties)this.GetValue(WeekdaysPropertiesProperty);
+      }
+      set
+      {
+        this.SetValue(WeekdaysPropertiesProperty, value);
+      }
+    }
+
+    [Description("")]
+    [Category("Calendar")]
+    [Browsable(true)]
     public bool Footer
     {
       get
@@ -495,6 +537,40 @@ namespace Pabo.MonthCalendar
       if (this.footer != null)
       {
         this.footer.Properties = (FooterProperties)newValue;
+      }
+    }
+
+    private static void OnWeeknumberPropertiesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        calendar.OnWeeknumberPropertiesChanged(e.NewValue, e.OldValue);
+    }
+
+
+    protected virtual void OnWeeknumberPropertiesChanged(object newValue, object oldValue)
+    {
+      if (this.weeknumbers != null)
+      {
+        this.weeknumbers.Properties = (WeeknumberProperties)newValue;
+      }
+    }
+
+    private static void OnWeekdaysPropertiesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        calendar.OnWeekdaysPropertiesChanged(e.NewValue, e.OldValue);
+    }
+
+
+    protected virtual void OnWeekdaysPropertiesChanged(object newValue, object oldValue)
+    {
+      if (this.weekdays != null)
+      {
+        this.weekdays.Properties = (WeekdaysProperties)newValue;
       }
     }
 

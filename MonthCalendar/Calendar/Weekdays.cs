@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.ComponentModel;
 using Pabo.MonthCalendar.Model;
+using Pabo.MonthCalendar.Properties;
 
 namespace Pabo.MonthCalendar
 {
@@ -18,6 +19,11 @@ namespace Pabo.MonthCalendar
                typeof(List<Weekday>),
                typeof(Weekdays),
                new FrameworkPropertyMetadata(new List<Weekday>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+    public static readonly DependencyProperty PropertiesProperty = DependencyProperty.Register("Properties",
+               typeof(WeekdaysProperties),
+               typeof(Weekdays),
+               new FrameworkPropertyMetadata(new WeekdaysProperties(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
     #endregion
 
@@ -37,8 +43,7 @@ namespace Pabo.MonthCalendar
     public override void OnApplyTemplate()
     {
       base.OnApplyTemplate();
-
-      this.Height = this.FontSize + 20;
+      Setup();
     }
 
     #endregion
@@ -55,6 +60,19 @@ namespace Pabo.MonthCalendar
       set
       {
         this.SetValue(DaysProperty, value);
+      }
+    }
+
+    internal WeekdaysProperties Properties
+    {
+      get
+      {
+        return (WeekdaysProperties)this.GetValue(PropertiesProperty);
+      }
+      set
+      {
+        this.SetValue(PropertiesProperty, value);
+        Setup();
       }
     }
 
@@ -78,6 +96,11 @@ namespace Pabo.MonthCalendar
       }
 
       this.Days = days.ToList<Weekday>();
+    }
+
+    private void Setup()
+    {
+      this.Height = this.Properties.FontSize + 20;
     }
   }
 }

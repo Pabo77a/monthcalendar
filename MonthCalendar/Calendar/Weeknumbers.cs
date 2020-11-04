@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Windows;
 using System.ComponentModel;
 using Pabo.MonthCalendar.Model;
+using System.Windows.Media;
+using Pabo.MonthCalendar.Properties;
+using System.Windows.Controls;
 
 namespace Pabo.MonthCalendar
 {
@@ -16,6 +19,11 @@ namespace Pabo.MonthCalendar
                typeof(List<Week>),
                typeof(Weeknumbers),
                new FrameworkPropertyMetadata(new List<Week>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+    public static readonly DependencyProperty PropertiesProperty = DependencyProperty.Register("Properties",
+               typeof(WeeknumberProperties),
+               typeof(Weeknumbers),
+               new FrameworkPropertyMetadata(new WeeknumberProperties(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
     #endregion
 
@@ -35,14 +43,20 @@ namespace Pabo.MonthCalendar
     public override void OnApplyTemplate()
     {
       base.OnApplyTemplate();
-
       this.Width = this.FontSize + 25;
+
+      this.Properties.PropertyChanged += Properties_PropertyChanged;
+    }
+
+    private void Properties_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+      Setup();
     }
 
     #endregion
-
-
+  
     #region properties
+
 
     internal List<Week> Weeks
     {
@@ -53,6 +67,19 @@ namespace Pabo.MonthCalendar
       set
       {
         this.SetValue(WeeksProperty, value);
+      }
+    }
+
+    internal WeeknumberProperties Properties
+    {
+      get
+      {
+        return (WeeknumberProperties)this.GetValue(PropertiesProperty);
+      }
+      set
+      {
+        this.SetValue(PropertiesProperty, value);
+        Setup();
       }
     }
 
@@ -71,5 +98,11 @@ namespace Pabo.MonthCalendar
       this.Weeks = weeks;
       
     }
+
+    private void Setup()
+    {
+      this.Width = Properties.FontSize + 25;
+    }
   }
+
 }

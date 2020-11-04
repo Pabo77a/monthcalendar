@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Drawing;
 using System.Globalization;
 
 namespace Pabo.MonthCalendar.Model
@@ -18,7 +19,7 @@ namespace Pabo.MonthCalendar.Model
 
 
     public DateTime FirstDateOWeek { get; set; }
-
+  
     public string Weeknumber
     {
       get

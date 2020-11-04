@@ -27,6 +27,8 @@ namespace MonthCalendar.Test
 
     HeaderProperties headerProperties = new HeaderProperties();
     FooterProperties footerProperties = new FooterProperties();
+    WeeknumberProperties weeknumberProperties = new WeeknumberProperties();
+    WeekdaysProperties weekdaysProperties = new WeekdaysProperties();
 
     public MainWindow()
     {
@@ -40,12 +42,28 @@ namespace MonthCalendar.Test
       this.days.Add(new DayItem() { Date = new DateTime(2020, 6, 6), BackgroundColor = Colors.ForestGreen, Text = "HEJ HEJ" });
       this.days.Add(new DayItem() { Date = new DateTime(2020, 10, 21), BackgroundColor = Colors.BlueViolet });
       this.days.Add(new DayItem() { Date = new DateTime(2020, 10, 11), BackgroundColor = Colors.Orange });
+
+      //this.weeknumberProperties.TextColor = Colors.DarkOliveGreen;
+      //this.weeknumberProperties.FontSize = 32;
+      //this.weeknumberProperties.FontWeight = FontWeights.Bold;
+      //this.weeknumberProperties.TextDecoration = "Underline";
+      //this.weeknumberProperties.BackgroundColor = Colors.LightBlue;
+      //this.headerProperties.BackgroundColor = Colors.Lavender;
+      //this.weekdaysProperties.BackgroundColor = Colors.DarkSeaGreen;
+      //this.weekdaysProperties.FontWeight = FontWeights.Bold;
+      //this.weekdaysProperties.TextDecoration = "Strikethrough";
+      //this.weekdaysProperties.TextColor = Colors.Firebrick;
+      //this.weekdaysProperties.FontSize = 30;
     }
 
     public List<DayItem> Days => days;
 
     public HeaderProperties HeaderProperties => headerProperties;
     public FooterProperties FooterProperties => footerProperties;
+
+    public WeeknumberProperties WeeknumberProperties => weeknumberProperties;
+
+    public WeekdaysProperties WeekdaysProperties => weekdaysProperties;
 
     private void MonthCalendar_SelectionChanged(object sender, Pabo.MonthCalendar.EventArgs.SelectionChangedEventArgs e)
     {

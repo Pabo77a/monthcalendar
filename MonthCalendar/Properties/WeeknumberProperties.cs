@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Windows;
 using System.Windows.Media;
 
 namespace Pabo.MonthCalendar.Properties
 {
-  public class FooterProperties : PanelProperties
+  public class WeeknumberProperties : PanelProperties
   {
-    public FooterProperties()
+    public WeeknumberProperties() : base()
     {
-      this.FontWeight = FontWeights.Bold;
-      this.TextColor = Colors.Black;
+      this.TextColor = Colors.Blue;
       this.BackgroundColor = Colors.White;
     }
   }
