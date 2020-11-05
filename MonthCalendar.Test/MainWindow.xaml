@@ -25,6 +25,8 @@
                             WeeknumberProperties="{Binding WeeknumberProperties, Mode=OneWay}"
                             WeekdaysProperties="{Binding WeekdaysProperties, Mode=OneWay}"
                             
+                            CalendarProperties="{Binding CalendarProperties, Mode=OneWay}"
+                              
                             Days="{Binding Path=Days, Mode=OneWay}" Margin="10,10,24,-10"
                             SelectionChanged="MonthCalendar_SelectionChanged"
                             MonthChanged="MonthCalendar_MonthChanged" >

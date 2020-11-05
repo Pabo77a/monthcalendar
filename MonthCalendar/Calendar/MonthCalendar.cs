@@ -104,6 +104,12 @@ namespace Pabo.MonthCalendar
                typeof(MonthCalendar),
                new FrameworkPropertyMetadata(new WeekdaysProperties(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnWeekdaysPropertiesChanged));
 
+    public static readonly DependencyProperty CalendarPropertiesProperty = DependencyProperty.Register("CalendarProperties",
+               typeof(CalendarProperties),
+               typeof(MonthCalendar),
+               new FrameworkPropertyMetadata(new CalendarProperties(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnCalendarPropertiesChanged));
+
+
 
 
     #endregion
@@ -240,7 +246,7 @@ namespace Pabo.MonthCalendar
     {
       if (this.header != null)
       {
-        this.header.SetDate(this.Year, this.Month);
+        this.header.Properties.SetDate(this.Year, this.Month);
       }
     }
 
@@ -458,6 +464,21 @@ namespace Pabo.MonthCalendar
       }
     }
 
+    [Description("")]
+    [Category("Calendar")]
+    [Browsable(true)]
+    public CalendarProperties CalendarProperties
+    {
+      get
+      {
+        return (CalendarProperties)this.GetValue(CalendarPropertiesProperty);
+      }
+      set
+      {
+        this.SetValue(CalendarPropertiesProperty, value);
+      }
+    }
+
     #endregion
 
 
@@ -501,6 +522,23 @@ namespace Pabo.MonthCalendar
       if (this.footer != null)
       {
         this.footer.Properties = (FooterProperties)newValue;
+      }
+    }
+
+    private static void OnCalendarPropertiesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        calendar.OnCalendarPropertiesChanged(e.NewValue, e.OldValue);
+    }
+
+
+    protected virtual void OnCalendarPropertiesChanged(object newValue, object oldValue)
+    {
+      if (this.calendar != null)
+      {
+        this.calendar.Properties = (CalendarProperties)newValue;
       }
     }
 

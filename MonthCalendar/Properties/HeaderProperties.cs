@@ -10,27 +10,20 @@ namespace Pabo.MonthCalendar.Properties
   public class HeaderProperties : PanelProperties
   {
 
-    private string dateText = string.Empty;
     private string text = string.Empty;
     private string dateFormat = "MMMM yyyy";
-      
+
 
     public HeaderProperties()
     {
+      this.Month = 1;
+      this.Year = 1990;
     }
- 
-    public string DateText
-    {
-      get => dateText;
-      set
-      {
-        if (value != dateText)
-        {
-          dateText = value;
-          OnPropertyChanged(nameof(this.Text));
-        }
-      }
-    }
+
+
+    internal int Month { private get; set; }
+
+    internal int Year { private get; set; }
 
     public string DateFormat
     {
@@ -50,7 +43,7 @@ namespace Pabo.MonthCalendar.Properties
     {
       get
       {
-        return !string.IsNullOrEmpty(this.text)  ? this.text : this.dateText;
+        return !string.IsNullOrEmpty(this.text) ? this.text : new DateTime(this.Year, this.Month, 1).ToString(this.DateFormat); 
       }
       set
       {
@@ -60,6 +53,14 @@ namespace Pabo.MonthCalendar.Properties
           OnPropertyChanged(nameof(this.Text));
         }
       }
+    }
+
+    internal void SetDate(int year, int month)
+    {
+      this.Month = month;
+      this.Year = year;
+      OnPropertyChanged(nameof(this.Text));
+
     }
   }
 }

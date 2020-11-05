@@ -13,6 +13,7 @@ using Pabo.MonthCalendar.Model;
 using Pabo.MonthCalendar.Controls;
 using Point = System.Windows.Point;
 using Pabo.MonthCalendar.EventArgs;
+using Pabo.MonthCalendar.Properties;
 
 namespace Pabo.MonthCalendar
 {
@@ -51,8 +52,14 @@ namespace Pabo.MonthCalendar
                typeof(Calendar),
                new FrameworkPropertyMetadata(new List<CalendarDay>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
+    public static readonly DependencyProperty PropertiesProperty = DependencyProperty.Register("Properties",
+               typeof(CalendarProperties),
+               typeof(Calendar),
+               new FrameworkPropertyMetadata(new CalendarProperties(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+
     #endregion
-       
+
 
     #region overrides
 
@@ -187,6 +194,21 @@ namespace Pabo.MonthCalendar
       }
     }
 
+    [Description("")]
+    [Category("Header")]
+    [Browsable(true)]
+    internal CalendarProperties Properties
+    {
+      get
+      {
+        return (CalendarProperties)this.GetValue(PropertiesProperty);
+      }
+      set
+      {
+        this.SetValue(PropertiesProperty, value);
+      }
+    }
+
     internal MonthCalendarSelectionMode SelectionMode
     {
       get => SelectionMode;
@@ -242,7 +264,6 @@ namespace Pabo.MonthCalendar
       for (int i = startPos - 1; i >= 0; i--)
       {
         days[i] = new CalendarDay(date);
-        days[i].DateColor = Colors.LightGray;
         date = date.AddDays(-1);
       }
 
@@ -250,8 +271,21 @@ namespace Pabo.MonthCalendar
       for (int i = endPos; i < 42; i++)
       {
         days[i] = new CalendarDay(date);
-        days[i].DateColor = Colors.LightGray;
         date = date.AddDays(1);
+      }
+
+      for (int i = 0;i < 42; i++)
+      {
+        if (days[i].Date.Month == month)
+        {
+          days[i].DateColor = Properties.DateColor;
+          days[i].BackgroundColor = Properties.BackgroundColor;
+        }
+        else
+        {
+          days[i].DateColor = Properties.TrailingDateColor;
+          days[i].BackgroundColor = Properties.TrailingBackgroundColor;
+        }
       }
 
       foreach (DayItem item in items)

@@ -140,14 +140,6 @@ namespace Pabo.MonthCalendar
 
     #region methods
 
-    internal void SetDate(int year, int month)
-    {
-      this.year = year;
-      this.month = month;
-
-      this.Properties.DateText = new DateTime(year, month,1).ToString("MMMM yyyy");
-    }
-
     #endregion
   }
 }

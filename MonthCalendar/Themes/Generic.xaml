@@ -102,7 +102,12 @@
                       </Rectangle.Fill>
                     </Rectangle>
                     <TextBlock Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right" 
-                               Foreground="{Binding DateColor, Converter={StaticResource BrushConverter}}" FontSize="16"
+                               Foreground="{Binding DateColor, Converter={StaticResource BrushConverter}}" 
+                               FontSize="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.DateFontSize}" 
+                               FontWeight="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.DateFontWeight}" 
+                               FontStyle="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.DateFontStyle}" 
+                               FontFamily="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.DateFontFamily}" 
+                               TextDecorations="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.DateTextDecoration}"
                                Text="{Binding Date, Converter={StaticResource DayConverter}}" Margin="0,4,7,0" ></TextBlock>
                     <!--<Ellipse Grid.Column="1" Grid.Row="0" Stroke="red"  Height="28" Width="28"
                              VerticalAlignment="Top" HorizontalAlignment="right" StrokeThickness="2"  Margin="0,1,1,0">

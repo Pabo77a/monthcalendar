@@ -29,6 +29,7 @@ namespace MonthCalendar.Test
     FooterProperties footerProperties = new FooterProperties();
     WeeknumberProperties weeknumberProperties = new WeeknumberProperties();
     WeekdaysProperties weekdaysProperties = new WeekdaysProperties();
+    CalendarProperties calendarProperties = new CalendarProperties();
 
     public MainWindow()
     {
@@ -56,11 +57,18 @@ namespace MonthCalendar.Test
       //this.weekdaysProperties.FontSize = 30;
       //this.HeaderProperties.DateText = "jjj"; // .Text = "TEST TEST TEST";
 
+      //this.calendarProperties.DateFontSize = 6;
+      this.calendarProperties.DateColor = Colors.Orange;
+      this.calendarProperties.DateTextDecoration = "Underline";
+      this.calendarProperties.DateFontStyle = FontStyles.Italic;
+      this.calendarProperties.DateFontWeight = FontWeights.Bold;
     }
 
     public List<DayItem> Days => days;
 
     public HeaderProperties HeaderProperties => headerProperties;
+
+    public CalendarProperties CalendarProperties => calendarProperties;
 
     public FooterProperties FooterProperties => footerProperties;
 
