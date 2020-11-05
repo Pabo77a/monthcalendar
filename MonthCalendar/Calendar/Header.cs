@@ -20,9 +20,7 @@ namespace Pabo.MonthCalendar
 
     private int month;
     private int year;
-
-    private HeaderProperties properties = new HeaderProperties();
-
+ 
     #endregion
 
     #region routed events
@@ -36,12 +34,7 @@ namespace Pabo.MonthCalendar
     #endregion
 
     #region dependency properties
-
-    public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text",
-               typeof(string),
-               typeof(Header),
-               new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
+   
     public static readonly DependencyProperty PropertiesProperty = DependencyProperty.Register("Properties",
                typeof(HeaderProperties),
                typeof(Header),
@@ -104,21 +97,7 @@ namespace Pabo.MonthCalendar
 
 
     #region properties
-
-    [Description("")]
-    [Category("Header")]
-    [Browsable(true)]
-    internal string Text
-    {
-      get
-      {
-        return (string)this.GetValue(TextProperty);
-      }
-      set
-      {
-        this.SetValue(TextProperty, value);
-      }
-    }
+    
 
     [Description("")]
     [Category("Header")]
@@ -166,8 +145,7 @@ namespace Pabo.MonthCalendar
       this.year = year;
       this.month = month;
 
-      var date = new DateTime(this.year, this.month, 1);
-      this.Text = date.ToString("MMMM yyyy");
+      this.Properties.DateText = new DateTime(year, month,1).ToString("MMMM yyyy");
     }
 
     #endregion

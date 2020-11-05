@@ -19,12 +19,7 @@ namespace Pabo.MonthCalendar
     #endregion
 
     #region dependency properties
-    
-    public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text",
-               typeof(string),
-               typeof(Footer),
-               new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
+        
     public static readonly DependencyProperty PropertiesProperty = DependencyProperty.Register("Properties",
                typeof(FooterProperties),
                typeof(Footer),
@@ -46,21 +41,7 @@ namespace Pabo.MonthCalendar
 
     #region properties
 
-    [Description("")]
-    [Category("Footer")]
-    [Browsable(true)]
-    internal string Text
-    {
-      get
-      {
-        return (string)this.GetValue(TextProperty);
-      }
-      set
-      {
-        this.SetValue(TextProperty, value);
-      }
-    }
-
+    
     [Description("")]
     [Category("Header")]
     [Browsable(true)]

@@ -54,11 +54,14 @@ namespace MonthCalendar.Test
       //this.weekdaysProperties.TextDecoration = "Strikethrough";
       //this.weekdaysProperties.TextColor = Colors.Firebrick;
       //this.weekdaysProperties.FontSize = 30;
+      //this.HeaderProperties.DateText = "jjj"; // .Text = "TEST TEST TEST";
+
     }
 
     public List<DayItem> Days => days;
 
     public HeaderProperties HeaderProperties => headerProperties;
+
     public FooterProperties FooterProperties => footerProperties;
 
     public WeeknumberProperties WeeknumberProperties => weeknumberProperties;
@@ -73,6 +76,11 @@ namespace MonthCalendar.Test
     private void MonthCalendar_MonthChanged(object sender, Pabo.MonthCalendar.EventArgs.MonthChangedEventArgs e)
     {
       int i = 1;
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+      this.headerProperties.Text = "Uj UJ UJ";
     }
   }
 }

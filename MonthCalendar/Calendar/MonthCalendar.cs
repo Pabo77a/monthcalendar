@@ -10,6 +10,7 @@ using Pabo.MonthCalendar.Common;
 using Pabo.MonthCalendar.Model;
 using Pabo.MonthCalendar.Properties;
 using System.Windows.Media;
+using System.Diagnostics;
 
 namespace Pabo.MonthCalendar
 {
@@ -76,12 +77,7 @@ namespace Pabo.MonthCalendar
                typeof(MonthCalendar),
                new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
-
-    public static readonly DependencyProperty FooterTextProperty = DependencyProperty.Register("FooterText",
-               typeof(string),
-               typeof(MonthCalendar),
-               new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,OnFooterTextChanged));
-
+    
     public static readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register("SelectionMode",
                typeof(MonthCalendarSelectionMode),
                typeof(MonthCalendar),
@@ -250,10 +246,6 @@ namespace Pabo.MonthCalendar
 
     private void SetupFooter()
     {
-      if (this.footer != null)
-      {
-        this.footer.Text = !string.IsNullOrEmpty(this.FooterText) ? this.FooterText : DateTime.Now.ToShortDateString();
-      }
     }
 
 
@@ -417,22 +409,7 @@ namespace Pabo.MonthCalendar
         this.SetValue(WeeknumbersVisibleProperty, value);
       }
     }
-
-    [Description("")]
-    [Category("Calendar")]
-    [Browsable(true)]
-    public string FooterText
-    {
-      get
-      {
-        return (string)this.GetValue(FooterTextProperty);
-      }
-      set
-      {
-        this.SetValue(FooterTextProperty, value);
-      }
-    }
-
+    
 
     [Description("")]
     [Category("Calendar")]
@@ -502,19 +479,6 @@ namespace Pabo.MonthCalendar
       this.Month++;
     }
 
-    private static void OnFooterTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-
-      MonthCalendar calendar = d as MonthCalendar;
-      if (calendar != null)
-        calendar.OnFooterTextChanged(e.NewValue, e.OldValue);
-    }
-
-    protected virtual void OnFooterTextChanged(object newValue, object oldValue)
-    {
-      SetupFooter();
-    }
-
     protected virtual void OnHeaderPropertiesChanged(object newValue, object oldValue)
     {
       if (this.header != null)
@@ -574,12 +538,24 @@ namespace Pabo.MonthCalendar
       }
     }
 
+    protected virtual void OHeaderPropertiesChanged(object newValue, object oldValue)
+    {
+      if (this.header != null)
+      {
+        this.header.Properties = (HeaderProperties)newValue;
+       
+      }
+    }
+
     private static void OnHeaderPropertiesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
 
       MonthCalendar calendar = d as MonthCalendar;
       if (calendar != null)
+      {
         calendar.OnHeaderPropertiesChanged(e.NewValue, e.OldValue);
+        calendar.SetupHeader();
+      }
     }
 
 
@@ -610,9 +586,6 @@ namespace Pabo.MonthCalendar
 
     protected virtual void OnYearChanged(object newValue, object oldValue)
     {
-      SetupHeader();
-      SetupCalendar();
-      SetupWeeknumbers();
     }
 
     private static void OnMonthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

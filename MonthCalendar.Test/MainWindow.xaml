@@ -6,12 +6,14 @@
   <Grid Margin="0,0,23,29">
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
+      <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
 
-    <calendar:MonthCalendar 
+    
+      <calendar:MonthCalendar Grid.Row="0"
                             Year="2020" Month="8" 
                             Header="true"
                             Footer="true" 
@@ -26,6 +28,7 @@
                             Days="{Binding Path=Days, Mode=OneWay}" Margin="10,10,24,-10"
                             SelectionChanged="MonthCalendar_SelectionChanged"
                             MonthChanged="MonthCalendar_MonthChanged" >
-    </calendar:MonthCalendar>
+      </calendar:MonthCalendar>
+    <Button Grid.Row="1" Click="Button_Click">TEST</Button>
   </Grid>
 </Window>

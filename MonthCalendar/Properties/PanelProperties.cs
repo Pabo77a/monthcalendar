@@ -11,8 +11,8 @@ namespace Pabo.MonthCalendar.Properties
     private int fontSize = 16;
     private FontWeight fontWeight = FontWeights.Normal;
     private FontStyle fontStyle = FontStyles.Normal;
-    private FontFamily fontFamily;
-    private String textDecoration;
+    private FontFamily fontFamily = new FontFamily(string.Empty);
+    private String textDecoration = string.Empty;
     private Color textColor = Colors.White;
     private Color backGroundColor = Colors.Blue;
 
