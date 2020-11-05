@@ -14,8 +14,15 @@ namespace Pabo.MonthCalendar.Common
         if (isMatched)
         {
           var value = sProp.GetValue(source);
-          PropertyInfo propertyInfo = target.GetType().GetProperty(sProp.Name);
-          propertyInfo.SetValue(target, value);
+          if (value != null)
+          {
+            PropertyInfo propertyInfo = target.GetType().GetProperty(sProp.Name);
+            propertyInfo.SetValue(target, value);
+          }
+          else
+          {
+            int i = 1;
+          }
         }
       }
       return target;

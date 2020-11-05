@@ -55,7 +55,7 @@ namespace Pabo.MonthCalendar
     public static readonly DependencyProperty DaysProperty = DependencyProperty.Register("Days",
                typeof(List<DayItem>),
                typeof(MonthCalendar),
-               new FrameworkPropertyMetadata(new List<DayItem>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+               new FrameworkPropertyMetadata(new List<DayItem>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnDaysChanged));
 
     public static readonly DependencyProperty HeaderVisibleProperty = DependencyProperty.Register("Header",
                typeof(bool),
@@ -539,6 +539,24 @@ namespace Pabo.MonthCalendar
       if (this.calendar != null)
       {
         this.calendar.Properties = (CalendarProperties)newValue;
+        this.calendar.SetupDays(this.Year, this.Month, this.Days);
+      }
+    }
+
+    private static void OnDaysChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        calendar.OnDaysChanged(e.NewValue, e.OldValue);
+    }
+
+
+    protected virtual void OnDaysChanged(object newValue, object oldValue)
+    {
+      if (this.calendar != null)
+      {
+        this.calendar.SetupDays(this.Year, this.Month, this.Days);
       }
     }
 

@@ -80,7 +80,7 @@
                 <DataTemplate DataType="{x:Type model:DayItem}" x:Name="foo">
                   <Grid>
                     <Grid.Background>
-                      <SolidColorBrush Color="lightgray" />
+                      <SolidColorBrush Color="Transparent" />
                     </Grid.Background>
                     <Grid.RowDefinitions>
                       <RowDefinition Height="*"></RowDefinition>
@@ -102,24 +102,25 @@
                       </Rectangle.Fill>
                     </Rectangle>
                     <TextBlock Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right" 
-                               Foreground="{Binding DateColor, Converter={StaticResource BrushConverter}}" 
-                               FontSize="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.DateFontSize}" 
-                               FontWeight="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.DateFontWeight}" 
-                               FontStyle="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.DateFontStyle}" 
-                               FontFamily="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.DateFontFamily}" 
-                               TextDecorations="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.DateTextDecoration}"
+                               Foreground="{ Binding DateColor, Converter={StaticResource BrushConverter}}" 
+                               FontSize="{Binding DateFontSize}" 
+                               FontWeight="{Binding DateFontWeight}" 
+                               FontStyle="{Binding DateFontStyle}" 
+                               FontFamily="{Binding DateFontFamily}" 
+                               TextDecorations="{Binding DateTextDecoration}"
                                Text="{Binding Date, Converter={StaticResource DayConverter}}" Margin="0,4,7,0" ></TextBlock>
                     <!--<Ellipse Grid.Column="1" Grid.Row="0" Stroke="red"  Height="28" Width="28"
                              VerticalAlignment="Top" HorizontalAlignment="right" StrokeThickness="2"  Margin="0,1,1,0">
 
                     </Ellipse>-->
                     <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"  HorizontalAlignment="Left" 
+                               FontSize="{Binding TextFontSize}" 
                                Foreground="{Binding TextColor, Converter={StaticResource BrushConverter}}"
                                Text="{Binding Text}" Margin="2,0,0,1" ></TextBlock>
                     <Border  BorderThickness="{Binding BorderThickness, Mode=TwoWay}"
                              BorderBrush="Blue" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" 
                              Visibility="{Binding Selected, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}"></Border>
-                    
+
                   </Grid>
                 </DataTemplate>
               </ItemsControl.ItemTemplate>

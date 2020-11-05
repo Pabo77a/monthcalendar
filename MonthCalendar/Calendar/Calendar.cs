@@ -274,8 +274,9 @@ namespace Pabo.MonthCalendar
         date = date.AddDays(1);
       }
 
-      for (int i = 0;i < 42; i++)
+      for (int i = 0; i < 42; i++)
       {
+
         if (days[i].Date.Month == month)
         {
           days[i].DateColor = Properties.DateColor;
@@ -286,13 +287,27 @@ namespace Pabo.MonthCalendar
           days[i].DateColor = Properties.TrailingDateColor;
           days[i].BackgroundColor = Properties.TrailingBackgroundColor;
         }
+
+        days[i].DateFontFamily = Properties.DateFontFamily;
+        days[i].DateFontSize = Properties.DateFontSize;
+        days[i].DateFontStyle = Properties.DateFontStyle;
+        days[i].DateFontWeight = Properties.DateFontWeight;
+        days[i].DateTextDecoration = Properties.DateTextDecoration;
+
+        days[i].TextFontFamily = Properties.TextFontFamily;
+        days[i].TextFontSize = Properties.TextFontSize;
+        days[i].TextFontStyle = Properties.TextFontStyle;
+        days[i].TextFontWeight = Properties.TextFontWeight;
+        days[i].TextTextDecoration = Properties.TextTextDecoration;
+
       }
 
       foreach (DayItem item in items)
       {
-        var day = days.First(x => x.Date == item.Date);
+        var day = days.FirstOrDefault(x => x.Date == item.Date);
         if (day != null)
         {
+          Utils.CopyProperties<CalendarProperties, CalendarDay>(Properties, day);
           Utils.CopyProperties<DayItem, CalendarDay>(item, day);
         }
       }

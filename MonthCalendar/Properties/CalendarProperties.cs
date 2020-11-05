@@ -8,7 +8,7 @@ namespace Pabo.MonthCalendar.Properties
 {
   public class CalendarProperties : PropertiesBase
   {
-
+    // Date
     private Color dateColor = Colors.Black;
     private int dateFontSize = 16;
     private FontWeight dateFontWeight = FontWeights.Normal;
@@ -16,10 +16,20 @@ namespace Pabo.MonthCalendar.Properties
     private FontFamily dateFontFamily = new FontFamily(string.Empty);
     private string dateTextDecoration = string.Empty;
 
+    // Text
+    private Color textColor = Colors.Black;
+    private int textFontSize = 16;
+    private FontWeight textFontWeight = FontWeights.Normal;
+    private FontStyle textFontStyle = FontStyles.Normal;
+    private FontFamily textFontFamily = new FontFamily(string.Empty);
+    private string textTextDecoration = string.Empty;
+
+
     private Color backGroundColor = Colors.White;
 
-    private Color trailingDateColor = Colors.LightGray;
-    private Color trailingBackgroundColor = Colors.White;
+    // Trailing
+    private Color trailingDateColor = Colors.White;
+    private Color trailingBackgroundColor = Colors.LightGray;
 
     public CalendarProperties()
     {
@@ -60,11 +70,95 @@ namespace Pabo.MonthCalendar.Properties
         if (value != trailingDateColor)
         {
           trailingDateColor = value;
-          OnPropertyChanged(nameof(this.BackgroundColor));
+          OnPropertyChanged(nameof(this.TrailingDateColor));
         }
       }
     }
 
+
+    #region Text
+
+
+    public string TextTextDecoration
+    {
+      get => textTextDecoration;
+      set
+      {
+        if (value != textTextDecoration)
+        {
+          textTextDecoration = value;
+          OnPropertyChanged(nameof(this.TextTextDecoration));
+        }
+      }
+    }
+
+    public FontFamily TextFontFamily
+    {
+      get => textFontFamily;
+      set
+      {
+        if (value != textFontFamily)
+        {
+          textFontFamily = value;
+          OnPropertyChanged(nameof(this.TextFontFamily));
+        }
+      }
+    }
+
+    public FontWeight TextFontWeight
+    {
+      get => textFontWeight;
+      set
+      {
+        if (value != textFontWeight)
+        {
+          textFontWeight = value;
+          OnPropertyChanged(nameof(this.textFontWeight));
+        }
+      }
+    }
+
+    public FontStyle TextFontStyle
+    {
+      get => textFontStyle;
+      set
+      {
+        if (value != textFontStyle)
+        {
+          textFontStyle = value;
+          OnPropertyChanged(nameof(this.TextFontStyle));
+        }
+      }
+    }
+
+    public Color TextColor
+    {
+      get => textColor;
+      set
+      {
+        if (value != textColor)
+        {
+          textColor = value;
+          OnPropertyChanged(nameof(this.textColor));
+        }
+      }
+    }
+
+    public int TextFontSize
+    {
+      get => textFontSize;
+      set
+      {
+        if (value != textFontSize)
+        {
+          textFontSize = value;
+          OnPropertyChanged(nameof(this.TextFontSize));
+        }
+      }
+    }
+
+
+    #endregion
 
     #region Date
 

@@ -40,9 +40,16 @@ namespace MonthCalendar.Test
 
     private void Setup()
     {
+
+
       this.days.Add(new DayItem() { Date = new DateTime(2020, 6, 6), BackgroundColor = Colors.ForestGreen, Text = "HEJ HEJ" });
       this.days.Add(new DayItem() { Date = new DateTime(2020, 10, 21), BackgroundColor = Colors.BlueViolet });
       this.days.Add(new DayItem() { Date = new DateTime(2020, 10, 11), BackgroundColor = Colors.Orange });
+
+      this.days.Add(new DayItem() { Date = new DateTime(2020, 8, 13), BackgroundColor = Colors.HotPink, DateColor=Colors.Yellow, DateFontSize=22, Text = "BIDEN", TextColor = Colors.White, TextFontSize = 36 });
+      this.days.Add(new DayItem() { Date = new DateTime(2020, 8, 16), BackgroundColor = Colors.Linen, DateColor = Colors.DarkOrange, Text = "TRUMP", TextColor = Colors.Ivory, TextFontSize = 22 });
+
+      this.days.Add(new DayItem() { Date = new DateTime(2020, 7, 28), DateColor = Colors.Red, Text = "yyy", TextColor = Colors.Black});
 
       //this.weeknumberProperties.TextColor = Colors.DarkOliveGreen;
       //this.weeknumberProperties.FontSize = 32;
@@ -57,11 +64,14 @@ namespace MonthCalendar.Test
       //this.weekdaysProperties.FontSize = 30;
       //this.HeaderProperties.DateText = "jjj"; // .Text = "TEST TEST TEST";
 
-      //this.calendarProperties.DateFontSize = 6;
-      this.calendarProperties.DateColor = Colors.Orange;
+      this.calendarProperties.DateFontSize = 24;
+      this.calendarProperties.DateColor = Colors.Green;
       this.calendarProperties.DateTextDecoration = "Underline";
       this.calendarProperties.DateFontStyle = FontStyles.Italic;
       this.calendarProperties.DateFontWeight = FontWeights.Bold;
+
+      this.calendarProperties.TrailingBackgroundColor = Colors.Gray;
+      this.calendarProperties.TrailingDateColor = Colors.White;
     }
 
     public List<DayItem> Days => days;
