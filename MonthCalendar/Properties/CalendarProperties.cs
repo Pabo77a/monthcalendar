@@ -15,6 +15,9 @@ namespace Pabo.MonthCalendar.Properties
     private FontStyle dateFontStyle = FontStyles.Normal;
     private FontFamily dateFontFamily = new FontFamily(string.Empty);
     private string dateTextDecoration = string.Empty;
+    private VerticalAlignment dateVerticalAlignment = VerticalAlignment.Top;
+    private HorizontalAlignment dateHorizontalAlignment = HorizontalAlignment.Right;
+
 
     // Text
     private Color textColor = Colors.Black;
@@ -23,6 +26,8 @@ namespace Pabo.MonthCalendar.Properties
     private FontStyle textFontStyle = FontStyles.Normal;
     private FontFamily textFontFamily = new FontFamily(string.Empty);
     private string textTextDecoration = string.Empty;
+    private VerticalAlignment textVerticalAlignment = VerticalAlignment.Bottom;
+    private HorizontalAlignment textHorizontalAlignment = HorizontalAlignment.Left;
 
 
     private Color backGroundColor = Colors.White;
@@ -77,6 +82,32 @@ namespace Pabo.MonthCalendar.Properties
 
 
     #region Text
+
+    public VerticalAlignment TextVerticalAlignment
+    {
+      get => textVerticalAlignment;
+      set
+      {
+        if (value != textVerticalAlignment)
+        {
+          textVerticalAlignment = value;
+          OnPropertyChanged(nameof(this.TextVerticalAlignment));
+        }
+      }
+    }
+
+    public HorizontalAlignment TextHorizontalAlignment
+    {
+      get => textHorizontalAlignment;
+      set
+      {
+        if (value != textHorizontalAlignment)
+        {
+          textHorizontalAlignment = value;
+          OnPropertyChanged(nameof(this.TextHorizontalAlignment));
+        }
+      }
+    }
 
 
     public string TextTextDecoration
@@ -161,6 +192,32 @@ namespace Pabo.MonthCalendar.Properties
     #endregion
 
     #region Date
+
+    public VerticalAlignment DateVerticalAlignment
+    {
+      get => dateVerticalAlignment;
+      set
+      {
+        if (value != dateVerticalAlignment)
+        {
+          dateVerticalAlignment = value;
+          OnPropertyChanged(nameof(this.DateVerticalAlignment));
+        }
+      }
+    }
+
+    public HorizontalAlignment DateHorizontalAlignment
+    {
+      get => dateHorizontalAlignment;
+      set
+      {
+        if (value != dateHorizontalAlignment)
+        {
+          dateHorizontalAlignment = value;
+          OnPropertyChanged(nameof(this.DateHorizontalAlignment));
+        }
+      }
+    }
 
     public string DateTextDecoration
     {

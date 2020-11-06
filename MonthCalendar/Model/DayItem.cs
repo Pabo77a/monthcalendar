@@ -14,11 +14,17 @@ namespace Pabo.MonthCalendar.Model
       DateTextDecoration = "";
       DateFontSize = 16;
       DateColor = Colors.Black;
+      DateVerticalAlignment = VerticalAlignment.Top;
+      DateHorizontalAlignment = HorizontalAlignment.Right;
 
       TextFontStyle = FontStyles.Normal;
       TextFontWeight = FontWeights.Normal;
       TextFontSize = 16;
+      TextTextDecoration = "";
       TextColor = Colors.Black;
+      TextVerticalAlignment = VerticalAlignment.Bottom;
+      TextHorizontalAlignment = HorizontalAlignment.Left;
+      
     }
 
     public DayItem(DateTime date) : this()
@@ -34,6 +40,9 @@ namespace Pabo.MonthCalendar.Model
     public FontStyle DateFontStyle { get; set; }
     public FontFamily DateFontFamily { get; set; }
     public string DateTextDecoration { get; set; }
+    public VerticalAlignment DateVerticalAlignment { get; set; }
+    public HorizontalAlignment DateHorizontalAlignment { get; set; }
+
 
     public Color BackgroundColor { get; set; }
 
@@ -44,6 +53,9 @@ namespace Pabo.MonthCalendar.Model
     public FontStyle TextFontStyle { get; set; }
     public FontFamily TextFontFamily { get; set; }
     public string TextTextDecoration { get; set; }
+    public VerticalAlignment TextVerticalAlignment { get; set; }
+    public HorizontalAlignment TextHorizontalAlignment { get; set; }
+
 
 
     public string Text { get; set; }

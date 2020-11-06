@@ -84,10 +84,8 @@
                     </Grid.Background>
                     <Grid.RowDefinitions>
                       <RowDefinition Height="*"></RowDefinition>
-                      <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="*"></ColumnDefinition>
                       <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Rectangle Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
@@ -101,7 +99,7 @@
                         <SolidColorBrush Opacity=".25" Color="LightBlue" />
                       </Rectangle.Fill>
                     </Rectangle>
-                    <TextBlock Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right" 
+                    <TextBlock VerticalAlignment="{Binding DateVerticalAlignment}" HorizontalAlignment="{Binding DateHorizontalAlignment}" 
                                Foreground="{ Binding DateColor, Converter={StaticResource BrushConverter}}" 
                                FontSize="{Binding DateFontSize}" 
                                FontWeight="{Binding DateFontWeight}" 
@@ -113,7 +111,7 @@
                              VerticalAlignment="Top" HorizontalAlignment="right" StrokeThickness="2"  Margin="0,1,1,0">
 
                     </Ellipse>-->
-                    <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"  HorizontalAlignment="Left" 
+                    <TextBlock VerticalAlignment="{Binding TextVerticalAlignment}" HorizontalAlignment="{Binding TextHorizontalAlignment}" 
                                FontSize="{Binding TextFontSize}" 
                                Foreground="{Binding TextColor, Converter={StaticResource BrushConverter}}"
                                FontWeight="{Binding TextFontWeight}" 
