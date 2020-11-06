@@ -116,6 +116,10 @@
                     <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"  HorizontalAlignment="Left" 
                                FontSize="{Binding TextFontSize}" 
                                Foreground="{Binding TextColor, Converter={StaticResource BrushConverter}}"
+                               FontWeight="{Binding TextFontWeight}" 
+                               FontStyle="{Binding TextFontStyle}" 
+                               FontFamily="{Binding TextFontFamily}" 
+                               TextDecorations="{Binding TextTextDecoration}"
                                Text="{Binding Text}" Margin="2,0,0,1" ></TextBlock>
                     <Border  BorderThickness="{Binding BorderThickness, Mode=TwoWay}"
                              BorderBrush="Blue" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" 

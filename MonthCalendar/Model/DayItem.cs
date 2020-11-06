@@ -13,10 +13,12 @@ namespace Pabo.MonthCalendar.Model
       DateFontWeight = FontWeights.Normal;
       DateTextDecoration = "";
       DateFontSize = 16;
+      DateColor = Colors.Black;
 
       TextFontStyle = FontStyles.Normal;
       TextFontWeight = FontWeights.Normal;
       TextFontSize = 16;
+      TextColor = Colors.Black;
     }
 
     public DayItem(DateTime date) : this()

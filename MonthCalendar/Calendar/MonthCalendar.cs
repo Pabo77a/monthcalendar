@@ -221,7 +221,9 @@ namespace Pabo.MonthCalendar
     {
       if (this.calendar != null)
       {
-        this.calendar.SetupDays(this.Year, this.Month, this.Days.Where(x => x.Date.Month == this.Month && x.Date.Year == this.Year).ToList());
+        var firstDateInMonth = new DateTime(this.Year, this.Month, 1);
+
+        this.calendar.SetupDays(this.Year, this.Month, this.Days.Where(x => x.Date > firstDateInMonth.AddDays(-15) && x.Date < firstDateInMonth.AddDays(45)).ToList());
         this.calendar.SelectionMode = this.SelectionMode;
       }
     }
