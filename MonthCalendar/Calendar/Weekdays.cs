@@ -6,6 +6,7 @@ using System.Windows;
 using System.ComponentModel;
 using Pabo.MonthCalendar.Model;
 using Pabo.MonthCalendar.Properties;
+using Pabo.MonthCalendar.Common;
 
 namespace Pabo.MonthCalendar
 {
@@ -16,9 +17,9 @@ namespace Pabo.MonthCalendar
     #region dependency properties
 
     public static readonly DependencyProperty DaysProperty = DependencyProperty.Register("Days",
-               typeof(List<Weekday>),
+               typeof(List<CalendarWeekday>),
                typeof(Weekdays),
-               new FrameworkPropertyMetadata(new List<Weekday>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+               new FrameworkPropertyMetadata(new List<CalendarWeekday>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
     public static readonly DependencyProperty PropertiesProperty = DependencyProperty.Register("Properties",
                typeof(WeekdaysProperties),
@@ -51,11 +52,11 @@ namespace Pabo.MonthCalendar
 
     #region properties
 
-    internal List<Weekday> Days
+    internal List<CalendarWeekday> Days
     {
       get
       {
-        return (List<Weekday>)this.GetValue(DaysProperty);
+        return (List<CalendarWeekday>)this.GetValue(DaysProperty);
       }
       set
       {
@@ -78,24 +79,36 @@ namespace Pabo.MonthCalendar
 
     #endregion
 
-    internal void SetupDays()
+    internal void SetupDays(int year, int month, List<Weekday> items)
     {
 
-      List<Weekday> days = new List<Weekday>();
+      List<CalendarWeekday> days = new List<CalendarWeekday>();
 
       CultureInfo ci = System.Threading.Thread.CurrentThread.CurrentCulture;
       DayOfWeek firstDayOfWeek = ci.DateTimeFormat.FirstDayOfWeek;
 
       for (int i = (int)firstDayOfWeek; i <= (int)DayOfWeek.Saturday; i++)
       {
-        days.Add(new Weekday((DayOfWeek)Enum.Parse(typeof(DayOfWeek), i.ToString())));
+        days.Add(new CalendarWeekday((DayOfWeek)Enum.Parse(typeof(DayOfWeek), i.ToString())));
       }
       if (firstDayOfWeek == DayOfWeek.Monday)
       {
-        days.Add(new Weekday(DayOfWeek.Sunday));
+        days.Add(new CalendarWeekday(DayOfWeek.Sunday));
       }
 
-      this.Days = days.ToList<Weekday>();
+      for (int i = 0; i<7;i++)
+      {
+        Utils.CopyProperties<WeekdaysProperties, CalendarWeekday>(Properties, days[i]);
+        days[i].Year = year;
+        days[i].Month = month;
+        var item = items.FirstOrDefault(x => x.Year == year && x.Month == month && x.DayOfWeek == days[i].Day);
+        if (item != null)
+        {
+          Utils.CopyProperties<Weekday, CalendarWeekday>(item, days[i]);
+        }
+      }
+
+      this.Days = days.ToList<CalendarWeekday>();
     }
 
     private void Setup()

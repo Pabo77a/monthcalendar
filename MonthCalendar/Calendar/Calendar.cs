@@ -108,7 +108,7 @@ namespace Pabo.MonthCalendar
 
       var ctrl = Keyboard.Modifiers == ModifierKeys.Control;
 
-      var oldSelection = this.Days.Where(x => x.Selected).ToList<DayItem>();
+      var oldSelection = this.Days.Where(x => x.Selected).ToList<Day>();
       if (this.selectionMode > MonthCalendarSelectionMode.None)
       {
         if ((this.selectionMode == MonthCalendarSelectionMode.Extended && ctrl) ||
@@ -126,7 +126,7 @@ namespace Pabo.MonthCalendar
         }
       }
 
-      var newSelection = this.Days.Where(x => x.Selected).ToList<DayItem>();
+      var newSelection = this.Days.Where(x => x.Selected).ToList<Day>();
       this.OnSelectionChanged(new CalendarSelectionChangedEventArgs(newSelection, oldSelection));
 
     }
@@ -219,9 +219,9 @@ namespace Pabo.MonthCalendar
           if ((value > MonthCalendarSelectionMode.Single || value == MonthCalendarSelectionMode.None) &&
               (this.Days.Where(x => x.Selected).ToList().Count > 1))
           {
-            var oldSelection = this.Days.Where(x => x.Selected).ToList<DayItem>();
+            var oldSelection = this.Days.Where(x => x.Selected).ToList<Day>();
             ClearCalendar();
-            this.OnSelectionChanged(new CalendarSelectionChangedEventArgs(new List<DayItem>(), oldSelection));
+            this.OnSelectionChanged(new CalendarSelectionChangedEventArgs(new List<Day>(), oldSelection));
 
           }
           this.selectionMode = value;
@@ -234,8 +234,11 @@ namespace Pabo.MonthCalendar
 
     #region methods
 
-    internal void SetupDays(int year, int month, List<DayItem> items)
+    internal void SetupDays(int year, int month, List<Day> items)
     {
+
+      var firstDay = new DateTime(year, month, 1);
+      items = items.Where(x => x.Date > firstDay.AddDays(-15) && x.Date < firstDay.AddDays(45)).ToList();
 
       CalendarDay[] days = new CalendarDay[42];
 
@@ -302,13 +305,13 @@ namespace Pabo.MonthCalendar
 
       }
 
-      foreach (DayItem item in items)
+      foreach (Day item in items)
       {
         var day = days.FirstOrDefault(x => x.Date == item.Date);
         if (day != null)
         {
           Utils.CopyProperties<CalendarProperties, CalendarDay>(Properties, day);
-          Utils.CopyProperties<DayItem, CalendarDay>(item, day);
+          Utils.CopyProperties<Day, CalendarDay>(item, day);
         }
       }
 

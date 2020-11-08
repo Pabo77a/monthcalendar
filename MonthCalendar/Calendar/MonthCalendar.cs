@@ -11,6 +11,9 @@ using Pabo.MonthCalendar.Model;
 using Pabo.MonthCalendar.Properties;
 using System.Windows.Media;
 using System.Diagnostics;
+using System.Collections.ObjectModel;
+using Pabo.MonthCalendar.Controls;
+using System.Collections.Specialized;
 
 namespace Pabo.MonthCalendar
 {
@@ -41,21 +44,33 @@ namespace Pabo.MonthCalendar
     public static readonly DependencyProperty MonthProperty = DependencyProperty.Register("Month",
                typeof(int),
                typeof(MonthCalendar),
-               new FrameworkPropertyMetadata(default(Int32), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+               new FrameworkPropertyMetadata(default(int), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                    OnMonthChanged,
                    OnCoerceMonthChanged, false, UpdateSourceTrigger.PropertyChanged));
 
     public static readonly DependencyProperty YearProperty = DependencyProperty.Register("Year",
                typeof(int),
                typeof(MonthCalendar),
-               new FrameworkPropertyMetadata(default(Int32), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+               new FrameworkPropertyMetadata(default(int), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                    OnYearChanged,
                    OnCoerceYearChanged, false, UpdateSourceTrigger.PropertyChanged));
 
     public static readonly DependencyProperty DaysProperty = DependencyProperty.Register("Days",
-               typeof(List<DayItem>),
+               typeof(TrulyObservableCollection<Day>),
                typeof(MonthCalendar),
-               new FrameworkPropertyMetadata(new List<DayItem>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnDaysChanged));
+               new FrameworkPropertyMetadata(new TrulyObservableCollection<Day>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnDaysChanged));
+
+    public static readonly DependencyProperty WeeksProperty = DependencyProperty.Register("Weeks",
+               typeof(TrulyObservableCollection<Week>),
+               typeof(MonthCalendar),
+               new FrameworkPropertyMetadata(new TrulyObservableCollection<Week>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnWeeksChanged));
+
+    public static readonly DependencyProperty DayOfWeekProperty = DependencyProperty.Register("DayOfWeek",
+               typeof(TrulyObservableCollection<Weekday>),
+               typeof(MonthCalendar),
+               new FrameworkPropertyMetadata(new TrulyObservableCollection<Weekday>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnDayOfWeekChanged));
+
+
 
     public static readonly DependencyProperty HeaderVisibleProperty = DependencyProperty.Register("Header",
                typeof(bool),
@@ -77,7 +92,7 @@ namespace Pabo.MonthCalendar
                typeof(MonthCalendar),
                new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
-    
+
     public static readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register("SelectionMode",
                typeof(MonthCalendarSelectionMode),
                typeof(MonthCalendar),
@@ -201,7 +216,7 @@ namespace Pabo.MonthCalendar
 
     }
 
-   
+
 
     #endregion
 
@@ -212,7 +227,7 @@ namespace Pabo.MonthCalendar
     {
       SetupHeader();
       SetupFooter();
-      SetupCalendar(); 
+      SetupCalendar();
       SetupWeekdays();
       SetupWeeknumbers();
     }
@@ -223,7 +238,7 @@ namespace Pabo.MonthCalendar
       {
         var firstDateInMonth = new DateTime(this.Year, this.Month, 1);
 
-        this.calendar.SetupDays(this.Year, this.Month, this.Days.Where(x => x.Date > firstDateInMonth.AddDays(-15) && x.Date < firstDateInMonth.AddDays(45)).ToList());
+        this.calendar.SetupDays(this.Year, this.Month, this.Days.ToList());
         this.calendar.SelectionMode = this.SelectionMode;
       }
     }
@@ -232,7 +247,7 @@ namespace Pabo.MonthCalendar
     {
       if (this.weekdays != null)
       {
-        this.weekdays.SetupDays();
+        this.weekdays.SetupDays(this.Year, this.Month, this.DayOfWeek.ToList());
       }
     }
 
@@ -240,7 +255,7 @@ namespace Pabo.MonthCalendar
     {
       if (this.weeknumbers != null)
       {
-        this.weeknumbers.SetupWeeks(this.calendar.Days.First().Date);
+        this.weeknumbers.SetupWeeks(this.calendar.Days.First().Date, this.Weeks.ToList());
       }
     }
 
@@ -260,20 +275,20 @@ namespace Pabo.MonthCalendar
     internal void GetWeekDays()
     {
 
-      DayItem[] days = new DayItem[42];
+      Day[] days = new Day[42];
 
-      System.Globalization.CultureInfo ci =  System.Threading.Thread.CurrentThread.CurrentCulture;
+      System.Globalization.CultureInfo ci = System.Threading.Thread.CurrentThread.CurrentCulture;
       DayOfWeek firstDayOfWeek = ci.DateTimeFormat.FirstDayOfWeek;
 
-      var date = new DateTime(this .Year, this.Month, 1);
+      var date = new DateTime(this.Year, this.Month, 1);
       DayOfWeek firstDayOfMonth = date.DayOfWeek;
 
       var startPos = (int)firstDayOfMonth + (1 - (int)firstDayOfMonth);
       var daysInMonth = DateTime.DaysInMonth(this.Year, this.Month);
 
-      for (int i = startPos;i<=startPos + daysInMonth;i++)
+      for (int i = startPos; i <= startPos + daysInMonth; i++)
       {
-        days[i] = new DayItem();
+        days[i] = new Day();
         days[i].Date = date;
         date.AddDays(1);
       }
@@ -286,15 +301,45 @@ namespace Pabo.MonthCalendar
     [Description("")]
     [Category("Calendar")]
     [Browsable(true)]
-    public List<DayItem> Days
+    public TrulyObservableCollection<Day> Days
     {
       get
       {
-        return (List<DayItem>)this.GetValue(DaysProperty);
+        return (TrulyObservableCollection<Day>)this.GetValue(DaysProperty);
       }
       set
       {
         this.SetValue(DaysProperty, value);
+      }
+    }
+
+    [Description("")]
+    [Category("Calendar")]
+    [Browsable(true)]
+    public TrulyObservableCollection<Week> Weeks
+    {
+      get
+      {
+        return (TrulyObservableCollection<Week>)this.GetValue(WeeksProperty);
+      }
+      set
+      {
+        this.SetValue(WeeksProperty, value);
+      }
+    }
+
+    [Description("")]
+    [Category("Calendar")]
+    [Browsable(true)]
+    public TrulyObservableCollection<Weekday> DayOfWeek
+    {
+      get
+      {
+        return (TrulyObservableCollection<Weekday>)this.GetValue(DayOfWeekProperty);
+      }
+      set
+      {
+        this.SetValue(DayOfWeekProperty, value);
       }
     }
 
@@ -417,7 +462,7 @@ namespace Pabo.MonthCalendar
         this.SetValue(WeeknumbersVisibleProperty, value);
       }
     }
-    
+
 
     [Description("")]
     [Category("Calendar")]
@@ -488,7 +533,7 @@ namespace Pabo.MonthCalendar
 
     private void Calendar_SelectionChanged(object sender, EventArgs.CalendarSelectionChangedEventArgs e)
     {
-      EventArgs.SelectionChangedEventArgs args = new EventArgs.SelectionChangedEventArgs(SelectionChangedEvent, e.CurrentSelection,e.PreviousSelection);
+      EventArgs.SelectionChangedEventArgs args = new EventArgs.SelectionChangedEventArgs(SelectionChangedEvent, e.CurrentSelection, e.PreviousSelection);
       RaiseEvent(args);
     }
 
@@ -541,7 +586,7 @@ namespace Pabo.MonthCalendar
       if (this.calendar != null)
       {
         this.calendar.Properties = (CalendarProperties)newValue;
-        this.calendar.SetupDays(this.Year, this.Month, this.Days);
+        this.calendar.SetupDays(this.Year, this.Month, this.Days.ToList());
       }
     }
 
@@ -558,7 +603,61 @@ namespace Pabo.MonthCalendar
     {
       if (this.calendar != null)
       {
-        this.calendar.SetupDays(this.Year, this.Month, this.Days);
+        this.calendar.SetupDays(this.Year, this.Month, this.Days.ToList());
+        this.Days.CollectionChanged += (s, e) =>
+        {
+          this.calendar.SetupDays(this.Year, this.Month, this.Days.ToList());
+        };
+      }
+    }
+
+    private static void OnWeeksChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        calendar.OnWeeksChanged(e.NewValue, e.OldValue);
+    }
+
+
+    protected virtual void OnWeeksChanged(object newValue, object oldValue)
+    {
+      if (this.weeknumbers != null)
+      {
+
+        this.weeknumbers.SetupWeeks(this.calendar.Days.First().Date, this.Weeks.ToList());
+        this.Weeks.CollectionChanged += (s, e) =>
+        {
+          if (this.calendar != null && this.weeknumbers != null)
+          {
+            this.weeknumbers.SetupWeeks(this.calendar.Days.First().Date, this.Weeks.ToList());
+          }
+        };
+      }
+    }
+
+    private static void OnDayOfWeekChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        calendar.OnDayOfWeekChanged(e.NewValue, e.OldValue);
+    }
+
+
+    protected virtual void OnDayOfWeekChanged(object newValue, object oldValue)
+    {
+      if (this.weekdays != null)
+      {
+
+        this.weekdays.SetupDays(this.Year, this.Month, this.DayOfWeek.ToList());
+        this.Weeks.CollectionChanged += (s, e) =>
+        {
+          if (this.calendar != null && this.weekdays != null)
+          {
+            this.weekdays.SetupDays(this.Year, this.Month, this.DayOfWeek.ToList());
+          }
+        };
       }
     }
 
@@ -601,7 +700,7 @@ namespace Pabo.MonthCalendar
       if (this.header != null)
       {
         this.header.Properties = (HeaderProperties)newValue;
-       
+
       }
     }
 
@@ -659,6 +758,7 @@ namespace Pabo.MonthCalendar
       SetupHeader();
       SetupCalendar();
       SetupWeeknumbers();
+      SetupWeekdays();
     }
 
     private static object OnCoerceMonthChanged(DependencyObject d, object value)
@@ -673,7 +773,7 @@ namespace Pabo.MonthCalendar
     protected virtual object OnCoerceMonthChanged(object value)
     {
       int month = (int)value;
-      
+
       if (month < 1)
       {
         this.Year--;
@@ -685,7 +785,7 @@ namespace Pabo.MonthCalendar
         return 1;
       }
 
-      
+
 
       return value;
     }

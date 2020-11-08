@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace Pabo.MonthCalendar.Model
 {
-  internal class CalendarDay : DayItem, INotifyPropertyChanged
+  internal class CalendarDay : Day, INotifyPropertyChanged
   {
 
 
@@ -45,13 +45,6 @@ namespace Pabo.MonthCalendar.Model
         }
       }
     }
-
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
+    
   }
 }

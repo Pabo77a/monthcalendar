@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Windows;
 using System.ComponentModel;
@@ -6,6 +7,10 @@ using Pabo.MonthCalendar.Model;
 using System.Windows.Media;
 using Pabo.MonthCalendar.Properties;
 using System.Windows.Controls;
+using System.Globalization;
+
+using Pabo.MonthCalendar.Common;
+
 
 namespace Pabo.MonthCalendar
 {
@@ -16,9 +21,9 @@ namespace Pabo.MonthCalendar
     #region dependency properties
 
     public static readonly DependencyProperty WeeksProperty = DependencyProperty.Register("Weeks",
-               typeof(List<Week>),
+               typeof(List<CalendarWeek>),
                typeof(Weeknumbers),
-               new FrameworkPropertyMetadata(new List<Week>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+               new FrameworkPropertyMetadata(new List<CalendarWeek>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
     public static readonly DependencyProperty PropertiesProperty = DependencyProperty.Register("Properties",
                typeof(WeeknumberProperties),
@@ -58,11 +63,11 @@ namespace Pabo.MonthCalendar
     #region properties
 
 
-    internal List<Week> Weeks
+    internal List<CalendarWeek> Weeks
     {
       get
       {
-        return (List<Week>)this.GetValue(WeeksProperty);
+        return (List<CalendarWeek>)this.GetValue(WeeksProperty);
       }
       set
       {
@@ -85,13 +90,23 @@ namespace Pabo.MonthCalendar
 
     #endregion
 
-    internal void SetupWeeks(DateTime firstDate)
+    internal void SetupWeeks(DateTime firstDate, List<Week> weekItems)
     {
-      var weeks = new List<Week>();
+      var year = firstDate.Year;
+    
+      var weeks = new List<CalendarWeek>();
       var date = firstDate;
       for (int i = 0;i<6;i++)
       {
-        weeks.Add(new Week(date));
+        var week = new CalendarWeek(date);
+        var number = ISOWeek.GetWeekOfYear(date);
+        var item = weekItems.FirstOrDefault(x => x.Year == year && x.Number == number);
+        Utils.CopyProperties<WeeknumberProperties, CalendarWeek>(Properties, week);
+        if (item != null)
+        {
+          Utils.CopyProperties<Week, CalendarWeek>(item, week);
+        }
+        weeks.Add(week);
         date = date.AddDays(7);
       }
 
