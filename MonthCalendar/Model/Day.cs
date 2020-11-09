@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Drawing.Printing;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Pabo.MonthCalendar.Model
 {
@@ -19,7 +21,14 @@ namespace Pabo.MonthCalendar.Model
     private HorizontalAlignment textHorizontalAlignment = HorizontalAlignment.Left;
     private FontFamily textFontFamily = new FontFamily("");
     private string text = "";
+    private Thickness textMargin = new Thickness(2, 0, 0, 2);
 
+    private BitmapImage image = null;
+    private VerticalAlignment imageVerticalAlignment = VerticalAlignment.Top;
+    private HorizontalAlignment imageHorizontalAlignment = HorizontalAlignment.Left;
+    private Stretch imageStretch = Stretch.None;
+    private Thickness imageMargin = new Thickness(2,2,0,0);
+   
     private Color backgroundColor;
 
     private Color dateColor = Colors.Black;
@@ -31,7 +40,7 @@ namespace Pabo.MonthCalendar.Model
     private DateTime date;
     private VerticalAlignment dateVerticalAlignment = VerticalAlignment.Top;
     private HorizontalAlignment dateHorizontalAlignment = HorizontalAlignment.Right;
-    
+    private Thickness dateMargin = new Thickness(0, 4, 7, 0);
 
 
     public Day()
@@ -67,6 +76,19 @@ namespace Pabo.MonthCalendar.Model
         {
           this.date = value;
           OnPropertyChanged(nameof(this.Date));
+        }
+      }
+    }
+
+    public Thickness DateMargin
+    {
+      get => dateMargin;
+      set
+      {
+        if (value != dateMargin)
+        {
+          dateMargin = value;
+          OnPropertyChanged(nameof(this.DateMargin));
         }
       }
     }
@@ -177,7 +199,6 @@ namespace Pabo.MonthCalendar.Model
 
     #endregion
 
-
     #region Text
 
     public Color TextColor
@@ -189,6 +210,19 @@ namespace Pabo.MonthCalendar.Model
         {
           this.textColor = value;
           OnPropertyChanged(nameof(this.TextColor));
+        }
+      }
+    }
+
+    public Thickness TextMargin
+    {
+      get => textMargin;
+      set
+      {
+        if (value != textMargin)
+        {
+          textMargin = value;
+          OnPropertyChanged(nameof(this.TextMargin));
         }
       }
     }
@@ -299,5 +333,73 @@ namespace Pabo.MonthCalendar.Model
 
     #endregion
 
+    #region Image
+
+    public BitmapImage Image
+    {
+      get => image;
+      set
+      {
+        if (value != image)
+        {
+          image = value;
+          OnPropertyChanged(nameof(this.Image));
+        }
+      }
+    }
+
+    public VerticalAlignment ImageVerticalAlignment
+    {
+      get => imageVerticalAlignment;
+      set
+      {
+        if (value != imageVerticalAlignment)
+        {
+          imageVerticalAlignment = value;
+          OnPropertyChanged(nameof(this.ImageVerticalAlignment));
+        }
+      }
+    }
+
+    public Stretch ImageStretch
+    {
+      get => imageStretch;
+      set
+      {
+        if (value != imageStretch)
+        {
+          imageStretch = value;
+          OnPropertyChanged(nameof(this.ImageStretch));
+        }
+      }
+    }
+
+    public Thickness ImageMargin
+    {
+      get => imageMargin;
+      set
+      {
+        if (value != imageMargin)
+        {
+          imageMargin = value;
+          OnPropertyChanged(nameof(this.ImageMargin));
+        }
+      }
+    }
+
+    public HorizontalAlignment ImageHorizontalAlignment
+    {
+      get => imageHorizontalAlignment;
+      set
+      {
+        if (value != imageHorizontalAlignment)
+        {
+          imageHorizontalAlignment = value;
+          OnPropertyChanged(nameof(this.ImageHorizontalAlignment));
+        }
+      }
+    }
+
+    #endregion
   }
 }

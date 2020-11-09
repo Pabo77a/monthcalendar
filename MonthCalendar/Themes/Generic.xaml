@@ -106,7 +106,7 @@
                                FontStyle="{Binding DateFontStyle}" 
                                FontFamily="{Binding DateFontFamily}" 
                                TextDecorations="{Binding DateTextDecoration}"
-                               Text="{Binding Date, Converter={StaticResource DayConverter}}" Margin="0,4,7,0" ></TextBlock>
+                               Text="{Binding Date, Converter={StaticResource DayConverter}}" Margin="{Binding DateMargin}" ></TextBlock>
                     <!--<Ellipse Grid.Column="1" Grid.Row="0" Stroke="red"  Height="28" Width="28"
                              VerticalAlignment="Top" HorizontalAlignment="right" StrokeThickness="2"  Margin="0,1,1,0">
 
@@ -115,10 +115,14 @@
                                FontSize="{Binding TextFontSize}" 
                                Foreground="{Binding TextColor, Converter={StaticResource BrushConverter}}"
                                FontWeight="{Binding TextFontWeight}" 
-                               FontStyle="{Binding TextFontStyle}" 
+                               FontStyle="{Binding TextFontStyle}"
                                FontFamily="{Binding TextFontFamily}" 
                                TextDecorations="{Binding TextTextDecoration}"
-                               Text="{Binding Text}" Margin="2,0,0,1" ></TextBlock>
+                               Text="{Binding Text}" Margin="{Binding TextMargin}" ></TextBlock>
+                    <Image Source="{Binding Image}" Stretch="{Binding ImageStretch}" VerticalAlignment="{Binding ImageVerticalAlignment}" 
+                           HorizontalAlignment="{Binding ImageHorizontalAlignment}"  Margin="{Binding ImageMargin}">
+                            
+                    </Image> 
                     <Border  BorderThickness="{Binding BorderThickness, Mode=TwoWay}"
                              BorderBrush="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.SelectedBackgroundColor, Converter={StaticResource BrushConverter}}"
                              Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" 

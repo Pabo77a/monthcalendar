@@ -48,14 +48,16 @@ namespace MonthCalendar.Test
       this.days.Add(new Day() { Date = new DateTime(2020, 10, 21), BackgroundColor = Colors.BlueViolet });
       this.days.Add(new Day() { Date = new DateTime(2020, 10, 11), BackgroundColor = Colors.Orange });
 
-      this.days.Add(new Day() { Date = new DateTime(2020, 8, 13), BackgroundColor = Colors.HotPink, DateColor=Colors.Yellow, DateFontSize=22, Text = "BIDEN", TextColor = Colors.White, TextFontSize = 36 });
+      this.days.Add(new Day() { Date = new DateTime(2020, 8, 13), BackgroundColor = Colors.HotPink, DateColor=Colors.Yellow, 
+                                Image = new BitmapImage(new Uri("pack://application:,,,/Resources/star.png", UriKind.Absolute)),
+                                DateFontSize =22, Text = "BIDEN", TextColor = Colors.White, TextFontSize = 36 });
       this.days.Add(new Day() { Date = new DateTime(2020, 8, 16), BackgroundColor = Colors.Linen, DateColor = Colors.DarkOrange, Text = "TRUMP", TextColor = Colors.Ivory, TextFontSize = 22 });
 
       this.days.Add(new Day() { Date = new DateTime(2020, 7, 28), DateColor = Colors.Red, Text = "yyy", TextColor = Colors.Black});
 
 
       this.weeks.Add(new Week() { TextColor = Colors.White, BackgroundColor=Colors.Green, FontWeight=FontWeights.Bold, Number= 32, Year=2020 });
-
+                      
       this.weekdays.Add(new Weekday() { BackgroundColor = Colors.Green, TextColor = Colors.White, FontSize = 16, FontWeight = FontWeights.Bold, Year = 2020, Month = 8, DayOfWeek = DayOfWeek.Tuesday });
       
       //this.weeknumberProperties.TextColor = Colors.DarkOliveGreen;
