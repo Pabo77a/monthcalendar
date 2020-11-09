@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Pabo.MonthCalendar.Properties
 {
@@ -30,11 +33,18 @@ namespace Pabo.MonthCalendar.Properties
     private HorizontalAlignment textHorizontalAlignment = HorizontalAlignment.Left;
 
 
-    private Color backGroundColor = Colors.White;
+    private BitmapImage backgroundImage = null;
+    private Color backgroundColor = Colors.White;
 
     // Trailing
     private Color trailingDateColor = Colors.White;
     private Color trailingBackgroundColor = Colors.LightGray;
+
+    // Selected
+    private Color selectedBackgroundColor = Colors.LightBlue;
+    private Color selectedBorderColor = Colors.Blue;
+    private double selectedOpacity = .25;
+
 
     public CalendarProperties()
     {
@@ -43,13 +53,26 @@ namespace Pabo.MonthCalendar.Properties
 
     public Color BackgroundColor
     {
-      get => backGroundColor;
+      get => backgroundColor;
       set
       {
-        if (value != backGroundColor)
+        if (value != backgroundColor)
         {
-          backGroundColor = value;
+          backgroundColor = value;
           OnPropertyChanged(nameof(this.BackgroundColor));
+        }
+      }
+    }
+
+    public BitmapImage BackgroundImage
+    {
+      get => backgroundImage;
+      set
+      {
+        if (value != backgroundImage)
+        {
+          backgroundImage = value;
+          OnPropertyChanged(nameof(this.BackgroundImage));
         }
       }
     }
@@ -295,6 +318,49 @@ namespace Pabo.MonthCalendar.Properties
         {
           dateFontSize = value;
           OnPropertyChanged(nameof(this.DateFontSize));
+        }
+      }
+    }
+
+    #endregion
+
+    #region Selected
+
+    public Color SelectedBackgroundColor
+    {
+      get => selectedBackgroundColor;
+      set
+      {
+        if (value != selectedBackgroundColor)
+        {
+          selectedBackgroundColor = value;
+          OnPropertyChanged(nameof(this.SelectedBackgroundColor));
+        }
+      }
+    }
+
+    public Color SelectedBorderColor
+    {
+      get => selectedBorderColor;
+      set
+      {
+        if (value != selectedBorderColor)
+        {
+          selectedBorderColor = value;
+          OnPropertyChanged(nameof(this.SelectedBorderColor));
+        }
+      }
+    }
+
+    public double SelectedOpacity
+    {
+      get => selectedOpacity;
+      set
+      {
+        if (value != selectedOpacity)
+        {
+          selectedOpacity = value;
+          OnPropertyChanged(nameof(this.SelectedOpacity));
         }
       }
     }

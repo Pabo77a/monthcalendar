@@ -76,6 +76,10 @@ namespace MonthCalendar.Test
       this.calendarProperties.DateTextDecoration = "Underline";
       this.calendarProperties.DateFontStyle = FontStyles.Italic;
       this.calendarProperties.DateFontWeight = FontWeights.Bold;
+      this.calendarProperties.SelectedBackgroundColor = Colors.Pink;
+      this.calendarProperties.SelectedBackgroundColor = Colors.Red;
+
+      //this.calendarProperties.BackgroundImage = new BitmapImage(new Uri("pack://application:,,,/Resources/bricks.jpeg", UriKind.Absolute));
 
       this.calendarProperties.TrailingBackgroundColor = Colors.Gray;
       this.calendarProperties.TrailingDateColor = Colors.White;

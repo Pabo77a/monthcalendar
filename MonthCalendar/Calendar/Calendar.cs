@@ -283,12 +283,12 @@ namespace Pabo.MonthCalendar
         if (days[i].Date.Month == month)
         {
           days[i].DateColor = Properties.DateColor;
-          days[i].BackgroundColor = Properties.BackgroundColor;
+          days[i].BackgroundColor = Properties.BackgroundImage != null ? Colors.Transparent : Properties.BackgroundColor;
         }
         else
         {
           days[i].DateColor = Properties.TrailingDateColor;
-          days[i].BackgroundColor = Properties.TrailingBackgroundColor;
+          days[i].BackgroundColor = Properties.BackgroundImage != null ? Colors.Transparent : Properties.TrailingBackgroundColor;
         }
 
         days[i].DateFontFamily = Properties.DateFontFamily;
