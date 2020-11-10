@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 
 
@@ -19,6 +20,13 @@ namespace Pabo.MonthCalendar.Controls
                typeof(CalendarWrapPanel),
                new FrameworkPropertyMetadata(1, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
+
+    #endregion
+
+    #region routed events
+
+    public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(
+      "SizeChanged", RoutingStrategy.Direct, typeof(SelectionChangedEventHandler), typeof(MonthCalendar));
 
     #endregion
 
@@ -59,7 +67,7 @@ namespace Pabo.MonthCalendar.Controls
         // measure each child with a square it should occupy
         child.Measure(tileSize);
       }
-   
+
       return availableSize;
     }
 
@@ -75,7 +83,6 @@ namespace Pabo.MonthCalendar.Controls
 
       foreach (UIElement child in this.InternalChildren)
       {
-
         if (col > Cols)
         {
           // if need to move on next row - do that
@@ -86,7 +93,7 @@ namespace Pabo.MonthCalendar.Controls
         }
         // arrange in square
         var tmp = tileSize;
-        
+
         // Add remainders to fill out space
         if (col == Cols)
           tmp.Width += remainderX;
@@ -97,7 +104,9 @@ namespace Pabo.MonthCalendar.Controls
         x += tileSize.Width;
         col++;
       }
+
       return finalSize;
+
     }
 
     Size GetTileSize(int width, int height, int cols, int rows)

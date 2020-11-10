@@ -46,6 +46,12 @@ namespace Pabo.MonthCalendar.Properties
     private double selectedOpacity = .25;
 
 
+    // MouseOver
+    private Color mouseOverBackgroundColor = Colors.LightBlue;
+    private Color mouseOverBorderColor = Colors.Transparent;
+    private double mouseOverOpacity = .25;
+
+
     public CalendarProperties()
     {
       
@@ -361,6 +367,49 @@ namespace Pabo.MonthCalendar.Properties
         {
           selectedOpacity = value;
           OnPropertyChanged(nameof(this.SelectedOpacity));
+        }
+      }
+    }
+
+    #endregion
+
+    #region Mouse over
+
+    public Color MouseOverBackgroundColor
+    {
+      get => mouseOverBackgroundColor;
+      set
+      {
+        if (value != mouseOverBackgroundColor)
+        {
+          mouseOverBackgroundColor = value;
+          OnPropertyChanged(nameof(this.MouseOverBackgroundColor));
+        }
+      }
+    }
+
+    public Color MouseOverBorderColor
+    {
+      get => mouseOverBorderColor;
+      set
+      {
+        if (value != mouseOverBorderColor)
+        {
+          mouseOverBorderColor = value;
+          OnPropertyChanged(nameof(this.MouseOverBorderColor));
+        }
+      }
+    }
+
+    public double MouseOverOpacity
+    {
+      get => mouseOverOpacity;
+      set
+      {
+        if (value != mouseOverOpacity)
+        {
+          mouseOverOpacity = value;
+          OnPropertyChanged(nameof(this.MouseOverOpacity));
         }
       }
     }

@@ -134,8 +134,16 @@ namespace Pabo.MonthCalendar
 
     public delegate void SelectionChangedEventHandler(object sender, EventArgs.SelectionChangedEventArgs e);
 
+    public delegate void MouseMoveEventHandler(object sender, EventArgs.DayEventArgs e);
+
     public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(
        "SelectionChanged", RoutingStrategy.Direct, typeof(SelectionChangedEventHandler), typeof(MonthCalendar));
+
+    public static readonly RoutedEvent DayLeaveEvent = EventManager.RegisterRoutedEvent(
+       "DayLeave", RoutingStrategy.Direct, typeof(MouseMoveEventHandler), typeof(MonthCalendar));
+
+    public static readonly RoutedEvent DayEnterEvent = EventManager.RegisterRoutedEvent(
+       "DayEnter", RoutingStrategy.Direct, typeof(MouseMoveEventHandler), typeof(MonthCalendar));
 
     public delegate void MonthChangedEventHandler(object sender, EventArgs.MonthChangedEventArgs e);
 
@@ -175,6 +183,22 @@ namespace Pabo.MonthCalendar
     }
 
 
+    [Category("Calendar")]
+    [Browsable(true)]
+    public event MouseMoveEventHandler DayLeave
+    {
+      add { AddHandler(DayLeaveEvent, value); }
+      remove { RemoveHandler(DayLeaveEvent, value); }
+    }
+
+    [Category("Calendar")]
+    [Browsable(true)]
+    public event MouseMoveEventHandler DayEnter
+    {
+      add { AddHandler(DayEnterEvent, value); }
+      remove { RemoveHandler(DayEnterEvent, value); }
+    }
+
     #endregion
 
     #region private properties
@@ -201,6 +225,8 @@ namespace Pabo.MonthCalendar
       if (this.calendar != null)
       {
         this.calendar.SelectionChanged += Calendar_SelectionChanged;
+        this.calendar.DayEnter += Calendar_DayEnter;
+        this.calendar.DayLeave += Calendar_DayLeave;
       }
       this.weekdays = GetTemplateChild("PART_Weekdays") as Weekdays;
       if (this.weekdays != null)
@@ -215,7 +241,6 @@ namespace Pabo.MonthCalendar
       this.Setup();
 
     }
-
 
 
     #endregion
@@ -536,6 +561,19 @@ namespace Pabo.MonthCalendar
       EventArgs.SelectionChangedEventArgs args = new EventArgs.SelectionChangedEventArgs(SelectionChangedEvent, e.CurrentSelection, e.PreviousSelection);
       RaiseEvent(args);
     }
+
+    private void Calendar_DayLeave(object sender, EventArgs.CalendarDayEventArgs e)
+    {
+      EventArgs.DayEventArgs args = new EventArgs.DayEventArgs(DayLeaveEvent, e.Day);
+      RaiseEvent(args);
+    }
+
+    private void Calendar_DayEnter(object sender, EventArgs.CalendarDayEventArgs e)
+    {
+      EventArgs.DayEventArgs args = new EventArgs.DayEventArgs(DayEnterEvent, e.Day);
+      RaiseEvent(args);
+    }
+
 
     private void Header_Decrease(object sender, RoutedEventArgs e)
     {

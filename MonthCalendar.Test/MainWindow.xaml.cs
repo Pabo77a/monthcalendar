@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -126,6 +127,16 @@ namespace MonthCalendar.Test
       {
         week.TextColor = Colors.Red;
       }
+    }
+
+    private void MonthCalendar_DayLeave(object sender, Pabo.MonthCalendar.EventArgs.DayEventArgs e)
+    {
+      //Debug.WriteLine("Leave:" + e.Day.Date);
+    }
+
+    private void MonthCalendar_DayEnter(object sender, Pabo.MonthCalendar.EventArgs.DayEventArgs e)
+    {
+      //Debug.WriteLine("Enter:" + e.Day.Date);
     }
   }
 }

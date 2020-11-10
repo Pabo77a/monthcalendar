@@ -99,6 +99,12 @@
                                          Color="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.SelectedBackgroundColor}"  />
                       </Rectangle.Fill>
                     </Rectangle>
+                    <Rectangle Visibility="{Binding MouseOver, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}">
+                      <Rectangle.Fill>
+                        <SolidColorBrush Opacity="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.MouseOverOpacity}"
+                                         Color="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.MouseOverBackgroundColor}"/>
+                      </Rectangle.Fill>
+                    </Rectangle>
                     <TextBlock VerticalAlignment="{Binding DateVerticalAlignment}" HorizontalAlignment="{Binding DateHorizontalAlignment}" 
                                Foreground="{ Binding DateColor, Converter={StaticResource BrushConverter}}" 
                                FontSize="{Binding DateFontSize}" 
@@ -124,9 +130,13 @@
                             
                     </Image> 
                     <Border  BorderThickness="{Binding BorderThickness, Mode=TwoWay}"
-                             BorderBrush="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.SelectedBackgroundColor, Converter={StaticResource BrushConverter}}"
+                             BorderBrush="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.SelectedBorderColor, Converter={StaticResource BrushConverter}}"
                              Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" 
                              Visibility="{Binding Selected, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}"></Border>
+                    <Border  BorderThickness="1,1,1,1"
+                             BorderBrush="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.MouseOverBorderColor, Converter={StaticResource BrushConverter}}"
+                             Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" 
+                             Visibility="{Binding MouseOver, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}"></Border>
 
                   </Grid>
                 </DataTemplate>

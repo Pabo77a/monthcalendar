@@ -24,8 +24,10 @@ namespace Pabo.MonthCalendar
 
     #region private members
 
-    ItemsControl itemsControl;
-    MonthCalendarSelectionMode selectionMode = MonthCalendarSelectionMode.Single;
+    private ItemsControl itemsControl;
+    private MonthCalendarSelectionMode selectionMode = MonthCalendarSelectionMode.Single;
+
+    private CalendarDay activeDay;
 
     #endregion
 
@@ -42,6 +44,11 @@ namespace Pabo.MonthCalendar
     #region events
 
     internal event EventHandler<CalendarSelectionChangedEventArgs> SelectionChanged;
+
+    internal event EventHandler<CalendarDayEventArgs> DayLeave;
+    
+    internal event EventHandler<CalendarDayEventArgs> DayEnter;
+
 
     #endregion
 
@@ -72,7 +79,42 @@ namespace Pabo.MonthCalendar
       if (this.itemsControl != null)
       {
         this.itemsControl.MouseUp += Calendar_MouseDown;
+        this.itemsControl.MouseMove += ItemsControl_MouseMove;
+        this.itemsControl.MouseEnter += ItemsControl_MouseEnter;
+        this.itemsControl.MouseLeave += ItemsControl_MouseLeave;
         this.itemsControl.MouseDoubleClick += ItemsControl_MouseDoubleClick;
+      }
+    }
+
+    private void ItemsControl_MouseLeave(object sender, MouseEventArgs e)
+    {
+      if (this.activeDay != null)
+      {
+        this.activeDay.MouseOver = false;
+        this.OnDayLeave(new CalendarDayEventArgs(this.activeDay));
+      }
+      this.activeDay = null;
+    }
+
+    private void ItemsControl_MouseEnter(object sender, MouseEventArgs e)
+    {
+      var day = GetDay(e.GetPosition(this));
+      this.activeDay = day;
+      this.activeDay.MouseOver = true;
+      this.OnDayEnter(new CalendarDayEventArgs(day));
+
+    }
+
+    private void ItemsControl_MouseMove(object sender, MouseEventArgs e)
+    {
+      var day = GetDay(e.GetPosition(this));
+      if (this.activeDay != day)
+      {
+        this.activeDay.MouseOver = false;
+        this.OnDayLeave(new CalendarDayEventArgs(this.activeDay));
+        this.activeDay = day;
+        this.activeDay.MouseOver = true;
+        this.OnDayEnter(new CalendarDayEventArgs(this.activeDay));
       }
     }
 
@@ -177,6 +219,19 @@ namespace Pabo.MonthCalendar
       EventHandler<CalendarSelectionChangedEventArgs> handler = SelectionChanged;
       handler?.Invoke(this, e);
     }
+    
+    private void OnDayLeave(CalendarDayEventArgs e)
+    {
+      EventHandler<CalendarDayEventArgs> handler = DayLeave;
+      handler?.Invoke(this, e);
+    }
+
+    private void OnDayEnter(CalendarDayEventArgs e)
+    {
+      EventHandler<CalendarDayEventArgs> handler = DayEnter;
+      handler?.Invoke(this, e);
+    }
+
 
     #endregion
 

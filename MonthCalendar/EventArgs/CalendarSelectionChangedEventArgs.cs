@@ -5,7 +5,7 @@ namespace Pabo.MonthCalendar.EventArgs
 {
   internal class CalendarSelectionChangedEventArgs
   {
-
+    
     public CalendarSelectionChangedEventArgs(List<Day> current, List<Day> prev)
     {
       this.PreviousSelection = prev;
