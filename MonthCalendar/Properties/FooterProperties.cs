@@ -13,7 +13,7 @@ namespace Pabo.MonthCalendar.Properties
 
     public FooterProperties()
     {
-      this.FontWeight = FontWeights.Bold;
+      this.TextFontWeight = FontWeights.Bold;
       this.TextColor = Colors.Black;
       this.BackgroundColor = Colors.White;
       this.Text = string.Empty;

@@ -95,18 +95,18 @@
                     </Rectangle>
                     <Rectangle Visibility="{Binding Selected, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}">
                       <Rectangle.Fill>
-                        <SolidColorBrush Opacity="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.SelectedOpacity}"
-                                         Color="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.SelectedBackgroundColor}"  />
+                        <SolidColorBrush Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Calendar}},Path=Properties.SelectedOpacity}"
+                                         Color="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Calendar}},Path=Properties.SelectedBackgroundColor}"  />
                       </Rectangle.Fill>
                     </Rectangle>
                     <Rectangle Visibility="{Binding MouseOver, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}">
                       <Rectangle.Fill>
-                        <SolidColorBrush Opacity="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.MouseOverOpacity}"
-                                         Color="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.MouseOverBackgroundColor}"/>
+                        <SolidColorBrush Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Calendar}},Path=Properties.MouseOverOpacity}"
+                                         Color="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Calendar}},Path=Properties.MouseOverBackgroundColor}"/>
                       </Rectangle.Fill>
                     </Rectangle>
                     <TextBlock VerticalAlignment="{Binding DateVerticalAlignment}" HorizontalAlignment="{Binding DateHorizontalAlignment}" 
-                               Foreground="{ Binding DateColor, Converter={StaticResource BrushConverter}}" 
+                               Foreground="{Binding DateColor, Converter={StaticResource BrushConverter}}" 
                                FontSize="{Binding DateFontSize}" 
                                FontWeight="{Binding DateFontWeight}" 
                                FontStyle="{Binding DateFontStyle}" 
@@ -130,11 +130,11 @@
                             
                     </Image> 
                     <Border  BorderThickness="{Binding BorderThickness, Mode=TwoWay}"
-                             BorderBrush="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.SelectedBorderColor, Converter={StaticResource BrushConverter}}"
+                             BorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Calendar}},Path=Properties.SelectedBorderColor, Converter={StaticResource BrushConverter}}"
                              Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" 
                              Visibility="{Binding Selected, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}"></Border>
                     <Border  BorderThickness="1,1,1,1"
-                             BorderBrush="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type calendar:Calendar}},Path=Properties.MouseOverBorderColor, Converter={StaticResource BrushConverter}}"
+                             BorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Calendar}},Path=Properties.MouseOverBorderColor, Converter={StaticResource BrushConverter}}"
                              Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" 
                              Visibility="{Binding MouseOver, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}"></Border>
 
@@ -189,6 +189,7 @@
   <Style TargetType="{x:Type calendar:Weekdays}">
     <Style.Resources>
       <converters:ColorToSolidColorBrushConverter x:Key="BrushConverter" />
+      <converters:BoolToVisibilityConverter x:Key="visibilityConverter" />
     </Style.Resources>
     <Setter Property="Template">
       <Setter.Value>
@@ -204,15 +205,21 @@
               <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type model:CalendarWeekday}">
                   <Grid  Background="{Binding BackgroundColor, Converter={StaticResource BrushConverter}}">
-                    <TextBlock Margin="0,10,0,10" Text="{Binding Name}" 
-                               VerticalAlignment="{Binding VerticalAlignment}"
-                               HorizontalAlignment="{Binding HorizontalAlignment}"
+                    <Rectangle Visibility="{Binding MouseOver, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}">
+                      <Rectangle.Fill>
+                        <SolidColorBrush Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Weekdays}},Path=Properties.MouseOverOpacity}"
+                                         Color="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Weekdays}},Path=Properties.MouseOverBackgroundColor}"/>
+                      </Rectangle.Fill>
+                    </Rectangle>
+                    <TextBlock Margin="{Binding TextMargin}" Text="{Binding Name}" 
+                               VerticalAlignment="{Binding TextVerticalAlignment}"
+                               HorizontalAlignment="{Binding TextHorizontalAlignment}"
                                Foreground="{Binding TextColor, Converter={StaticResource BrushConverter}}" 
-                               FontSize="{Binding FontSize}" 
-                               FontWeight="{Binding FontWeight}" 
-                               FontStyle="{Binding FontStyle}" 
-                               FontFamily="{Binding FontFamily}" 
-                               TextDecorations="{Binding TextDecoration}"/>
+                               FontSize="{Binding TextFontSize}" 
+                               FontWeight="{Binding TextFontWeight}" 
+                               FontStyle="{Binding TextFontStyle}" 
+                               FontFamily="{Binding TextFontFamily}" 
+                               TextDecorations="{Binding TextTextDecoration}"/>
                   </Grid>
                 </DataTemplate>
               </ItemsControl.ItemTemplate>
@@ -233,6 +240,7 @@
   <Style TargetType="{x:Type calendar:Weeknumbers}">
     <Style.Resources>
       <converters:ColorToSolidColorBrushConverter x:Key="BrushConverter" />
+      <converters:BoolToVisibilityConverter x:Key="visibilityConverter" />
     </Style.Resources>
     <Setter Property="Template">
       <Setter.Value>
@@ -243,15 +251,25 @@
               <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type model:CalendarWeek}">
                   <Grid Background="{Binding BackgroundColor, Converter={StaticResource BrushConverter}}">
-                    <TextBlock Margin="10,0,10,0" Text="{Binding Weeknumber}" 
+                    <Rectangle Visibility="{Binding MouseOver, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}">
+                      <Rectangle.Fill>
+                        <SolidColorBrush Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Weeknumbers}},Path=Properties.MouseOverOpacity}"
+                                         Color="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Weeknumbers}},Path=Properties.MouseOverBackgroundColor}"/>
+                      </Rectangle.Fill>
+                    </Rectangle>
+                    <TextBlock Margin="{Binding TextMargin}" Text="{Binding Weeknumber}" 
                                Foreground="{Binding TextColor, Converter={StaticResource BrushConverter}}" 
-                               FontSize="{Binding FontSize}" 
-                               FontWeight="{Binding FontWeight}" 
-                               FontStyle="{Binding FontStyle}" 
-                               FontFamily="{Binding FontFamily}" 
-                               TextDecorations="{Binding TextDecoration}"
-                               VerticalAlignment="{Binding VerticalAlignment}" 
-                               HorizontalAlignment="{Binding HorizontalAlignment}"/>
+                               FontSize="{Binding TextFontSize}" 
+                               FontWeight="{Binding TextFontWeight}" 
+                               FontStyle="{Binding TextFontStyle}" 
+                               FontFamily="{Binding TextFontFamily}" 
+                               TextDecorations="{Binding TextTextDecoration}"
+                               VerticalAlignment="{Binding TextVerticalAlignment}" 
+                               HorizontalAlignment="{Binding TextHorizontalAlignment}"/>
+                    <Border  BorderThickness="1,1,1,1"
+                             BorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Weeknumbers}},Path=Properties.MouseOverBorderColor, Converter={StaticResource BrushConverter}}"
+                             Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" 
+                             Visibility="{Binding MouseOver, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}"></Border>
                   </Grid>
                 </DataTemplate>
               </ItemsControl.ItemTemplate>

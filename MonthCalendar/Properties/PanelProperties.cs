@@ -8,17 +8,31 @@ namespace Pabo.MonthCalendar.Properties
 {
   public class PanelProperties : PropertiesBase
   {
-    private int fontSize = 16;
-    private FontWeight fontWeight = FontWeights.Normal;
-    private FontStyle fontStyle = FontStyles.Normal;
-    private FontFamily fontFamily = new FontFamily(string.Empty);
-    private String textDecoration = string.Empty;
+
+     // Text
+    private int textFontSize = 16;
+    private FontWeight textFontWeight = FontWeights.Normal;
+    private FontStyle textFontStyle = FontStyles.Normal;
+    private FontFamily textFontFamily = new FontFamily(string.Empty);
+    private String textTextDecoration = string.Empty;
     private Color textColor = Colors.White;
     private Color backGroundColor = Colors.Blue;
+    private VerticalAlignment textVerticalAlignment = VerticalAlignment.Center;
+    private HorizontalAlignment textHorizontalAlignment = HorizontalAlignment.Center;
+    private Thickness textMargin = new Thickness(0, 0, 0, 0);
+
+    // MouseOver
+    private Color mouseOverBackgroundColor = Colors.LightBlue;
+    private Color mouseOverBorderColor = Colors.Transparent;
+    private double mouseOverOpacity = .25;
+
+
 
     public PanelProperties()
     {
     }
+
+    #region Text
 
     public Color TextColor
     {
@@ -29,6 +43,19 @@ namespace Pabo.MonthCalendar.Properties
         {
           textColor = value;
           OnPropertyChanged(nameof(this.TextColor));
+        }
+      }
+    }
+
+    public Thickness TextMargin
+    {
+      get => textMargin;
+      set
+      {
+        if (value != textMargin)
+        {
+          textMargin = value;
+          OnPropertyChanged(nameof(this.TextMargin));
         }
       }
     }
@@ -46,69 +73,141 @@ namespace Pabo.MonthCalendar.Properties
       }
     }
 
-    public int FontSize
+    public int TextFontSize
     {
-      get => fontSize;
+      get => textFontSize;
       set
       {
-        if (value != fontSize)
+        if (value != textFontSize)
         {
-          fontSize = value;
-          OnPropertyChanged(nameof(this.FontSize));
+          textFontSize = value;
+          OnPropertyChanged(nameof(this.TextFontSize));
         }
       }
     }
 
-    public string TextDecoration
+    public string TextTextDecoration
     {
-      get => textDecoration;
+      get => textTextDecoration;
       set
       {
-        if (value != textDecoration)
+        if (value != textTextDecoration)
         {
-          textDecoration = value;
-          OnPropertyChanged(nameof(this.TextDecoration));
+          textTextDecoration = value;
+          OnPropertyChanged(nameof(this.TextTextDecoration));
         }
       }
     }
 
-    public FontFamily FontFamily
+    public FontFamily TextFontFamily
     {
-      get => fontFamily;
+      get => textFontFamily;
       set
       {
-        if (value != fontFamily)
+        if (value != textFontFamily)
         {
-          fontFamily = value;
-          OnPropertyChanged(nameof(this.FontFamily));
+          textFontFamily = value;
+          OnPropertyChanged(nameof(this.TextFontFamily));
         }
       }
     }
 
-    public FontWeight FontWeight
+    public FontWeight TextFontWeight
     {
-      get => fontWeight;
+      get => textFontWeight;
       set
       {
-        if (value != fontWeight)
+        if (value != textFontWeight)
         {
-          fontWeight = value;
-          OnPropertyChanged(nameof(this.FontWeight));
+          textFontWeight = value;
+          OnPropertyChanged(nameof(this.TextFontWeight));
         }
       }
     }
 
-    public FontStyle FontStyle
+    public FontStyle TextFontStyle
     {
-      get => fontStyle;
+      get => textFontStyle;
       set
       {
-        if (value != fontStyle)
+        if (value != textFontStyle)
         {
-          fontStyle = value;
-          OnPropertyChanged(nameof(this.FontStyle));
+          textFontStyle = value;
+          OnPropertyChanged(nameof(this.TextFontStyle));
         }
       }
     }
+
+    public VerticalAlignment TextVerticalAlignment
+    {
+      get => textVerticalAlignment;
+      set
+      {
+        if (value != textVerticalAlignment)
+        {
+          textVerticalAlignment = value;
+          OnPropertyChanged(nameof(this.TextVerticalAlignment));
+        }
+      }
+    }
+
+    public HorizontalAlignment TextHorizontalAlignment
+    {
+      get => textHorizontalAlignment;
+      set
+      {
+        if (value != textHorizontalAlignment)
+        {
+          textHorizontalAlignment = value;
+          OnPropertyChanged(nameof(this.TextHorizontalAlignment));
+        }
+      }
+    }
+
+    #endregion
+
+    #region MouseOver
+
+    public Color MouseOverBackgroundColor
+    {
+      get => mouseOverBackgroundColor;
+      set
+      {
+        if (value != mouseOverBackgroundColor)
+        {
+          mouseOverBackgroundColor = value;
+          OnPropertyChanged(nameof(this.MouseOverBackgroundColor));
+        }
+      }
+    }
+
+    public Color MouseOverBorderColor
+    {
+      get => mouseOverBorderColor;
+      set
+      {
+        if (value != mouseOverBorderColor)
+        {
+          mouseOverBorderColor = value;
+          OnPropertyChanged(nameof(this.MouseOverBorderColor));
+        }
+      }
+    }
+
+    public double MouseOverOpacity
+    {
+      get => mouseOverOpacity;
+      set
+      {
+        if (value != mouseOverOpacity)
+        {
+          mouseOverOpacity = value;
+          OnPropertyChanged(nameof(this.MouseOverOpacity));
+        }
+      }
+    }
+
+    #endregion
+
   }
 }

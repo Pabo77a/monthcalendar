@@ -9,6 +9,7 @@ namespace Pabo.MonthCalendar.Model
 {
   internal class CalendarWeek : Week, INotifyPropertyChanged
   {
+    private bool mouseOver;
 
     public CalendarWeek()
     {
@@ -19,7 +20,20 @@ namespace Pabo.MonthCalendar.Model
       FirstDateOWeek = date;
     }
 
-    
+    public bool MouseOver
+    {
+      get => this.mouseOver;
+      set
+      {
+        if (value != this.mouseOver)
+        {
+          this.mouseOver = value;
+          OnPropertyChanged(nameof(this.MouseOver));
+        }
+      }
+
+    }
+
 
     public DateTime FirstDateOWeek { get; set; }
   

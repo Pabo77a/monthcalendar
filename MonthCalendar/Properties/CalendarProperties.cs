@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 
 namespace Pabo.MonthCalendar.Properties
 {
-  public class CalendarProperties : PropertiesBase
+  public class CalendarProperties : PanelProperties
   {
     // Date
     private Color dateColor = Colors.Black;
@@ -20,21 +20,15 @@ namespace Pabo.MonthCalendar.Properties
     private string dateTextDecoration = string.Empty;
     private VerticalAlignment dateVerticalAlignment = VerticalAlignment.Top;
     private HorizontalAlignment dateHorizontalAlignment = HorizontalAlignment.Right;
+    private Thickness dateMargin = new Thickness(0, 4, 7, 0);
 
-
-    // Text
-    private Color textColor = Colors.Black;
-    private int textFontSize = 16;
-    private FontWeight textFontWeight = FontWeights.Normal;
-    private FontStyle textFontStyle = FontStyles.Normal;
-    private FontFamily textFontFamily = new FontFamily(string.Empty);
-    private string textTextDecoration = string.Empty;
-    private VerticalAlignment textVerticalAlignment = VerticalAlignment.Bottom;
-    private HorizontalAlignment textHorizontalAlignment = HorizontalAlignment.Left;
+    //Image
+    private Thickness imageMargin = new Thickness(2,2,0,0);
+    private VerticalAlignment imageVerticalAlignment = VerticalAlignment.Top;
+    private HorizontalAlignment imageHorizontalAlignment = HorizontalAlignment.Left;
 
 
     private BitmapImage backgroundImage = null;
-    private Color backgroundColor = Colors.White;
 
     // Trailing
     private Color trailingDateColor = Colors.White;
@@ -46,28 +40,23 @@ namespace Pabo.MonthCalendar.Properties
     private double selectedOpacity = .25;
 
 
-    // MouseOver
-    private Color mouseOverBackgroundColor = Colors.LightBlue;
-    private Color mouseOverBorderColor = Colors.Transparent;
-    private double mouseOverOpacity = .25;
-
-
-    public CalendarProperties()
+    public CalendarProperties() : base()
     {
-      
-    }
+      this.MouseOverBackgroundColor = Colors.LightBlue;
+      this.MouseOverBorderColor = Colors.Transparent;
+      this.MouseOverOpacity = .25;
+      this.TextColor = Colors.Black;
+      this.BackgroundColor = Colors.White;
 
-    public Color BackgroundColor
-    {
-      get => backgroundColor;
-      set
-      {
-        if (value != backgroundColor)
-        {
-          backgroundColor = value;
-          OnPropertyChanged(nameof(this.BackgroundColor));
-        }
-      }
+      this.TextFontSize = 16;
+      this.TextFontWeight = FontWeights.Normal;
+      this.TextFontStyle = FontStyles.Normal;
+      this.TextFontFamily = new FontFamily(string.Empty);
+      this.TextTextDecoration = string.Empty;
+
+      this.TextVerticalAlignment = VerticalAlignment.Bottom;
+      this.TextHorizontalAlignment = HorizontalAlignment.Left;
+      this.TextMargin = new Thickness(2, 0, 0, 2);
     }
 
     public BitmapImage BackgroundImage
@@ -109,117 +98,6 @@ namespace Pabo.MonthCalendar.Properties
       }
     }
 
-
-    #region Text
-
-    public VerticalAlignment TextVerticalAlignment
-    {
-      get => textVerticalAlignment;
-      set
-      {
-        if (value != textVerticalAlignment)
-        {
-          textVerticalAlignment = value;
-          OnPropertyChanged(nameof(this.TextVerticalAlignment));
-        }
-      }
-    }
-
-    public HorizontalAlignment TextHorizontalAlignment
-    {
-      get => textHorizontalAlignment;
-      set
-      {
-        if (value != textHorizontalAlignment)
-        {
-          textHorizontalAlignment = value;
-          OnPropertyChanged(nameof(this.TextHorizontalAlignment));
-        }
-      }
-    }
-
-
-    public string TextTextDecoration
-    {
-      get => textTextDecoration;
-      set
-      {
-        if (value != textTextDecoration)
-        {
-          textTextDecoration = value;
-          OnPropertyChanged(nameof(this.TextTextDecoration));
-        }
-      }
-    }
-
-    public FontFamily TextFontFamily
-    {
-      get => textFontFamily;
-      set
-      {
-        if (value != textFontFamily)
-        {
-          textFontFamily = value;
-          OnPropertyChanged(nameof(this.TextFontFamily));
-        }
-      }
-    }
-
-    public FontWeight TextFontWeight
-    {
-      get => textFontWeight;
-      set
-      {
-        if (value != textFontWeight)
-        {
-          textFontWeight = value;
-          OnPropertyChanged(nameof(this.textFontWeight));
-        }
-      }
-    }
-
-    public FontStyle TextFontStyle
-    {
-      get => textFontStyle;
-      set
-      {
-        if (value != textFontStyle)
-        {
-          textFontStyle = value;
-          OnPropertyChanged(nameof(this.TextFontStyle));
-        }
-      }
-    }
-
-    public Color TextColor
-    {
-      get => textColor;
-      set
-      {
-        if (value != textColor)
-        {
-          textColor = value;
-          OnPropertyChanged(nameof(this.textColor));
-        }
-      }
-    }
-
-    public int TextFontSize
-    {
-      get => textFontSize;
-      set
-      {
-        if (value != textFontSize)
-        {
-          textFontSize = value;
-          OnPropertyChanged(nameof(this.TextFontSize));
-        }
-      }
-    }
-
-
-    #endregion
-
     #region Date
 
     public VerticalAlignment DateVerticalAlignment
@@ -257,6 +135,19 @@ namespace Pabo.MonthCalendar.Properties
         {
           dateTextDecoration = value;
           OnPropertyChanged(nameof(this.DateTextDecoration));
+        }
+      }
+    }
+
+    public Thickness DateMargin
+    {
+      get => dateMargin;
+      set
+      {
+        if (value != dateMargin)
+        {
+          dateMargin = value;
+          OnPropertyChanged(nameof(this.DateMargin));
         }
       }
     }
@@ -330,6 +221,49 @@ namespace Pabo.MonthCalendar.Properties
 
     #endregion
 
+    #region Image
+
+    public Thickness ImageMargin
+    {
+      get => imageMargin;
+      set
+      {
+        if (value != imageMargin)
+        {
+          imageMargin = value;
+          OnPropertyChanged(nameof(this.ImageMargin));
+        }
+      }
+    }
+
+    public VerticalAlignment ImageVerticalAlignment
+    {
+      get => imageVerticalAlignment;
+      set
+      {
+        if (value != imageVerticalAlignment)
+        {
+          imageVerticalAlignment = value;
+          OnPropertyChanged(nameof(this.ImageVerticalAlignment));
+        }
+      }
+    }
+
+    public HorizontalAlignment ImageHorizontalAlignment
+    {
+      get => imageHorizontalAlignment;
+      set
+      {
+        if (value != imageHorizontalAlignment)
+        {
+          imageHorizontalAlignment = value;
+          OnPropertyChanged(nameof(this.ImageHorizontalAlignment));
+        }
+      }
+    }
+
+    #endregion
+
     #region Selected
 
     public Color SelectedBackgroundColor
@@ -373,48 +307,7 @@ namespace Pabo.MonthCalendar.Properties
 
     #endregion
 
-    #region Mouse over
 
-    public Color MouseOverBackgroundColor
-    {
-      get => mouseOverBackgroundColor;
-      set
-      {
-        if (value != mouseOverBackgroundColor)
-        {
-          mouseOverBackgroundColor = value;
-          OnPropertyChanged(nameof(this.MouseOverBackgroundColor));
-        }
-      }
-    }
-
-    public Color MouseOverBorderColor
-    {
-      get => mouseOverBorderColor;
-      set
-      {
-        if (value != mouseOverBorderColor)
-        {
-          mouseOverBorderColor = value;
-          OnPropertyChanged(nameof(this.MouseOverBorderColor));
-        }
-      }
-    }
-
-    public double MouseOverOpacity
-    {
-      get => mouseOverOpacity;
-      set
-      {
-        if (value != mouseOverOpacity)
-        {
-          mouseOverOpacity = value;
-          OnPropertyChanged(nameof(this.MouseOverOpacity));
-        }
-      }
-    }
-
-    #endregion
 
   }
 }

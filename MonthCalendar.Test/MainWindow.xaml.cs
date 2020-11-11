@@ -57,9 +57,9 @@ namespace MonthCalendar.Test
       this.days.Add(new Day() { Date = new DateTime(2020, 7, 28), DateColor = Colors.Red, Text = "yyy", TextColor = Colors.Black});
 
 
-      this.weeks.Add(new Week() { TextColor = Colors.White, BackgroundColor=Colors.Green, FontWeight=FontWeights.Bold, Number= 32, Year=2020 });
+      this.weeks.Add(new Week() { TextColor = Colors.White, BackgroundColor=Colors.Green, TextFontWeight=FontWeights.Bold, Number= 32, Year=2020 });
                       
-      this.weekdays.Add(new Weekday() { BackgroundColor = Colors.Green, TextColor = Colors.White, FontSize = 16, FontWeight = FontWeights.Bold, Year = 2020, Month = 8, DayOfWeek = DayOfWeek.Tuesday });
+      this.weekdays.Add(new Weekday() { BackgroundColor = Colors.Green, TextColor = Colors.White, TextFontSize = 16, TextFontWeight = FontWeights.Bold, Year = 2020, Month = 8, DayOfWeek = DayOfWeek.Tuesday });
       
       //this.weeknumberProperties.TextColor = Colors.DarkOliveGreen;
       //this.weeknumberProperties.FontSize = 32;
@@ -106,12 +106,10 @@ namespace MonthCalendar.Test
 
     private void MonthCalendar_SelectionChanged(object sender, Pabo.MonthCalendar.EventArgs.SelectionChangedEventArgs e)
     {
-      int i = 1;
     }
 
     private void MonthCalendar_MonthChanged(object sender, Pabo.MonthCalendar.EventArgs.MonthChangedEventArgs e)
     {
-      int i = 1;
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)
@@ -131,12 +129,28 @@ namespace MonthCalendar.Test
 
     private void MonthCalendar_DayLeave(object sender, Pabo.MonthCalendar.EventArgs.DayEventArgs e)
     {
-      //Debug.WriteLine("Leave:" + e.Day.Date);
     }
 
     private void MonthCalendar_DayEnter(object sender, Pabo.MonthCalendar.EventArgs.DayEventArgs e)
     {
-      //Debug.WriteLine("Enter:" + e.Day.Date);
+    }
+
+    private void MonthCalendar_WeekLeave(object sender, Pabo.MonthCalendar.EventArgs.WeekEventArgs e)
+    {
+    }
+
+    private void MonthCalendar_WeekEnter(object sender, Pabo.MonthCalendar.EventArgs.WeekEventArgs e)
+    {
+    }
+
+    private void MonthCalendar_WeekdayLeave(object sender, Pabo.MonthCalendar.EventArgs.WeekdayEventArgs e)
+    {
+      //Debug.WriteLine("Leave=" + e.Weekday.DayOfWeek.ToString());
+    }
+
+    private void MonthCalendar_WeekdayEnter(object sender, Pabo.MonthCalendar.EventArgs.WeekdayEventArgs e)
+    {
+      //Debug.WriteLine("Enter=" + e.Weekday.DayOfWeek.ToString());
     }
   }
 }

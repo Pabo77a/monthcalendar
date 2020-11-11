@@ -134,16 +134,32 @@ namespace Pabo.MonthCalendar
 
     public delegate void SelectionChangedEventHandler(object sender, EventArgs.SelectionChangedEventArgs e);
 
-    public delegate void MouseMoveEventHandler(object sender, EventArgs.DayEventArgs e);
+    public delegate void DayEventHandler(object sender, EventArgs.DayEventArgs e);
+    public delegate void WeekEventHandler(object sender, EventArgs.WeekEventArgs e);
+    public delegate void WeekdayEventHandler(object sender, EventArgs.WeekdayEventArgs e);
 
     public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(
        "SelectionChanged", RoutingStrategy.Direct, typeof(SelectionChangedEventHandler), typeof(MonthCalendar));
 
     public static readonly RoutedEvent DayLeaveEvent = EventManager.RegisterRoutedEvent(
-       "DayLeave", RoutingStrategy.Direct, typeof(MouseMoveEventHandler), typeof(MonthCalendar));
+       "DayLeave", RoutingStrategy.Direct, typeof(DayEventHandler), typeof(MonthCalendar));
 
     public static readonly RoutedEvent DayEnterEvent = EventManager.RegisterRoutedEvent(
-       "DayEnter", RoutingStrategy.Direct, typeof(MouseMoveEventHandler), typeof(MonthCalendar));
+       "DayEnter", RoutingStrategy.Direct, typeof(DayEventHandler), typeof(MonthCalendar));
+
+    public static readonly RoutedEvent WeekLeaveEvent = EventManager.RegisterRoutedEvent(
+       "WeekLeave", RoutingStrategy.Direct, typeof(WeekEventHandler), typeof(MonthCalendar));
+
+    public static readonly RoutedEvent WeekEnterEvent = EventManager.RegisterRoutedEvent(
+       "WeekEnter", RoutingStrategy.Direct, typeof(WeekEventHandler), typeof(MonthCalendar));
+
+    public static readonly RoutedEvent WeekdayLeaveEvent = EventManager.RegisterRoutedEvent(
+       "WeekdayLeave", RoutingStrategy.Direct, typeof(WeekdayEventHandler), typeof(MonthCalendar));
+
+    public static readonly RoutedEvent WeekdayEnterEvent = EventManager.RegisterRoutedEvent(
+       "WeekdayEnter", RoutingStrategy.Direct, typeof(WeekdayEventHandler), typeof(MonthCalendar));
+
+
 
     public delegate void MonthChangedEventHandler(object sender, EventArgs.MonthChangedEventArgs e);
 
@@ -185,7 +201,7 @@ namespace Pabo.MonthCalendar
 
     [Category("Calendar")]
     [Browsable(true)]
-    public event MouseMoveEventHandler DayLeave
+    public event DayEventHandler DayLeave
     {
       add { AddHandler(DayLeaveEvent, value); }
       remove { RemoveHandler(DayLeaveEvent, value); }
@@ -193,10 +209,42 @@ namespace Pabo.MonthCalendar
 
     [Category("Calendar")]
     [Browsable(true)]
-    public event MouseMoveEventHandler DayEnter
+    public event DayEventHandler DayEnter
     {
       add { AddHandler(DayEnterEvent, value); }
       remove { RemoveHandler(DayEnterEvent, value); }
+    }
+
+    [Category("Calendar")]
+    [Browsable(true)]
+    public event WeekdayEventHandler WeekdayLeave
+    {
+      add { AddHandler(WeekdayLeaveEvent, value); }
+      remove { RemoveHandler(WeekdayLeaveEvent, value); }
+    }
+
+    [Category("Calendar")]
+    [Browsable(true)]
+    public event WeekdayEventHandler WeekdayEnter
+    {
+      add { AddHandler(WeekdayEnterEvent, value); }
+      remove { RemoveHandler(WeekdayEnterEvent, value); }
+    }
+
+    [Category("Calendar")]
+    [Browsable(true)]
+    public event WeekEventHandler WeekLeave
+    {
+      add { AddHandler(WeekLeaveEvent, value); }
+      remove { RemoveHandler(WeekLeaveEvent, value); }
+    }
+
+    [Category("Calendar")]
+    [Browsable(true)]
+    public event WeekEventHandler WeekEnter
+    {
+      add { AddHandler(WeekEnterEvent, value); }
+      remove { RemoveHandler(WeekEnterEvent, value); }
     }
 
     #endregion
@@ -231,16 +279,22 @@ namespace Pabo.MonthCalendar
       this.weekdays = GetTemplateChild("PART_Weekdays") as Weekdays;
       if (this.weekdays != null)
       {
+        this.weekdays.WeekdayEnter += Weekdays_WeekdayEnter;
+        this.weekdays.WeekdayLeave += Weekdays_WeekdayLeave;
       }
 
       this.weeknumbers = GetTemplateChild("PART_Weeknumbers") as Weeknumbers;
       if (this.weeknumbers != null)
       {
+        this.weeknumbers.WeekEnter += Weeknumbers_WeekEnter;
+        this.weeknumbers.WeekLeave += Weeknumbers_WeekLeave;
       }
 
       this.Setup();
 
     }
+
+
 
 
     #endregion
@@ -572,6 +626,34 @@ namespace Pabo.MonthCalendar
     {
       EventArgs.DayEventArgs args = new EventArgs.DayEventArgs(DayEnterEvent, e.Day);
       RaiseEvent(args);
+    }
+
+    private void Weeknumbers_WeekLeave(object sender, EventArgs.CalendarWeekEventArgs e)
+    {
+      EventArgs.WeekEventArgs args = new EventArgs.WeekEventArgs(WeekLeaveEvent, e.Week);
+      RaiseEvent(args);
+
+    }
+
+    private void Weeknumbers_WeekEnter(object sender, EventArgs.CalendarWeekEventArgs e)
+    {
+      EventArgs.WeekEventArgs args = new EventArgs.WeekEventArgs(WeekEnterEvent, e.Week);
+      RaiseEvent(args);
+
+    }
+
+    private void Weekdays_WeekdayLeave(object sender, EventArgs.CalendarWeekdayEventArgs e)
+    {
+      EventArgs.WeekdayEventArgs args = new EventArgs.WeekdayEventArgs(WeekdayLeaveEvent, e.Weekday);
+      RaiseEvent(args);
+
+    }
+
+    private void Weekdays_WeekdayEnter(object sender, EventArgs.CalendarWeekdayEventArgs e)
+    {
+      EventArgs.WeekdayEventArgs args = new EventArgs.WeekdayEventArgs(WeekdayEnterEvent, e.Weekday);
+      RaiseEvent(args);
+
     }
 
 

@@ -8,17 +8,32 @@ namespace Pabo.MonthCalendar.Model
   internal class CalendarWeekday : Weekday, INotifyPropertyChanged
   {
 
+    private bool mouseOver = false;
+
     public CalendarWeekday()
     {
     }
 
     public CalendarWeekday(DayOfWeek day) : this()
     {
-      Day = day;
+      DayOfWeek = day;
     }
 
- 
-    public DayOfWeek Day { get; set; }
+
+    public bool MouseOver
+    {
+      get => this.mouseOver;
+      set
+      {
+        if (value != this.mouseOver)
+        {
+          this.mouseOver = value;
+          OnPropertyChanged(nameof(this.MouseOver));
+        }
+      }
+
+    }
+
 
     public string Name
     {
@@ -31,7 +46,7 @@ namespace Pabo.MonthCalendar.Model
         else
         {
           CultureInfo ci = Thread.CurrentThread.CurrentCulture;
-          return ci.DateTimeFormat.GetAbbreviatedDayName(Day);
+          return ci.DateTimeFormat.GetAbbreviatedDayName(DayOfWeek);
         }
       }
     }

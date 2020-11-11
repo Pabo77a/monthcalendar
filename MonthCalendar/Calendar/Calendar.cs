@@ -19,8 +19,13 @@ namespace Pabo.MonthCalendar
 {
   [TemplatePart(Name = "PART_Panel", Type = typeof(CalendarWrapPanel))]
   [ToolboxItem(false)]
-  internal class Calendar : BaseControl
+  internal class Calendar : PanelControl
   {
+
+    public Calendar() : base(7,6)
+    {
+
+    }
 
     #region private members
 
@@ -98,7 +103,7 @@ namespace Pabo.MonthCalendar
 
     private void ItemsControl_MouseEnter(object sender, MouseEventArgs e)
     {
-      var day = GetDay(e.GetPosition(this));
+      var day = this.Days[GetPanel(e.GetPosition(this))];
       this.activeDay = day;
       this.activeDay.MouseOver = true;
       this.OnDayEnter(new CalendarDayEventArgs(day));
@@ -107,7 +112,7 @@ namespace Pabo.MonthCalendar
 
     private void ItemsControl_MouseMove(object sender, MouseEventArgs e)
     {
-      var day = GetDay(e.GetPosition(this));
+      var day =this.Days[GetPanel(e.GetPosition(this))];
       if (this.activeDay != day)
       {
         this.activeDay.MouseOver = false;
@@ -120,13 +125,13 @@ namespace Pabo.MonthCalendar
 
     private void ItemsControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-      var day = GetDay(e.GetPosition(this));
+      var day = this.Days[GetPanel(e.GetPosition(this))];
       Debug.WriteLine("DoubleClick : " + string.Format(day.Date.ToString()));
     }
 
     private void Calendar_MouseDown(object sender, MouseButtonEventArgs e)
     {
-      var day = GetDay(e.GetPosition(this));
+      var day = this.Days[GetPanel(e.GetPosition(this))];
 
       if (e.ClickCount > 1)
       {
@@ -186,20 +191,6 @@ namespace Pabo.MonthCalendar
 
         day.BorderThickness = new Thickness(left, top, right, bottom);
       }
-    }
-
-    private CalendarDay GetDay(Point pt)
-    {
-
-      var itemWidth = this.ActualWidth / 7;
-      var itemHeight = this.ActualHeight / 6;
-
-      int x = (int)(pt.X / itemWidth);
-      int y = (int)(pt.Y / itemHeight);
-
-      var day = x + (y * 6) + y;
-
-      return this.Days[day];
     }
 
     private void ClearCalendar(bool setupBorders = true)
@@ -351,12 +342,24 @@ namespace Pabo.MonthCalendar
         days[i].DateFontStyle = Properties.DateFontStyle;
         days[i].DateFontWeight = Properties.DateFontWeight;
         days[i].DateTextDecoration = Properties.DateTextDecoration;
+        days[i].DateMargin = Properties.DateMargin;
+        days[i].DateVerticalAlignment = Properties.DateVerticalAlignment;
+        days[i].DateHorizontalAlignment = Properties.DateHorizontalAlignment;
+
+        days[i].ImageMargin = Properties.ImageMargin;
+        days[i].ImageVerticalAlignment = Properties.ImageVerticalAlignment;
+        days[i].ImageHorizontalAlignment = Properties.ImageHorizontalAlignment;
+
 
         days[i].TextFontFamily = Properties.TextFontFamily;
         days[i].TextFontSize = Properties.TextFontSize;
         days[i].TextFontStyle = Properties.TextFontStyle;
         days[i].TextFontWeight = Properties.TextFontWeight;
         days[i].TextTextDecoration = Properties.TextTextDecoration;
+        days[i].TextMargin = Properties.TextMargin;
+        days[i].TextVerticalAlignment = Properties.TextVerticalAlignment;
+        days[i].TextHorizontalAlignment = Properties.TextHorizontalAlignment;
+
 
       }
 

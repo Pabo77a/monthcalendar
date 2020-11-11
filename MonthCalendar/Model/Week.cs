@@ -11,13 +11,14 @@ namespace Pabo.MonthCalendar.Model
   {
 
     private Color textColor = Colors.Black;
-    private FontStyle fontStyle = FontStyles.Normal;
-    private FontWeight fontWeight = FontWeights.Normal;
-    private int fontSize = 16;
-    private string textDecoration = "";
-    private VerticalAlignment verticalAlignment = VerticalAlignment.Center;
-    private HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center;
-    private FontFamily fontFamily = new FontFamily("");
+    private FontStyle textFontStyle = FontStyles.Normal;
+    private FontWeight textFontWeight = FontWeights.Normal;
+    private int textFontSize = 16;
+    private string textTextDecoration = "";
+    private VerticalAlignment textVerticalAlignment = VerticalAlignment.Center;
+    private HorizontalAlignment textHorizontalAlignment = HorizontalAlignment.Center;
+    private FontFamily textFontFamily = new FontFamily("");
+    private Thickness textMargin = new Thickness(10, 0, 10, 0);
     private string text = "";
     private int number;
     private int year;
@@ -78,93 +79,106 @@ namespace Pabo.MonthCalendar.Model
       }
     }
 
-    public int FontSize
+    public int TextFontSize
     {
-      get => fontSize;
+      get => textFontSize;
       set
       {
-        if (value != fontSize)
+        if (value != textFontSize)
         {
-          this.fontSize = value;
-          OnPropertyChanged(nameof(this.FontSize));
+          this.textFontSize = value;
+          OnPropertyChanged(nameof(this.TextFontSize));
         }
       }
     }
 
-    public FontWeight FontWeight
+    public FontWeight TextFontWeight
     {
-      get => fontWeight;
+      get => textFontWeight;
       set
       {
-        if (value != fontWeight)
+        if (value != textFontWeight)
         {
-          this.fontWeight = value;
-          OnPropertyChanged(nameof(this.FontWeight));
+          this.textFontWeight = value;
+          OnPropertyChanged(nameof(this.TextFontWeight));
         }
       }
     }
 
-    public FontStyle FontStyle
+    public FontStyle TextFontStyle
     {
-      get => fontStyle;
+      get => textFontStyle;
       set
       {
-        if (value != fontStyle)
+        if (value != textFontStyle)
         {
-          this.fontStyle = value;
-          OnPropertyChanged(nameof(this.FontStyle));
+          this.textFontStyle = value;
+          OnPropertyChanged(nameof(this.TextFontStyle));
         }
       }
     }
 
-    public FontFamily FontFamily
+    public FontFamily TextFontFamily
     {
-      get => fontFamily;
+      get => textFontFamily;
       set
       {
-        if (value != fontFamily)
+        if (value != textFontFamily)
         {
-          this.fontFamily = value;
-          OnPropertyChanged(nameof(this.FontFamily));
+          this.textFontFamily = value;
+          OnPropertyChanged(nameof(this.TextFontFamily));
         }
       }
     }
 
-    public string TextDecoration
+    public string TextTextDecoration
     {
-      get => textDecoration;
+      get => textTextDecoration;
       set
       {
-        if (value != textDecoration)
+        if (value != textTextDecoration)
         {
-          this.textDecoration = value;
-          OnPropertyChanged(nameof(this.textDecoration));
+          this.textTextDecoration = value;
+          OnPropertyChanged(nameof(this.TextTextDecoration));
         }
       }
     }
 
-    public VerticalAlignment VerticalAlignment
+    public VerticalAlignment TextVerticalAlignment
     {
-      get => verticalAlignment;
+      get => textVerticalAlignment;
       set
       {
-        if (value != verticalAlignment)
+        if (value != textVerticalAlignment)
         {
-          this.verticalAlignment = value;
-          OnPropertyChanged(nameof(this.verticalAlignment));
+          this.textVerticalAlignment = value;
+          OnPropertyChanged(nameof(this.TextVerticalAlignment));
         }
       }
     }
 
-    public HorizontalAlignment HorizontalAlignment
+    public HorizontalAlignment TextHorizontalAlignment
     {
-      get => horizontalAlignment;
+      get => textHorizontalAlignment;
       set
       {
-        if (value != horizontalAlignment)
+        if (value != textHorizontalAlignment)
         {
-          this.horizontalAlignment = value;
-          OnPropertyChanged(nameof(this.HorizontalAlignment));
+          this.textHorizontalAlignment = value;
+          OnPropertyChanged(nameof(this.TextHorizontalAlignment));
+        }
+      }
+    }
+
+    public Thickness TextMargin
+    {
+      get => textMargin;
+      set
+      {
+        if (value != textMargin)
+        {
+          this.textMargin = value;
+          OnPropertyChanged(nameof(this.TextMargin));
         }
       }
     }
