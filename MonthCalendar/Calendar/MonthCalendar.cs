@@ -159,6 +159,11 @@ namespace Pabo.MonthCalendar
     public static readonly RoutedEvent WeekdayEnterEvent = EventManager.RegisterRoutedEvent(
        "WeekdayEnter", RoutingStrategy.Direct, typeof(WeekdayEventHandler), typeof(MonthCalendar));
 
+    public static readonly RoutedEvent FooterEnterEvent = EventManager.RegisterRoutedEvent(
+       "FooterEnter", RoutingStrategy.Direct, typeof(RoutedEventHandler), typeof(MonthCalendar));
+
+    public static readonly RoutedEvent FooterLeaveEvent = EventManager.RegisterRoutedEvent(
+       "FooterLeave", RoutingStrategy.Direct, typeof(RoutedEventHandler), typeof(MonthCalendar));
 
 
     public delegate void MonthChangedEventHandler(object sender, EventArgs.MonthChangedEventArgs e);
@@ -196,6 +201,22 @@ namespace Pabo.MonthCalendar
     {
       add { AddHandler(MonthChangedEvent, value); }
       remove { RemoveHandler(MonthChangedEvent, value); }
+    }
+
+    [Category("Calendar")]
+    [Browsable(true)]
+    public event RoutedEventHandler FooterLeave
+    {
+      add { AddHandler(FooterLeaveEvent, value); }
+      remove { RemoveHandler(FooterLeaveEvent, value); }
+    }
+
+    [Category("Calendar")]
+    [Browsable(true)]
+    public event RoutedEventHandler FooterEnter
+    {
+      add { AddHandler(FooterEnterEvent, value); }
+      remove { RemoveHandler(FooterEnterEvent, value); }
     }
 
 
@@ -269,6 +290,11 @@ namespace Pabo.MonthCalendar
         this.header.Increase += Header_Increase;
       }
       this.footer = GetTemplateChild("PART_Footer") as Footer;
+      if (this.footer != null)
+      {
+        this.footer.FooterEnter += Footer_FooterEnter;
+        this.footer.FooterLeave += Footer_FooterLeave;
+      }
       this.calendar = GetTemplateChild("PART_Calendar") as Calendar;
       if (this.calendar != null)
       {
@@ -293,7 +319,6 @@ namespace Pabo.MonthCalendar
       this.Setup();
 
     }
-
 
 
 
@@ -609,6 +634,20 @@ namespace Pabo.MonthCalendar
 
 
     #region eventhandlers
+
+    private void Footer_FooterLeave(object sender, System.EventArgs e)
+    {
+      RoutedEventArgs args = new RoutedEventArgs(FooterLeaveEvent);
+      RaiseEvent(args);
+
+    }
+
+    private void Footer_FooterEnter(object sender, System.EventArgs e)
+    {
+      RoutedEventArgs args = new RoutedEventArgs(FooterEnterEvent);
+      RaiseEvent(args);
+    }
+
 
     private void Calendar_SelectionChanged(object sender, EventArgs.CalendarSelectionChangedEventArgs e)
     {

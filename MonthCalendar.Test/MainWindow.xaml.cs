@@ -106,6 +106,7 @@ namespace MonthCalendar.Test
 
     private void MonthCalendar_SelectionChanged(object sender, Pabo.MonthCalendar.EventArgs.SelectionChangedEventArgs e)
     {
+
     }
 
     private void MonthCalendar_MonthChanged(object sender, Pabo.MonthCalendar.EventArgs.MonthChangedEventArgs e)
@@ -151,6 +152,14 @@ namespace MonthCalendar.Test
     private void MonthCalendar_WeekdayEnter(object sender, Pabo.MonthCalendar.EventArgs.WeekdayEventArgs e)
     {
       //Debug.WriteLine("Enter=" + e.Weekday.DayOfWeek.ToString());
+    }
+
+    private void MonthCalendar_FooterEnter(object sender, RoutedEventArgs e)
+    {
+    }
+
+    private void MonthCalendar_FooterLeave(object sender, RoutedEventArgs e)
+    {
     }
   }
 }
