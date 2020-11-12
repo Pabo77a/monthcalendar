@@ -87,7 +87,6 @@ namespace Pabo.MonthCalendar
         this.itemsControl.MouseDoubleClick += ItemsControl_MouseDoubleClick;
       }
 
-
       Setup();
     }
 
@@ -129,10 +128,7 @@ namespace Pabo.MonthCalendar
       }
     }
 
-    private void PropertiesChanged(object sender, PropertyChangedEventArgs e)
-    {
-      Setup();
-    }
+    
 
     internal bool SuspendLayout
     {
@@ -223,6 +219,11 @@ namespace Pabo.MonthCalendar
 
 
     #region event handlers
+
+    private void PropertiesChanged(object sender, PropertyChangedEventArgs e)
+    {
+      Setup();
+    }
 
     private void ItemsControl_MouseLeave(object sender, MouseEventArgs e)
     {

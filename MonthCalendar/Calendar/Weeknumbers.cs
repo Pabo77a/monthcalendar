@@ -144,10 +144,6 @@ namespace Pabo.MonthCalendar
       }
     }
 
-    private void PropertiesChanged(object sender, PropertyChangedEventArgs e)
-    {
-      Setup();
-    }
 
     #endregion
 
@@ -187,6 +183,39 @@ namespace Pabo.MonthCalendar
     private void Setup()
     {
       this.SetupWeeks(this.firstDate, this.weekItems);
+    }
+
+    private void OnWeekClick(CalendarWeekEventArgs e)
+    {
+      EventHandler<CalendarWeekEventArgs> handler = WeekClick;
+      handler?.Invoke(this, e);
+
+    }
+
+    private void OnWeekDoubleClick(CalendarWeekEventArgs e)
+    {
+      EventHandler<CalendarWeekEventArgs> handler = WeekDoubleClick;
+      handler?.Invoke(this, e);
+    }
+
+    private void OnWeekLeave(CalendarWeekEventArgs e)
+    {
+      EventHandler<CalendarWeekEventArgs> handler = WeekLeave;
+      handler?.Invoke(this, e);
+    }
+
+    private void OnWeekEnter(CalendarWeekEventArgs e)
+    {
+      EventHandler<CalendarWeekEventArgs> handler = WeekEnter;
+      handler?.Invoke(this, e);
+    }
+
+
+    #region event handlers
+
+    private void PropertiesChanged(object sender, PropertyChangedEventArgs e)
+    {
+      Setup();
     }
 
     private void ItemsControl_MouseLeave(object sender, MouseEventArgs e)
@@ -235,30 +264,9 @@ namespace Pabo.MonthCalendar
       this.Button_Click(sender, e);
     }
 
-    private void OnWeekClick(CalendarWeekEventArgs e)
-    {
-      EventHandler<CalendarWeekEventArgs> handler = WeekClick;
-      handler?.Invoke(this, e);
+    #endregion
 
-    }
-
-    private void OnWeekDoubleClick(CalendarWeekEventArgs e)
-    {
-      EventHandler<CalendarWeekEventArgs> handler = WeekDoubleClick;
-      handler?.Invoke(this, e);
-    }
-
-    private void OnWeekLeave(CalendarWeekEventArgs e)
-    {
-      EventHandler<CalendarWeekEventArgs> handler = WeekLeave;
-      handler?.Invoke(this, e);
-    }
-
-    private void OnWeekEnter(CalendarWeekEventArgs e)
-    {
-      EventHandler<CalendarWeekEventArgs> handler = WeekEnter;
-      handler?.Invoke(this, e);
-    }
+   
   }
 
 }

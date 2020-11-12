@@ -156,9 +156,11 @@ namespace MonthCalendar.Test
       this.WeekdaysProperties.TextFontSize = 24;
       this.WeekdaysProperties.TextFontWeight = FontWeights.Bold;
 
+      //this.CalendarProperties.DateColor = Colors.Blue;
+      //this.CalendarProperties.DateFontSize = 10;
+
       MyCalendar.ResumeLayout();
 
-      //this.CalendarProperties.DateFontSize = 10;
       //this.MyCalendar.Refresh();
     }
 

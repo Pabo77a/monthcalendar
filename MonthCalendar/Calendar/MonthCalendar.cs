@@ -1094,7 +1094,7 @@ namespace Pabo.MonthCalendar
 
     public void SuspendLayout()
     {
-      //this.calendar.suspendLayout = true;
+      this.calendar.SuspendLayout = true;
       //this.Header.suspendLayout = true;
       //this.Footer.suspendLayout = true;
       this.weekdays.SuspendLayout = true;
@@ -1103,7 +1103,7 @@ namespace Pabo.MonthCalendar
 
     public void ResumeLayout()
     {
-      //this.calendar.suspendLayout = true;
+      this.calendar.SuspendLayout = false;
       //this.Header.suspendLayout = true;
       //this.Footer.suspendLayout = true;
       this.weekdays.SuspendLayout = false;

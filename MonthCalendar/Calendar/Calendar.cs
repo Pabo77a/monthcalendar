@@ -38,10 +38,15 @@ namespace Pabo.MonthCalendar
     private CalendarDay activeDay;
     private CalendarDay clickDay;
 
+    private bool suspendLayout = false;
+    private int year;
+    private int month;
+    private List<Day> dayItems;
+
     #endregion
 
 
-   
+
     #region constructor
 
     static Calendar()
@@ -100,6 +105,10 @@ namespace Pabo.MonthCalendar
       }
     }
 
+    #endregion
+
+    #region event handlers
+
     private void ItemsControl_MouseLeave(object sender, MouseEventArgs e)
     {
       if (this.activeDay != null)
@@ -146,6 +155,12 @@ namespace Pabo.MonthCalendar
       this.Button_Click(sender, e);
       SelectDay(this.clickDay);
     }
+
+    private void PropertiesChanged(object sender, PropertyChangedEventArgs e)
+    {
+      Setup();
+    }
+
 
     #endregion
 
@@ -256,6 +271,22 @@ namespace Pabo.MonthCalendar
       }
     }
 
+    internal bool SuspendLayout
+    {
+      get => this.suspendLayout;
+      set
+      {
+        if (value != this.suspendLayout)
+        {
+          this.suspendLayout = value;
+          if (!this.suspendLayout)
+          {
+            this.Setup();
+          }
+        }
+      }
+    }
+
     [Description("")]
     [Category("Header")]
     [Browsable(true)]
@@ -268,9 +299,14 @@ namespace Pabo.MonthCalendar
       set
       {
         this.SetValue(PropertiesProperty, value);
+        if (value != null)
+        {
+          value.PropertyChanged -= PropertiesChanged;
+          value.PropertyChanged += PropertiesChanged;
+        }
       }
     }
-
+    
     internal MonthCalendarSelectionMode SelectionMode
     {
       get => SelectionMode;
@@ -296,100 +332,112 @@ namespace Pabo.MonthCalendar
 
     #region methods
 
+    private void Setup()
+    {
+      SetupDays(this.year, this.month, this.dayItems);
+    }
+
     internal void SetupDays(int year, int month, List<Day> items)
     {
 
-      var firstDay = new DateTime(year, month, 1);
-      items = items.Where(x => x.Date > firstDay.AddDays(-15) && x.Date < firstDay.AddDays(45)).ToList();
-
-      CalendarDay[] days = new CalendarDay[42];
-
-      CultureInfo ci = System.Threading.Thread.CurrentThread.CurrentCulture;
-      DayOfWeek firstDayOfWeek = ci.DateTimeFormat.FirstDayOfWeek;
-
-      var firstDayInMonth = new DateTime(year, month, 1);
-      DayOfWeek firstDayOfMonth = firstDayInMonth.DayOfWeek;
-
-      var startPos = (int)firstDayOfMonth + (1 - (int)firstDayOfWeek) - 1;
-      if (startPos == -1)
-      {
-        startPos = 6;
-      }
-      var daysInMonth = DateTime.DaysInMonth(year, month);
-      var endPos = startPos + daysInMonth;
-
-      var date = firstDayInMonth;
-      for (int i = startPos; i < endPos; i++)
-      {
-        days[i] = new CalendarDay(date);
-        date = date.AddDays(1);
-      }
-
-      date = firstDayInMonth.AddDays(-1);
-      for (int i = startPos - 1; i >= 0; i--)
-      {
-        days[i] = new CalendarDay(date);
-        date = date.AddDays(-1);
-      }
-
-      date = firstDayInMonth.AddDays(daysInMonth);
-      for (int i = endPos; i < 42; i++)
-      {
-        days[i] = new CalendarDay(date);
-        date = date.AddDays(1);
-      }
-
-      for (int i = 0; i < 42; i++)
+      this.year = year;
+      this.month = month;
+      this.dayItems = items;
+      if (!SuspendLayout)
       {
 
-        if (days[i].Date.Month == month)
+        var firstDay = new DateTime(year, month, 1);
+        items = items.Where(x => x.Date > firstDay.AddDays(-15) && x.Date < firstDay.AddDays(45)).ToList();
+
+        CalendarDay[] days = new CalendarDay[42];
+
+        CultureInfo ci = System.Threading.Thread.CurrentThread.CurrentCulture;
+        DayOfWeek firstDayOfWeek = ci.DateTimeFormat.FirstDayOfWeek;
+
+        var firstDayInMonth = new DateTime(year, month, 1);
+        DayOfWeek firstDayOfMonth = firstDayInMonth.DayOfWeek;
+
+        var startPos = (int)firstDayOfMonth + (1 - (int)firstDayOfWeek) - 1;
+        if (startPos == -1)
         {
-          days[i].DateColor = Properties.DateColor;
-          days[i].BackgroundColor = Properties.BackgroundImage != null ? Colors.Transparent : Properties.BackgroundColor;
+          startPos = 6;
         }
-        else
+        var daysInMonth = DateTime.DaysInMonth(year, month);
+        var endPos = startPos + daysInMonth;
+
+        var date = firstDayInMonth;
+        for (int i = startPos; i < endPos; i++)
         {
-          days[i].DateColor = Properties.TrailingDateColor;
-          days[i].BackgroundColor = Properties.BackgroundImage != null ? Colors.Transparent : Properties.TrailingBackgroundColor;
+          days[i] = new CalendarDay(date);
+          date = date.AddDays(1);
         }
 
-        days[i].DateFontFamily = Properties.DateFontFamily;
-        days[i].DateFontSize = Properties.DateFontSize;
-        days[i].DateFontStyle = Properties.DateFontStyle;
-        days[i].DateFontWeight = Properties.DateFontWeight;
-        days[i].DateTextDecoration = Properties.DateTextDecoration;
-        days[i].DateMargin = Properties.DateMargin;
-        days[i].DateVerticalAlignment = Properties.DateVerticalAlignment;
-        days[i].DateHorizontalAlignment = Properties.DateHorizontalAlignment;
-
-        days[i].ImageMargin = Properties.ImageMargin;
-        days[i].ImageVerticalAlignment = Properties.ImageVerticalAlignment;
-        days[i].ImageHorizontalAlignment = Properties.ImageHorizontalAlignment;
-
-
-        days[i].TextFontFamily = Properties.TextFontFamily;
-        days[i].TextFontSize = Properties.TextFontSize;
-        days[i].TextFontStyle = Properties.TextFontStyle;
-        days[i].TextFontWeight = Properties.TextFontWeight;
-        days[i].TextTextDecoration = Properties.TextTextDecoration;
-        days[i].TextMargin = Properties.TextMargin;
-        days[i].TextVerticalAlignment = Properties.TextVerticalAlignment;
-        days[i].TextHorizontalAlignment = Properties.TextHorizontalAlignment;
-
-
-      }
-
-      foreach (Day item in items)
-      {
-        var day = days.FirstOrDefault(x => x.Date == item.Date);
-        if (day != null)
+        date = firstDayInMonth.AddDays(-1);
+        for (int i = startPos - 1; i >= 0; i--)
         {
-          Utils.CopyProperties<CalendarProperties, CalendarDay>(Properties, day);
-          Utils.CopyProperties<Day, CalendarDay>(item, day);
+          days[i] = new CalendarDay(date);
+          date = date.AddDays(-1);
         }
-      }
 
-      this.Days = days.ToList<CalendarDay>();
+        date = firstDayInMonth.AddDays(daysInMonth);
+        for (int i = endPos; i < 42; i++)
+        {
+          days[i] = new CalendarDay(date);
+          date = date.AddDays(1);
+        }
+
+        for (int i = 0; i < 42; i++)
+        {
+
+          if (days[i].Date.Month == month)
+          {
+            days[i].DateColor = Properties.DateColor;
+            days[i].BackgroundColor = Properties.BackgroundImage != null ? Colors.Transparent : Properties.BackgroundColor;
+          }
+          else
+          {
+            days[i].DateColor = Properties.TrailingDateColor;
+            days[i].BackgroundColor = Properties.BackgroundImage != null ? Colors.Transparent : Properties.TrailingBackgroundColor;
+          }
+
+          days[i].DateFontFamily = Properties.DateFontFamily;
+          days[i].DateFontSize = Properties.DateFontSize;
+          days[i].DateFontStyle = Properties.DateFontStyle;
+          days[i].DateFontWeight = Properties.DateFontWeight;
+          days[i].DateTextDecoration = Properties.DateTextDecoration;
+          days[i].DateMargin = Properties.DateMargin;
+          days[i].DateVerticalAlignment = Properties.DateVerticalAlignment;
+          days[i].DateHorizontalAlignment = Properties.DateHorizontalAlignment;
+
+          days[i].ImageMargin = Properties.ImageMargin;
+          days[i].ImageVerticalAlignment = Properties.ImageVerticalAlignment;
+          days[i].ImageHorizontalAlignment = Properties.ImageHorizontalAlignment;
+
+
+          days[i].TextFontFamily = Properties.TextFontFamily;
+          days[i].TextFontSize = Properties.TextFontSize;
+          days[i].TextFontStyle = Properties.TextFontStyle;
+          days[i].TextFontWeight = Properties.TextFontWeight;
+          days[i].TextTextDecoration = Properties.TextTextDecoration;
+          days[i].TextMargin = Properties.TextMargin;
+          days[i].TextVerticalAlignment = Properties.TextVerticalAlignment;
+          days[i].TextHorizontalAlignment = Properties.TextHorizontalAlignment;
+
+
+        }
+
+        foreach (Day item in items)
+        {
+          var day = days.FirstOrDefault(x => x.Date == item.Date);
+          if (day != null)
+          {
+            Utils.CopyProperties<CalendarProperties, CalendarDay>(Properties, day);
+            Utils.CopyProperties<Day, CalendarDay>(item, day);
+          }
+        }
+
+        this.Days = days.ToList<CalendarDay>();
+      }
 
     }
 
