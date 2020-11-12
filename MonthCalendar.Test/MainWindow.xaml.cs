@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,7 +29,7 @@ namespace MonthCalendar.Test
     TrulyObservableCollection<Day> days = new TrulyObservableCollection<Day>();
     TrulyObservableCollection<Week> weeks = new TrulyObservableCollection<Week>();
     TrulyObservableCollection<Weekday> weekdays = new TrulyObservableCollection<Weekday>();
-  
+
     HeaderProperties headerProperties = new HeaderProperties();
     FooterProperties footerProperties = new FooterProperties();
     WeeknumberProperties weeknumberProperties = new WeeknumberProperties();
@@ -49,18 +51,26 @@ namespace MonthCalendar.Test
       this.days.Add(new Day() { Date = new DateTime(2020, 10, 21), BackgroundColor = Colors.BlueViolet });
       this.days.Add(new Day() { Date = new DateTime(2020, 10, 11), BackgroundColor = Colors.Orange });
 
-      this.days.Add(new Day() { Date = new DateTime(2020, 8, 13), BackgroundColor = Colors.HotPink, DateColor=Colors.Yellow, 
-                                Image = new BitmapImage(new Uri("pack://application:,,,/Resources/star.png", UriKind.Absolute)),
-                                DateFontSize =22, Text = "BIDEN", TextColor = Colors.White, TextFontSize = 36 });
+      this.days.Add(new Day()
+      {
+        Date = new DateTime(2020, 8, 13),
+        BackgroundColor = Colors.HotPink,
+        DateColor = Colors.Yellow,
+        Image = new BitmapImage(new Uri("pack://application:,,,/Resources/star.png", UriKind.Absolute)),
+        DateFontSize = 22,
+        Text = "BIDEN",
+        TextColor = Colors.White,
+        TextFontSize = 36
+      });
       this.days.Add(new Day() { Date = new DateTime(2020, 8, 16), BackgroundColor = Colors.Linen, DateColor = Colors.DarkOrange, Text = "TRUMP", TextColor = Colors.Ivory, TextFontSize = 22 });
 
-      this.days.Add(new Day() { Date = new DateTime(2020, 7, 28), DateColor = Colors.Red, Text = "yyy", TextColor = Colors.Black});
+      this.days.Add(new Day() { Date = new DateTime(2020, 7, 28), DateColor = Colors.Red, Text = "yyy", TextColor = Colors.Black });
 
 
-      this.weeks.Add(new Week() { TextColor = Colors.White, BackgroundColor=Colors.Green, TextFontWeight=FontWeights.Bold, Number= 32, Year=2020 });
-                      
+      this.weeks.Add(new Week() { TextColor = Colors.White, BackgroundColor = Colors.Green, TextFontWeight = FontWeights.Bold, Number = 32, Year = 2020 });
+
       this.weekdays.Add(new Weekday() { BackgroundColor = Colors.Green, TextColor = Colors.White, TextFontSize = 16, TextFontWeight = FontWeights.Bold, Year = 2020, Month = 8, DayOfWeek = DayOfWeek.Tuesday });
-      
+
       //this.weeknumberProperties.TextColor = Colors.DarkOliveGreen;
       //this.weeknumberProperties.FontSize = 32;
       //this.weeknumberProperties.FontWeight = FontWeights.Bold;
@@ -96,7 +106,17 @@ namespace MonthCalendar.Test
 
     public HeaderProperties HeaderProperties => headerProperties;
 
-    public CalendarProperties CalendarProperties => calendarProperties;
+    public CalendarProperties CalendarProperties
+    {
+      get => calendarProperties;
+      set
+      {
+        calendarProperties = value;
+        OnPropertyChanged(nameof(this.CalendarProperties));
+      }
+    }
+
+
 
     public FooterProperties FooterProperties => footerProperties;
 
@@ -115,7 +135,7 @@ namespace MonthCalendar.Test
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-      //this.headerProperties.Text = "Uj UJ UJ";
+      this.headerProperties.Text = "Uj UJ UJ";
       var day = this.days.FirstOrDefault(x => x.Date == new DateTime(2020, 8, 13));
       if (day != null)
       {
@@ -126,6 +146,27 @@ namespace MonthCalendar.Test
       {
         week.TextColor = Colors.Red;
       }
+
+      MyCalendar.SuspendLayout();
+
+      //this.WeeknumberProperties.TextColor = Colors.Purple;
+      //this.WeeknumberProperties.TextFontSize = 24;
+      //this.WeeknumberProperties.TextFontWeight = FontWeights.Bold;
+      this.WeekdaysProperties.TextColor = Colors.Purple;
+      this.WeekdaysProperties.TextFontSize = 24;
+      this.WeekdaysProperties.TextFontWeight = FontWeights.Bold;
+
+      MyCalendar.ResumeLayout();
+
+      //this.CalendarProperties.DateFontSize = 10;
+      //this.MyCalendar.Refresh();
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
     private void MonthCalendar_DayLeave(object sender, Pabo.MonthCalendar.EventArgs.DayEventArgs e)

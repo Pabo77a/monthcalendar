@@ -39,6 +39,9 @@ namespace Pabo.MonthCalendar
     private System.Windows.Controls.ItemsControl itemsControl;
     private CalendarWeek clickWeek;
 
+    private DateTime firstDate;
+    private List<Week> weekItems;
+    private bool suspendLayout = false;
 
     public Weeknumbers() : base(1, 6)
     {
@@ -76,9 +79,7 @@ namespace Pabo.MonthCalendar
     public override void OnApplyTemplate()
     {
       base.OnApplyTemplate();
-      this.Width = this.FontSize + 25;
-
-      this.Properties.PropertyChanged += Properties_PropertyChanged;
+      this.Width = this.Properties.TextFontSize + 25;
 
       this.itemsControl = GetTemplateChild("PART_Host") as System.Windows.Controls.ItemsControl;
       if (this.itemsControl != null)
@@ -91,17 +92,27 @@ namespace Pabo.MonthCalendar
       }
 
     }
-   
-
-    private void Properties_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-      Setup();
-    }
-
+ 
     #endregion
 
     #region properties
 
+
+    internal bool SuspendLayout
+    {
+      get => this.suspendLayout;
+      set
+      {
+        if (value != this.suspendLayout)
+        {
+          this.suspendLayout = value;
+          if (!this.suspendLayout)
+          {
+            this.Setup();
+          }
+        }
+      }
+    }
 
     internal List<CalendarWeek> Weeks
     {
@@ -115,6 +126,7 @@ namespace Pabo.MonthCalendar
       }
     }
 
+
     internal WeeknumberProperties Properties
     {
       get
@@ -124,40 +136,57 @@ namespace Pabo.MonthCalendar
       set
       {
         this.SetValue(PropertiesProperty, value);
-        Setup();
+        if (value != null)
+        {
+          value.PropertyChanged -= PropertiesChanged;
+          value.PropertyChanged += PropertiesChanged;
+        }
       }
+    }
+
+    private void PropertiesChanged(object sender, PropertyChangedEventArgs e)
+    {
+      Setup();
     }
 
     #endregion
 
     internal void SetupWeeks(DateTime firstDate, List<Week> weekItems)
     {
-      var year = firstDate.Year;
-
-      var weeks = new List<CalendarWeek>();
-      var date = firstDate;
-      for (int i = 0; i < 6; i++)
+      if (!SuspendLayout)
       {
-        var week = new CalendarWeek(date);
-        var number = ISOWeek.GetWeekOfYear(date);
-        week.Number = number;
-        var item = weekItems.FirstOrDefault(x => x.Year == year && x.Number == number);
-        Utils.CopyProperties<WeeknumberProperties, CalendarWeek>(Properties, week);
-        if (item != null)
+        this.firstDate = firstDate;
+        this.weekItems = weekItems;
+
+        this.Width = this.Properties.TextFontSize + 25;
+
+        var year = firstDate.Year;
+
+        var weeks = new List<CalendarWeek>();
+        var date = firstDate;
+        for (int i = 0; i < 6; i++)
         {
-          Utils.CopyProperties<Week, CalendarWeek>(item, week);
+          var week = new CalendarWeek(date);
+          var number = ISOWeek.GetWeekOfYear(date);
+          week.Number = number;
+          var item = weekItems.FirstOrDefault(x => x.Year == year && x.Number == number);
+          Utils.CopyProperties<WeeknumberProperties, CalendarWeek>(Properties, week);
+          if (item != null)
+          {
+            Utils.CopyProperties<Week, CalendarWeek>(item, week);
+          }
+          weeks.Add(week);
+          date = date.AddDays(7);
         }
-        weeks.Add(week);
-        date = date.AddDays(7);
+
+        this.Weeks = weeks;
       }
 
-      this.Weeks = weeks;
-
     }
-
+    
     private void Setup()
     {
-      this.Width = Properties.TextFontSize + 25;
+      this.SetupWeeks(this.firstDate, this.weekItems);
     }
 
     private void ItemsControl_MouseLeave(object sender, MouseEventArgs e)

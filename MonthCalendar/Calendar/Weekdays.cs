@@ -43,6 +43,10 @@ namespace Pabo.MonthCalendar
     private System.Windows.Controls.ItemsControl itemsControl;
     private CalendarWeekday activeWeekday = null;
     private CalendarWeekday clickWeekday;
+    private bool suspendLayout = false;
+    private int year;
+    private int month;
+    private List<Weekday> weekdayItems;
 
     #region constructor
 
@@ -117,7 +121,32 @@ namespace Pabo.MonthCalendar
       set
       {
         this.SetValue(PropertiesProperty, value);
-        Setup();
+        if (value != null)
+        {
+          value.PropertyChanged -= PropertiesChanged;
+          value.PropertyChanged += PropertiesChanged;
+        }
+      }
+    }
+
+    private void PropertiesChanged(object sender, PropertyChangedEventArgs e)
+    {
+      Setup();
+    }
+
+    internal bool SuspendLayout
+    {
+      get => this.suspendLayout;
+      set
+      {
+        if (value != this.suspendLayout)
+        {
+          this.suspendLayout = value;
+          if (!this.suspendLayout)
+          {
+            this.Setup();
+          }
+        }
       }
     }
 
@@ -125,39 +154,47 @@ namespace Pabo.MonthCalendar
 
     internal void SetupDays(int year, int month, List<Weekday> items)
     {
+      this.year = year;
+      this.month = month;
+      this.weekdayItems = items;
 
-      List<CalendarWeekday> days = new List<CalendarWeekday>();
-
-      CultureInfo ci = System.Threading.Thread.CurrentThread.CurrentCulture;
-      DayOfWeek firstDayOfWeek = ci.DateTimeFormat.FirstDayOfWeek;
-
-      for (int i = (int)firstDayOfWeek; i <= (int)DayOfWeek.Saturday; i++)
+      if (!SuspendLayout)
       {
-        days.Add(new CalendarWeekday((DayOfWeek)Enum.Parse(typeof(DayOfWeek), i.ToString())));
-      }
-      if (firstDayOfWeek == DayOfWeek.Monday)
-      {
-        days.Add(new CalendarWeekday(DayOfWeek.Sunday));
-      }
 
-      for (int i = 0; i<7;i++)
-      {
-        Utils.CopyProperties<WeekdaysProperties, CalendarWeekday>(Properties, days[i]);
-        days[i].Year = year;
-        days[i].Month = month;
-        var item = items.FirstOrDefault(x => x.Year == year && x.Month == month && x.DayOfWeek == days[i].DayOfWeek);
-        if (item != null)
+        List<CalendarWeekday> days = new List<CalendarWeekday>();
+
+        CultureInfo ci = System.Threading.Thread.CurrentThread.CurrentCulture;
+        DayOfWeek firstDayOfWeek = ci.DateTimeFormat.FirstDayOfWeek;
+
+        for (int i = (int)firstDayOfWeek; i <= (int)DayOfWeek.Saturday; i++)
         {
-          Utils.CopyProperties<Weekday, CalendarWeekday>(item, days[i]);
+          days.Add(new CalendarWeekday((DayOfWeek)Enum.Parse(typeof(DayOfWeek), i.ToString())));
         }
-      }
+        if (firstDayOfWeek == DayOfWeek.Monday)
+        {
+          days.Add(new CalendarWeekday(DayOfWeek.Sunday));
+        }
 
-      this.Days = days.ToList<CalendarWeekday>();
+        for (int i = 0; i < 7; i++)
+        {
+          Utils.CopyProperties<WeekdaysProperties, CalendarWeekday>(Properties, days[i]);
+          days[i].Year = year;
+          days[i].Month = month;
+          var item = items.FirstOrDefault(x => x.Year == year && x.Month == month && x.DayOfWeek == days[i].DayOfWeek);
+          if (item != null)
+          {
+            Utils.CopyProperties<Weekday, CalendarWeekday>(item, days[i]);
+          }
+        }
+
+        this.Days = days.ToList<CalendarWeekday>();
+      }
     }
 
     private void Setup()
     {
       this.Height = this.Properties.TextFontSize + 20;
+      SetupDays(this.year, this.month, this.weekdayItems);
     }
 
     private void OnWeekdayLeave(CalendarWeekdayEventArgs e)

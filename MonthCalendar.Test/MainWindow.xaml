@@ -14,6 +14,7 @@
 
 
     <calendar:MonthCalendar Grid.Row="0"
+                            Name="MyCalendar"
                             Year="2020" Month="8" 
                             Header="true"
                             Footer="true" 

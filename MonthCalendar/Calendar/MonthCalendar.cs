@@ -413,8 +413,6 @@ namespace Pabo.MonthCalendar
     {
       if (this.calendar != null)
       {
-        var firstDateInMonth = new DateTime(this.Year, this.Month, 1);
-
         this.calendar.SetupDays(this.Year, this.Month, this.Days.ToList());
         this.calendar.SelectionMode = this.SelectionMode;
       }
@@ -840,6 +838,7 @@ namespace Pabo.MonthCalendar
       if (this.footer != null)
       {
         this.footer.Properties = (FooterProperties)newValue;
+        
       }
     }
 
@@ -857,8 +856,15 @@ namespace Pabo.MonthCalendar
       if (this.calendar != null)
       {
         this.calendar.Properties = (CalendarProperties)newValue;
+        this.calendar.Properties.PropertyChanged -= CalendarPropertiesChanged;
+        this.calendar.Properties.PropertyChanged += CalendarPropertiesChanged;
         this.calendar.SetupDays(this.Year, this.Month, this.Days.ToList());
       }
+    }
+
+    private void CalendarPropertiesChanged(object sender, PropertyChangedEventArgs e)
+    {
+      SetupCalendar();
     }
 
     private static void OnDaysChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -965,7 +971,7 @@ namespace Pabo.MonthCalendar
         this.weekdays.Properties = (WeekdaysProperties)newValue;
       }
     }
-
+  
     protected virtual void OHeaderPropertiesChanged(object newValue, object oldValue)
     {
       if (this.header != null)
@@ -1080,6 +1086,29 @@ namespace Pabo.MonthCalendar
 
     #region public methods
 
+
+    public void Refresh()
+    {
+      this.Setup();
+    }
+
+    public void SuspendLayout()
+    {
+      //this.calendar.suspendLayout = true;
+      //this.Header.suspendLayout = true;
+      //this.Footer.suspendLayout = true;
+      this.weekdays.SuspendLayout = true;
+      this.weeknumbers.SuspendLayout = true;
+    }
+
+    public void ResumeLayout()
+    {
+      //this.calendar.suspendLayout = true;
+      //this.Header.suspendLayout = true;
+      //this.Footer.suspendLayout = true;
+      this.weekdays.SuspendLayout = false;
+      this.weeknumbers.SuspendLayout = false;
+    }
 
     #endregion
   }

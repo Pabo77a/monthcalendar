@@ -5,6 +5,7 @@
     <UseWPF>true</UseWPF>
     <RootNamespace>Pabo.MonthCalendar</RootNamespace>
     <AssemblyName>Pabo.MonthCalendar</AssemblyName>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
 </Project>
