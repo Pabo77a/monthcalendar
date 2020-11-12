@@ -22,9 +22,12 @@ namespace Pabo.MonthCalendar
   internal class Calendar : PanelControl
   {
 
-    public Calendar() : base(7,6)
+    public Calendar() : base(7, 6)
     {
-
+      this.Click += (sender, e) => 
+      {
+        this.OnDayClick(new CalendarDayEventArgs(clickDay));
+      };
     }
 
     #region private members
@@ -33,15 +36,18 @@ namespace Pabo.MonthCalendar
     private MonthCalendarSelectionMode selectionMode = MonthCalendarSelectionMode.Single;
 
     private CalendarDay activeDay;
+    private CalendarDay clickDay;
 
     #endregion
 
+
+   
     #region constructor
 
     static Calendar()
     {
       DefaultStyleKeyProperty.OverrideMetadata(typeof(Calendar), new FrameworkPropertyMetadata(typeof(Calendar)));
-
+      
     }
 
     #endregion
@@ -51,8 +57,12 @@ namespace Pabo.MonthCalendar
     internal event EventHandler<CalendarSelectionChangedEventArgs> SelectionChanged;
 
     internal event EventHandler<CalendarDayEventArgs> DayLeave;
-    
+
     internal event EventHandler<CalendarDayEventArgs> DayEnter;
+
+    internal event EventHandler<CalendarDayEventArgs> DayClick;
+
+    internal event EventHandler<CalendarDayEventArgs> DayDoubleClick;
 
 
     #endregion
@@ -78,12 +88,11 @@ namespace Pabo.MonthCalendar
     public override void OnApplyTemplate()
     {
       base.OnApplyTemplate();
-
-
+    
       this.itemsControl = GetTemplateChild("PART_Host") as ItemsControl;
       if (this.itemsControl != null)
       {
-        this.itemsControl.MouseUp += Calendar_MouseDown;
+        this.itemsControl.MouseDown += Calendar_MouseDown;
         this.itemsControl.MouseMove += ItemsControl_MouseMove;
         this.itemsControl.MouseEnter += ItemsControl_MouseEnter;
         this.itemsControl.MouseLeave += ItemsControl_MouseLeave;
@@ -112,7 +121,7 @@ namespace Pabo.MonthCalendar
 
     private void ItemsControl_MouseMove(object sender, MouseEventArgs e)
     {
-      var day =this.Days[GetPanel(e.GetPosition(this))];
+      var day = this.Days[GetPanel(e.GetPosition(this))];
       if (this.activeDay != day)
       {
         this.activeDay.MouseOver = false;
@@ -125,23 +134,17 @@ namespace Pabo.MonthCalendar
 
     private void ItemsControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
+      e.Handled = true;
+      this.Button_DoubleClick(sender, e);
       var day = this.Days[GetPanel(e.GetPosition(this))];
-      Debug.WriteLine("DoubleClick : " + string.Format(day.Date.ToString()));
+      this.OnDayDoubleClick(new CalendarDayEventArgs(day));
     }
 
     private void Calendar_MouseDown(object sender, MouseButtonEventArgs e)
     {
-      var day = this.Days[GetPanel(e.GetPosition(this))];
-
-      if (e.ClickCount > 1)
-      {
-        Debug.WriteLine("DoubleClick : " + string.Format(day.Date.ToString()));
-      }
-      else
-      {
-        SelectDay(day);
-        Debug.WriteLine("Click : " + string.Format(day.Date.ToString()));
-      }
+      this.clickDay = this.Days[GetPanel(e.GetPosition(this))];
+      this.Button_Click(sender, e);
+      SelectDay(this.clickDay);
     }
 
     #endregion
@@ -210,7 +213,7 @@ namespace Pabo.MonthCalendar
       EventHandler<CalendarSelectionChangedEventArgs> handler = SelectionChanged;
       handler?.Invoke(this, e);
     }
-    
+
     private void OnDayLeave(CalendarDayEventArgs e)
     {
       EventHandler<CalendarDayEventArgs> handler = DayLeave;
@@ -220,6 +223,19 @@ namespace Pabo.MonthCalendar
     private void OnDayEnter(CalendarDayEventArgs e)
     {
       EventHandler<CalendarDayEventArgs> handler = DayEnter;
+      handler?.Invoke(this, e);
+    }
+
+    private void OnDayClick(CalendarDayEventArgs e)
+    {
+      EventHandler<CalendarDayEventArgs> handler = DayClick;
+      handler?.Invoke(this, e);
+
+    }
+
+    private void OnDayDoubleClick(CalendarDayEventArgs e)
+    {
+      EventHandler<CalendarDayEventArgs> handler = DayDoubleClick;
       handler?.Invoke(this, e);
     }
 

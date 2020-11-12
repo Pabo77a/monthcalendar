@@ -7,5 +7,6 @@ namespace Pabo.MonthCalendar.Properties
 {
   public class PropertiesBase : NotificationHandler
   {
+
   }
 }

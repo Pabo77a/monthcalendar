@@ -141,6 +141,13 @@ namespace Pabo.MonthCalendar
     public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(
        "SelectionChanged", RoutingStrategy.Direct, typeof(SelectionChangedEventHandler), typeof(MonthCalendar));
 
+
+    public static readonly RoutedEvent DayClickEvent = EventManager.RegisterRoutedEvent(
+       "DayClick", RoutingStrategy.Direct, typeof(DayEventHandler), typeof(MonthCalendar));
+
+    public static readonly RoutedEvent DayDoubleClickEvent = EventManager.RegisterRoutedEvent(
+       "DayDoubleClick", RoutingStrategy.Direct, typeof(DayEventHandler), typeof(MonthCalendar));
+
     public static readonly RoutedEvent DayLeaveEvent = EventManager.RegisterRoutedEvent(
        "DayLeave", RoutingStrategy.Direct, typeof(DayEventHandler), typeof(MonthCalendar));
 
@@ -219,6 +226,22 @@ namespace Pabo.MonthCalendar
       remove { RemoveHandler(FooterEnterEvent, value); }
     }
 
+
+    [Category("Calendar")]
+    [Browsable(true)]
+    public event DayEventHandler DayClick
+    {
+      add { AddHandler(DayClickEvent, value); }
+      remove { RemoveHandler(DayClickEvent, value); }
+    }
+
+    [Category("Calendar")]
+    [Browsable(true)]
+    public event DayEventHandler DayDoubleClick
+    {
+      add { AddHandler(DayDoubleClickEvent, value); }
+      remove { RemoveHandler(DayDoubleClickEvent, value); }
+    }
 
     [Category("Calendar")]
     [Browsable(true)]
@@ -301,6 +324,8 @@ namespace Pabo.MonthCalendar
         this.calendar.SelectionChanged += Calendar_SelectionChanged;
         this.calendar.DayEnter += Calendar_DayEnter;
         this.calendar.DayLeave += Calendar_DayLeave;
+        this.calendar.DayClick += Calendar_DayClick;
+        this.calendar.DayDoubleClick += Calendar_DayDoubleClick;
       }
       this.weekdays = GetTemplateChild("PART_Weekdays") as Weekdays;
       if (this.weekdays != null)
@@ -319,6 +344,8 @@ namespace Pabo.MonthCalendar
       this.Setup();
 
     }
+
+   
 
 
 
@@ -666,6 +693,20 @@ namespace Pabo.MonthCalendar
       EventArgs.DayEventArgs args = new EventArgs.DayEventArgs(DayEnterEvent, e.Day);
       RaiseEvent(args);
     }
+
+    private void Calendar_DayDoubleClick(object sender, EventArgs.CalendarDayEventArgs e)
+    {
+      EventArgs.DayEventArgs args = new EventArgs.DayEventArgs(DayDoubleClickEvent, e.Day);
+      RaiseEvent(args);
+    }
+
+    private void Calendar_DayClick(object sender, EventArgs.CalendarDayEventArgs e)
+    {
+      EventArgs.DayEventArgs args = new EventArgs.DayEventArgs(DayClickEvent, e.Day);
+      RaiseEvent(args);
+
+    }
+
 
     private void Weeknumbers_WeekLeave(object sender, EventArgs.CalendarWeekEventArgs e)
     {

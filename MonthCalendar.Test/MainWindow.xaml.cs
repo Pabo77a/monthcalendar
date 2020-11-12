@@ -161,5 +161,15 @@ namespace MonthCalendar.Test
     private void MonthCalendar_FooterLeave(object sender, RoutedEventArgs e)
     {
     }
+
+    private void MonthCalendar_DayClick(object sender, Pabo.MonthCalendar.EventArgs.DayEventArgs e)
+    {
+      var i = 1;
+    }
+
+    private void MonthCalendar_DayDoubleClick(object sender, Pabo.MonthCalendar.EventArgs.DayEventArgs e)
+    {
+      var i = 1;
+    }
   }
 }
