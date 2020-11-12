@@ -6,21 +6,20 @@ using System.Windows;
 
 namespace Pabo.MonthCalendar
 {
-  public class PanelControl : BaseControl
+  public class ItemsControl : BaseControl
   {
-    public PanelControl(int cols, int rows)
+    public ItemsControl(int cols, int rows)
     {
       this.Cols = cols;
       this.Rows = rows;
     }
-
 
     public int Cols { get; private set; }
 
     public int Rows { get; private set; }
 
 
-    protected int GetPanel(Point pt)
+    protected int GetItem(Point pt)
     {
 
       var itemWidth = this.ActualWidth / this.Cols;

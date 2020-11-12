@@ -142,6 +142,19 @@ namespace Pabo.MonthCalendar
        "SelectionChanged", RoutingStrategy.Direct, typeof(SelectionChangedEventHandler), typeof(MonthCalendar));
 
 
+    public static readonly RoutedEvent WeekClickEvent = EventManager.RegisterRoutedEvent(
+       "WeekClick", RoutingStrategy.Direct, typeof(WeekEventHandler), typeof(MonthCalendar));
+
+    public static readonly RoutedEvent WeekDoubleClickEvent = EventManager.RegisterRoutedEvent(
+       "WeekDoubleClick", RoutingStrategy.Direct, typeof(WeekEventHandler), typeof(MonthCalendar));
+
+    public static readonly RoutedEvent WeekdayClickEvent = EventManager.RegisterRoutedEvent(
+       "WeekdayClick", RoutingStrategy.Direct, typeof(WeekdayEventHandler), typeof(MonthCalendar));
+
+    public static readonly RoutedEvent WeekdayDoubleClickEvent = EventManager.RegisterRoutedEvent(
+       "WeekdayDoubleClick", RoutingStrategy.Direct, typeof(WeekdayEventHandler), typeof(MonthCalendar));
+
+
     public static readonly RoutedEvent DayClickEvent = EventManager.RegisterRoutedEvent(
        "DayClick", RoutingStrategy.Direct, typeof(DayEventHandler), typeof(MonthCalendar));
 
@@ -226,6 +239,38 @@ namespace Pabo.MonthCalendar
       remove { RemoveHandler(FooterEnterEvent, value); }
     }
 
+    [Category("Calendar")]
+    [Browsable(true)]
+    public event WeekdayEventHandler WeekdayClick
+    {
+      add { AddHandler(WeekdayClickEvent, value); }
+      remove { RemoveHandler(WeekdayClickEvent, value); }
+    }
+
+    [Category("Calendar")]
+    [Browsable(true)]
+    public event WeekdayEventHandler WeekdayDoubleClick
+    {
+      add { AddHandler(WeekdayDoubleClickEvent, value); }
+      remove { RemoveHandler(WeekdayDoubleClickEvent, value); }
+    }
+
+
+    [Category("Calendar")]
+    [Browsable(true)]
+    public event WeekEventHandler WeekClick
+    {
+      add { AddHandler(WeekClickEvent, value); }
+      remove { RemoveHandler(WeekClickEvent, value); }
+    }
+
+    [Category("Calendar")]
+    [Browsable(true)]
+    public event WeekEventHandler WeekDoubleClick
+    {
+      add { AddHandler(WeekDoubleClickEvent, value); }
+      remove { RemoveHandler(WeekDoubleClickEvent, value); }
+    }
 
     [Category("Calendar")]
     [Browsable(true)]
@@ -332,6 +377,8 @@ namespace Pabo.MonthCalendar
       {
         this.weekdays.WeekdayEnter += Weekdays_WeekdayEnter;
         this.weekdays.WeekdayLeave += Weekdays_WeekdayLeave;
+        this.weekdays.WeekdayClick += Weekdays_WeekdayClick;
+        this.weekdays.WeekdayDoubleClick += Weekdays_WeekdayDoubleClick;
       }
 
       this.weeknumbers = GetTemplateChild("PART_Weeknumbers") as Weeknumbers;
@@ -339,14 +386,13 @@ namespace Pabo.MonthCalendar
       {
         this.weeknumbers.WeekEnter += Weeknumbers_WeekEnter;
         this.weeknumbers.WeekLeave += Weeknumbers_WeekLeave;
+        this.weeknumbers.WeekClick += Weeknumbers_WeekClick;
+        this.weeknumbers.WeekDoubleClick += Weeknumbers_WeekDoubleClick;
       }
 
       this.Setup();
 
     }
-
-   
-
 
 
     #endregion
@@ -691,6 +737,31 @@ namespace Pabo.MonthCalendar
     private void Calendar_DayEnter(object sender, EventArgs.CalendarDayEventArgs e)
     {
       EventArgs.DayEventArgs args = new EventArgs.DayEventArgs(DayEnterEvent, e.Day);
+      RaiseEvent(args);
+    }
+
+    private void Weeknumbers_WeekDoubleClick(object sender, EventArgs.CalendarWeekEventArgs e)
+    {
+      EventArgs.WeekEventArgs args = new EventArgs.WeekEventArgs(WeekDoubleClickEvent, e.Week);
+      RaiseEvent(args);
+    }
+
+    private void Weeknumbers_WeekClick(object sender, EventArgs.CalendarWeekEventArgs e)
+    {
+      EventArgs.WeekEventArgs args = new EventArgs.WeekEventArgs(WeekClickEvent, e.Week);
+      RaiseEvent(args);
+    }
+
+
+    private void Weekdays_WeekdayDoubleClick(object sender, EventArgs.CalendarWeekdayEventArgs e)
+    {
+      EventArgs.WeekdayEventArgs args = new EventArgs.WeekdayEventArgs(WeekdayDoubleClickEvent, e.Weekday);
+      RaiseEvent(args);
+    }
+
+    private void Weekdays_WeekdayClick(object sender, EventArgs.CalendarWeekdayEventArgs e)
+    {
+      EventArgs.WeekdayEventArgs args = new EventArgs.WeekdayEventArgs(WeekdayClickEvent, e.Weekday);
       RaiseEvent(args);
     }
 

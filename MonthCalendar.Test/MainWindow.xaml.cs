@@ -164,12 +164,26 @@ namespace MonthCalendar.Test
 
     private void MonthCalendar_DayClick(object sender, Pabo.MonthCalendar.EventArgs.DayEventArgs e)
     {
-      var i = 1;
     }
 
     private void MonthCalendar_DayDoubleClick(object sender, Pabo.MonthCalendar.EventArgs.DayEventArgs e)
     {
-      var i = 1;
+    }
+
+    private void MonthCalendar_WeekClick(object sender, Pabo.MonthCalendar.EventArgs.WeekEventArgs e)
+    {
+    }
+
+    private void MonthCalendar_WeekDoubleClick(object sender, Pabo.MonthCalendar.EventArgs.WeekEventArgs e)
+    {
+    }
+
+    private void MonthCalendar_WeekdayClick(object sender, Pabo.MonthCalendar.EventArgs.WeekdayEventArgs e)
+    {
+    }
+
+    private void MonthCalendar_WeekdayDoubleClick(object sender, Pabo.MonthCalendar.EventArgs.WeekdayEventArgs e)
+    {
     }
   }
 }

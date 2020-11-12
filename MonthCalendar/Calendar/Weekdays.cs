@@ -14,7 +14,7 @@ using System.Windows.Input;
 namespace Pabo.MonthCalendar
 {
   [ToolboxItem(false)]
-  internal class Weekdays : PanelControl
+  internal class Weekdays : ItemsControl
   {
 
     #region dependency properties
@@ -33,10 +33,16 @@ namespace Pabo.MonthCalendar
 
 
     public Weekdays() : base(7,1)
-    { }
+    {
+      this.Click += (sender, e) =>
+      {
+        this.OnWeekdayClick(new CalendarWeekdayEventArgs(clickWeekday));
+      };
+    }
 
-    private ItemsControl itemsControl;
+    private System.Windows.Controls.ItemsControl itemsControl;
     private CalendarWeekday activeWeekday = null;
+    private CalendarWeekday clickWeekday;
 
     #region constructor
 
@@ -54,6 +60,10 @@ namespace Pabo.MonthCalendar
 
     internal event EventHandler<CalendarWeekdayEventArgs> WeekdayEnter;
 
+    internal event EventHandler<CalendarWeekdayEventArgs> WeekdayClick;
+
+    internal event EventHandler<CalendarWeekdayEventArgs> WeekdayDoubleClick;
+
     #endregion
 
 
@@ -63,19 +73,23 @@ namespace Pabo.MonthCalendar
     {
       base.OnApplyTemplate();
 
-      this.itemsControl = GetTemplateChild("PART_Host") as ItemsControl;
+      this.itemsControl = GetTemplateChild("PART_Host") as System.Windows.Controls.ItemsControl;
       if (this.itemsControl != null)
       {
         this.itemsControl.MouseMove += ItemsControl_MouseMove;
         this.itemsControl.MouseEnter += ItemsControl_MouseEnter;
         this.itemsControl.MouseLeave += ItemsControl_MouseLeave;
+        this.itemsControl.MouseDown += ItemsControl_MouseDown;
+        this.itemsControl.MouseDoubleClick += ItemsControl_MouseDoubleClick;
       }
 
 
       Setup();
     }
 
-   
+    
+
+
 
     #endregion
 
@@ -158,6 +172,18 @@ namespace Pabo.MonthCalendar
       handler?.Invoke(this, e);
     }
 
+    private void OnWeekdayClick(CalendarWeekdayEventArgs e)
+    {
+      EventHandler<CalendarWeekdayEventArgs> handler = WeekdayClick;
+      handler?.Invoke(this, e);
+    }
+
+    private void OnWeekdayDoubleClick(CalendarWeekdayEventArgs e)
+    {
+      EventHandler<CalendarWeekdayEventArgs> handler = WeekdayDoubleClick;
+      handler?.Invoke(this, e);
+    }
+
 
     #region event handlers
 
@@ -171,9 +197,23 @@ namespace Pabo.MonthCalendar
       this.activeWeekday = null;
     }
 
+    private void ItemsControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+      e.Handled = true;
+      this.Button_DoubleClick(sender, e);
+      var day = this.Days[GetItem(e.GetPosition(this))];
+      this.OnWeekdayDoubleClick(new CalendarWeekdayEventArgs(day));
+    }
+
+    private void ItemsControl_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+      this.clickWeekday = this.Days[GetItem(e.GetPosition(this))];
+      this.Button_Click(sender, e);
+    }
+
     private void ItemsControl_MouseEnter(object sender, MouseEventArgs e)
     {
-      var weekday = this.Days[GetPanel(e.GetPosition(this))];
+      var weekday = this.Days[GetItem(e.GetPosition(this))];
       this.activeWeekday = weekday;
       this.activeWeekday.MouseOver = true;
       this.OnWeekdayEnter(new CalendarWeekdayEventArgs(weekday));
@@ -182,7 +222,7 @@ namespace Pabo.MonthCalendar
 
     private void ItemsControl_MouseMove(object sender, MouseEventArgs e)
     {
-      var weekday = this.Days[GetPanel(e.GetPosition(this))];
+      var weekday = this.Days[GetItem(e.GetPosition(this))];
       if (this.activeWeekday != weekday)
       {
         this.activeWeekday.MouseOver = false;

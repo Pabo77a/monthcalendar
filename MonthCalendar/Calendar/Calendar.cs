@@ -19,7 +19,7 @@ namespace Pabo.MonthCalendar
 {
   [TemplatePart(Name = "PART_Panel", Type = typeof(CalendarWrapPanel))]
   [ToolboxItem(false)]
-  internal class Calendar : PanelControl
+  internal class Calendar : ItemsControl
   {
 
     public Calendar() : base(7, 6)
@@ -32,7 +32,7 @@ namespace Pabo.MonthCalendar
 
     #region private members
 
-    private ItemsControl itemsControl;
+    private System.Windows.Controls.ItemsControl itemsControl;
     private MonthCalendarSelectionMode selectionMode = MonthCalendarSelectionMode.Single;
 
     private CalendarDay activeDay;
@@ -89,7 +89,7 @@ namespace Pabo.MonthCalendar
     {
       base.OnApplyTemplate();
     
-      this.itemsControl = GetTemplateChild("PART_Host") as ItemsControl;
+      this.itemsControl = GetTemplateChild("PART_Host") as System.Windows.Controls.ItemsControl;
       if (this.itemsControl != null)
       {
         this.itemsControl.MouseDown += Calendar_MouseDown;
@@ -112,7 +112,7 @@ namespace Pabo.MonthCalendar
 
     private void ItemsControl_MouseEnter(object sender, MouseEventArgs e)
     {
-      var day = this.Days[GetPanel(e.GetPosition(this))];
+      var day = this.Days[GetItem(e.GetPosition(this))];
       this.activeDay = day;
       this.activeDay.MouseOver = true;
       this.OnDayEnter(new CalendarDayEventArgs(day));
@@ -121,7 +121,7 @@ namespace Pabo.MonthCalendar
 
     private void ItemsControl_MouseMove(object sender, MouseEventArgs e)
     {
-      var day = this.Days[GetPanel(e.GetPosition(this))];
+      var day = this.Days[GetItem(e.GetPosition(this))];
       if (this.activeDay != day)
       {
         this.activeDay.MouseOver = false;
@@ -136,13 +136,13 @@ namespace Pabo.MonthCalendar
     {
       e.Handled = true;
       this.Button_DoubleClick(sender, e);
-      var day = this.Days[GetPanel(e.GetPosition(this))];
+      var day = this.Days[GetItem(e.GetPosition(this))];
       this.OnDayDoubleClick(new CalendarDayEventArgs(day));
     }
 
     private void Calendar_MouseDown(object sender, MouseButtonEventArgs e)
     {
-      this.clickDay = this.Days[GetPanel(e.GetPosition(this))];
+      this.clickDay = this.Days[GetItem(e.GetPosition(this))];
       this.Button_Click(sender, e);
       SelectDay(this.clickDay);
     }

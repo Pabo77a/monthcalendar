@@ -43,6 +43,10 @@
                             WeekdayEnter="MonthCalendar_WeekdayEnter"
                             DayClick="MonthCalendar_DayClick"
                             DayDoubleClick="MonthCalendar_DayDoubleClick"
+                            WeekClick="MonthCalendar_WeekClick"
+                            WeekdayClick="MonthCalendar_WeekdayClick"
+                            WeekdayDoubleClick="MonthCalendar_WeekdayDoubleClick"
+                            WeekDoubleClick="MonthCalendar_WeekDoubleClick"
                             MonthChanged="MonthCalendar_MonthChanged" >
     </calendar:MonthCalendar>
     <Button Grid.Row="1" Click="Button_Click">TEST</Button>
