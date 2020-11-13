@@ -24,7 +24,7 @@ namespace Pabo.MonthCalendar
 
     public Calendar() : base(7, 6)
     {
-      this.Click += (sender, e) => 
+      this.Click += (sender, e) =>
       {
         this.OnDayClick(new CalendarDayEventArgs(clickDay));
       };
@@ -43,6 +43,10 @@ namespace Pabo.MonthCalendar
     private int month;
     private List<Day> dayItems;
 
+    private bool mouseDown = false;
+    private Pos startPos = new Pos();
+    private Pos endPos = new Pos();
+
     #endregion
 
 
@@ -52,7 +56,7 @@ namespace Pabo.MonthCalendar
     static Calendar()
     {
       DefaultStyleKeyProperty.OverrideMetadata(typeof(Calendar), new FrameworkPropertyMetadata(typeof(Calendar)));
-      
+
     }
 
     #endregion
@@ -93,17 +97,20 @@ namespace Pabo.MonthCalendar
     public override void OnApplyTemplate()
     {
       base.OnApplyTemplate();
-    
+
       this.itemsControl = GetTemplateChild("PART_Host") as System.Windows.Controls.ItemsControl;
       if (this.itemsControl != null)
       {
         this.itemsControl.MouseDown += Calendar_MouseDown;
         this.itemsControl.MouseMove += ItemsControl_MouseMove;
+        this.itemsControl.MouseUp += ItemsControl_MouseUp;
         this.itemsControl.MouseEnter += ItemsControl_MouseEnter;
         this.itemsControl.MouseLeave += ItemsControl_MouseLeave;
         this.itemsControl.MouseDoubleClick += ItemsControl_MouseDoubleClick;
       }
     }
+
+
 
     #endregion
 
@@ -131,12 +138,20 @@ namespace Pabo.MonthCalendar
     private void ItemsControl_MouseMove(object sender, MouseEventArgs e)
     {
       var day = this.Days[GetItem(e.GetPosition(this))];
+
+      if (this.mouseDown)
+      {
+        EndPos = this.GetItemPos(e.GetPosition(this));
+
+      }
       if (this.activeDay != day)
       {
-        this.activeDay.MouseOver = false;
+        if (!this.mouseDown)
+          this.activeDay.MouseOver = false;
         this.OnDayLeave(new CalendarDayEventArgs(this.activeDay));
         this.activeDay = day;
-        this.activeDay.MouseOver = true;
+        if (!this.mouseDown)
+          this.activeDay.MouseOver = true;
         this.OnDayEnter(new CalendarDayEventArgs(this.activeDay));
       }
     }
@@ -149,11 +164,23 @@ namespace Pabo.MonthCalendar
       this.OnDayDoubleClick(new CalendarDayEventArgs(day));
     }
 
+    private void ItemsControl_MouseUp(object sender, MouseButtonEventArgs e)
+    {
+      if (this.mouseDown)
+      {
+        this.clickDay = this.Days[GetItem(e.GetPosition(this))];
+        SelectDay(this.clickDay);
+      }
+      this.mouseDown = false;
+    }
+
+
     private void Calendar_MouseDown(object sender, MouseButtonEventArgs e)
     {
-      this.clickDay = this.Days[GetItem(e.GetPosition(this))];
+      StartPos = GetItemPos(e.GetPosition(this));
+
+      this.mouseDown = true;
       this.Button_Click(sender, e);
-      SelectDay(this.clickDay);
     }
 
     private void PropertiesChanged(object sender, PropertyChangedEventArgs e)
@@ -259,6 +286,46 @@ namespace Pabo.MonthCalendar
 
     #region properties
 
+    private Pos StartPos
+    {
+      get => startPos;
+      set
+      {
+        if (value != startPos)
+        {
+          startPos = value;
+        }
+      }
+    }
+
+    private Pos EndPos
+    {
+      get => endPos;
+      set
+      {
+        if (value.Col != endPos.Col || value.Row != endPos.Row)
+        {
+          endPos = value;
+
+          for (int i = 0;i<42;i++)
+          {
+            this.Days[i].MouseOver = false;
+          }
+
+          Debug.WriteLine("Start:" + startPos + " End:" + endPos);
+          for (int c = Math.Min(StartPos.Col, EndPos.Col); c <= Math.Max(EndPos.Col, StartPos.Col); c++)
+          {
+            for (int r = Math.Min(StartPos.Row, EndPos.Row); r <= Math.Max(EndPos.Row, StartPos.Row); r++)
+            {
+              var y = ((r - 1) * 7) + c - 1;
+              Debug.WriteLine(y);
+              this.Days[y].MouseOver = true;
+            }
+          }
+        }
+      }
+    }
+
     internal List<CalendarDay> Days
     {
       get
@@ -306,7 +373,7 @@ namespace Pabo.MonthCalendar
         }
       }
     }
-    
+
     internal MonthCalendarSelectionMode SelectionMode
     {
       get => SelectionMode;
