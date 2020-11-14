@@ -17,10 +17,7 @@ namespace Pabo.MonthCalendar
 
     private Button left;
     private Button right;
-
-    private int month;
-    private int year;
- 
+   
     #endregion
 
     #region routed events

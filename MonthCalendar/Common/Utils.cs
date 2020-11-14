@@ -21,7 +21,6 @@ namespace Pabo.MonthCalendar.Common
           }
           else
           {
-            int i = 1;
           }
         }
       }

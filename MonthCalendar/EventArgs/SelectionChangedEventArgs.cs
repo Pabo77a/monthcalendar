@@ -7,14 +7,11 @@ namespace Pabo.MonthCalendar.EventArgs
 {
   public class SelectionChangedEventArgs : RoutedEventArgs
   {
-    public List<Day> Current { get; }
+    public List<Day> Selected { get; }
 
-    public List<Day> Previous { get; }
-
-    public SelectionChangedEventArgs(RoutedEvent routedEvent, List<Day> current, List<Day> previous) : base(routedEvent)
+    public SelectionChangedEventArgs(RoutedEvent routedEvent, List<Day> selected) : base(routedEvent)
     {
-      this.Current = current;
-      this.Previous = previous;
+      this.Selected = selected;
     }
 
   }

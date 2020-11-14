@@ -33,9 +33,7 @@ namespace Pabo.MonthCalendar
     private Calendar calendar;
     private Weekdays weekdays;
     private Weeknumbers weeknumbers;
-
-    private SelectionMode selectionMode;
-
+ 
     #endregion
 
 
@@ -722,7 +720,7 @@ namespace Pabo.MonthCalendar
 
     private void Calendar_SelectionChanged(object sender, EventArgs.CalendarSelectionChangedEventArgs e)
     {
-      EventArgs.SelectionChangedEventArgs args = new EventArgs.SelectionChangedEventArgs(SelectionChangedEvent, e.CurrentSelection, e.PreviousSelection);
+      EventArgs.SelectionChangedEventArgs args = new EventArgs.SelectionChangedEventArgs(SelectionChangedEvent, e.Selected);
       RaiseEvent(args);
     }
 
@@ -1109,6 +1107,55 @@ namespace Pabo.MonthCalendar
       this.weekdays.SuspendLayout = false;
       this.weeknumbers.SuspendLayout = false;
     }
+
+    public void Select(List<DateTime> dates)
+    {
+      if (this.calendar != null)
+      {
+        this.calendar.Select(dates);
+      }
+    }
+
+    public void Deselect(List<DateTime> dates)
+    {
+      if (this.calendar != null)
+      {
+        this.calendar.Deselect(dates);
+      }
+    }
+
+    public void SelectWeek(int week)
+    {
+      if (this.calendar != null)
+      {
+        this.calendar.SelectWeek(week);
+      }
+    }
+
+    public void DeselectWeek(int week)
+    {
+      if (this.calendar != null)
+      {
+        this.calendar.DeselectWeek(week);
+      }
+    }
+
+    public void SelectWeekday(DayOfWeek weekday)
+    {
+      if (this.calendar != null)
+      {
+        this.calendar.SelectWeekday(weekday);
+      }
+    }
+
+    public void DeselectWeekday(DayOfWeek weekday)
+    {
+      if (this.calendar != null)
+      {
+        this.calendar.DeselectWeekday(weekday);
+      }
+    }
+
 
     #endregion
   }

@@ -46,6 +46,7 @@ namespace Pabo.MonthCalendar
     private bool mouseDown = false;
     private Pos startPos = new Pos();
     private Pos endPos = new Pos();
+    private List<Day> prevSelected = new List<Day>();
 
     #endregion
 
@@ -137,20 +138,21 @@ namespace Pabo.MonthCalendar
 
     private void ItemsControl_MouseMove(object sender, MouseEventArgs e)
     {
+
       var day = this.Days[GetItem(e.GetPosition(this))];
 
-      if (this.mouseDown)
+      if (this.mouseDown && this.SelectionMode > MonthCalendarSelectionMode.Single)
       {
         EndPos = this.GetItemPos(e.GetPosition(this));
 
       }
       if (this.activeDay != day)
       {
-        if (!this.mouseDown)
+        if ((!this.mouseDown) || (this.SelectionMode == MonthCalendarSelectionMode.Single))
           this.activeDay.MouseOver = false;
         this.OnDayLeave(new CalendarDayEventArgs(this.activeDay));
         this.activeDay = day;
-        if (!this.mouseDown)
+        if ((!this.mouseDown) || (this.SelectionMode == MonthCalendarSelectionMode.Single))
           this.activeDay.MouseOver = true;
         this.OnDayEnter(new CalendarDayEventArgs(this.activeDay));
       }
@@ -169,7 +171,9 @@ namespace Pabo.MonthCalendar
       if (this.mouseDown)
       {
         this.clickDay = this.Days[GetItem(e.GetPosition(this))];
-        SelectDay(this.clickDay);
+
+        var selectedDays = this.Days.Where(x => x.Selected).ToList();
+        SelectDays(this.Days.Where(x => x.MouseOver).ToList(), this.clickDay);
       }
       this.mouseDown = false;
     }
@@ -194,35 +198,41 @@ namespace Pabo.MonthCalendar
 
     #region private methods
 
-
-    private void SelectDay(CalendarDay day)
+    private void SelectDays(List<CalendarDay> days, CalendarDay activeDay)
     {
 
-      var ctrl = Keyboard.Modifiers == ModifierKeys.Control;
-
-      var oldSelection = this.Days.Where(x => x.Selected).ToList<Day>();
-      if (this.selectionMode > MonthCalendarSelectionMode.None)
+      var selected = this.Days.Where(x => x.Selected).ToList();
+      if (SelectionMode > MonthCalendarSelectionMode.None)
       {
-        if ((this.selectionMode == MonthCalendarSelectionMode.Extended && ctrl) ||
-            (this.selectionMode < MonthCalendarSelectionMode.Extended))
+        if (SelectionMode == MonthCalendarSelectionMode.Single)
         {
-          day.Selected = !day.Selected;
+          foreach (CalendarDay day in selected)
+          {
+            if (day != activeDay)
+            {
+              day.Selected = false;
+            }
+          }
+          activeDay.Selected = activeDay.Selected ? false : true;
         }
-        if (day.Selected && this.selectionMode == MonthCalendarSelectionMode.Single)
+        if (SelectionMode > MonthCalendarSelectionMode.Single)
         {
-          ClearCalendar(false);
+          foreach (CalendarDay day in days)
+          {
+            day.Selected = day == activeDay && activeDay.Selected ? false : true;
+            day.MouseOver = false;
+          }
         }
+        activeDay.MouseOver = true;
         foreach (CalendarDay sel in this.Days.Where(x => x.Selected))
         {
           this.SetupSelectedBorders(sel);
         }
+        this.OnSelectionChanged();
       }
-
-      var newSelection = this.Days.Where(x => x.Selected).ToList<Day>();
-      this.OnSelectionChanged(new CalendarSelectionChangedEventArgs(newSelection, oldSelection));
-
     }
 
+   
     private void SetupSelectedBorders(CalendarDay day)
     {
       var index = this.Days.FindIndex(x => x.Date == day.Date);
@@ -248,12 +258,23 @@ namespace Pabo.MonthCalendar
           this.SetupSelectedBorders(day);
         }
       }
+
+      this.OnSelectionChanged();
     }
 
-    private void OnSelectionChanged(CalendarSelectionChangedEventArgs e)
+    private void OnSelectionChanged()
     {
-      EventHandler<CalendarSelectionChangedEventArgs> handler = SelectionChanged;
-      handler?.Invoke(this, e);
+      var selectedDays = this.Days.Where(x => x.Selected).ToList<Day>();
+
+      var diff1 = selectedDays.Except(this.prevSelected).ToList();
+      var diff2 = this.prevSelected.Except(selectedDays).ToList();
+      if (diff1.Count() > 0 || diff2.Count > 0)
+      {
+        this.prevSelected = selectedDays;
+        foreach (CalendarDay day in selectedDays) { this.SetupSelectedBorders(day);  };
+        EventHandler<CalendarSelectionChangedEventArgs> handler = SelectionChanged;
+        handler?.Invoke(this, new CalendarSelectionChangedEventArgs(selectedDays));
+      }
     }
 
     private void OnDayLeave(CalendarDayEventArgs e)
@@ -307,18 +328,16 @@ namespace Pabo.MonthCalendar
         {
           endPos = value;
 
-          for (int i = 0;i<42;i++)
+          for (int i = 0; i < 42; i++)
           {
             this.Days[i].MouseOver = false;
           }
 
-          Debug.WriteLine("Start:" + startPos + " End:" + endPos);
           for (int c = Math.Min(StartPos.Col, EndPos.Col); c <= Math.Max(EndPos.Col, StartPos.Col); c++)
           {
             for (int r = Math.Min(StartPos.Row, EndPos.Row); r <= Math.Max(EndPos.Row, StartPos.Row); r++)
             {
               var y = ((r - 1) * 7) + c - 1;
-              Debug.WriteLine(y);
               this.Days[y].MouseOver = true;
             }
           }
@@ -376,7 +395,7 @@ namespace Pabo.MonthCalendar
 
     internal MonthCalendarSelectionMode SelectionMode
     {
-      get => SelectionMode;
+      get => selectionMode;
       set
       {
         if (value != this.selectionMode)
@@ -384,9 +403,8 @@ namespace Pabo.MonthCalendar
           if ((value > MonthCalendarSelectionMode.Single || value == MonthCalendarSelectionMode.None) &&
               (this.Days.Where(x => x.Selected).ToList().Count > 1))
           {
-            var oldSelection = this.Days.Where(x => x.Selected).ToList<Day>();
             ClearCalendar();
-            this.OnSelectionChanged(new CalendarSelectionChangedEventArgs(new List<Day>(), oldSelection));
+           
 
           }
           this.selectionMode = value;
@@ -397,7 +415,91 @@ namespace Pabo.MonthCalendar
     #endregion
 
 
-    #region methods
+    #region public methods
+
+    public void Select(List<DateTime> dates)
+    {
+      foreach (DateTime date in dates)
+      {
+        var day = this.Days.FirstOrDefault(x => x.Date == date);
+        if (day != null)
+        {
+          day.Selected = true;
+        }
+      }
+
+      this.OnSelectionChanged();
+    }
+
+    public void Deselect(List<DateTime> dates)
+    {
+      foreach (DateTime date in dates)
+      {
+        var day = this.Days.FirstOrDefault(x => x.Date == date);
+        if (day != null)
+        {
+          day.Selected = false;
+        }
+      }
+
+      this.OnSelectionChanged();
+    }
+
+    public void SelectWeek(int week)
+    {
+      foreach (CalendarDay day in this.Days)
+      {
+        if (ISOWeek.GetWeekOfYear(day.Date) == week)
+        {
+          day.Selected = true;
+        }
+      }
+
+      this.OnSelectionChanged();
+    }
+
+    public void DeselectWeek(int week)
+    {
+      foreach (CalendarDay day in this.Days)
+      {
+        if (ISOWeek.GetWeekOfYear(day.Date) == week)
+        {
+          day.Selected = false;
+        }
+      }
+
+      this.OnSelectionChanged();
+    }
+
+    public void SelectWeekday(DayOfWeek weekday)
+    {
+      foreach (CalendarDay day in this.Days)
+      {
+        if (day.Date.DayOfWeek == weekday)
+        {
+          day.Selected = true;
+        }
+      }
+
+      this.OnSelectionChanged();
+    }
+
+    public void DeselectWeekday(DayOfWeek weekday)
+    {
+      foreach (CalendarDay day in this.Days)
+      {
+        if (day.Date.DayOfWeek == weekday)
+        {
+          day.Selected = false;
+        }
+      }
+
+      this.OnSelectionChanged();
+    }
+
+    #endregion
+
+    #region private methods
 
     private void Setup()
     {

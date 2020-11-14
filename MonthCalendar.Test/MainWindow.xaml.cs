@@ -126,7 +126,7 @@ namespace MonthCalendar.Test
 
     private void MonthCalendar_SelectionChanged(object sender, Pabo.MonthCalendar.EventArgs.SelectionChangedEventArgs e)
     {
-
+      var  i = 1;
     }
 
     private void MonthCalendar_MonthChanged(object sender, Pabo.MonthCalendar.EventArgs.MonthChangedEventArgs e)
@@ -135,7 +135,7 @@ namespace MonthCalendar.Test
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-      this.headerProperties.Text = "Uj UJ UJ";
+      /*this.headerProperties.Text = "Uj UJ UJ";
       var day = this.days.FirstOrDefault(x => x.Date == new DateTime(2020, 8, 13));
       if (day != null)
       {
@@ -147,21 +147,31 @@ namespace MonthCalendar.Test
         week.TextColor = Colors.Red;
       }
 
-      MyCalendar.SuspendLayout();
+      MyCalendar.SuspendLayout();*/
 
       //this.WeeknumberProperties.TextColor = Colors.Purple;
       //this.WeeknumberProperties.TextFontSize = 24;
       //this.WeeknumberProperties.TextFontWeight = FontWeights.Bold;
-      this.WeekdaysProperties.TextColor = Colors.Purple;
-      this.WeekdaysProperties.TextFontSize = 24;
-      this.WeekdaysProperties.TextFontWeight = FontWeights.Bold;
+      //this.WeekdaysProperties.TextColor = Colors.Purple;
+      //this.WeekdaysProperties.TextFontSize = 24;
+      //this.WeekdaysProperties.TextFontWeight = FontWeights.Bold;
 
       //this.CalendarProperties.DateColor = Colors.Blue;
       //this.CalendarProperties.DateFontSize = 10;
 
-      MyCalendar.ResumeLayout();
+      //MyCalendar.ResumeLayout();
 
       //this.MyCalendar.Refresh();
+
+      //MyCalendar.Select(new List<DateTime>() { new DateTime(2020, 8, 7), new DateTime(2020, 8, 8) });
+      //MyCalendar.Select(new List<DateTime>() { new DateTime(2020, 8, 15), new DateTime(2020, 8, 16) });
+      //MyCalendar.Deselect(new List<DateTime>() { new DateTime(2020, 8, 7), new DateTime(2020, 8, 8) });
+
+      //MyCalendar.SelectWeek(34);
+      //MyCalendar.DeselectWeek(34);
+
+      //MyCalendar.SelectWeekday(DayOfWeek.Thursday);
+      //MyCalendar.DeselectWeekday(DayOfWeek.Thursday);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
