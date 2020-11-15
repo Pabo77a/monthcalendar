@@ -19,7 +19,9 @@ namespace Pabo.MonthCalendar.Model
     private HorizontalAlignment textHorizontalAlignment = HorizontalAlignment.Center;
     private FontFamily textFontFamily = new FontFamily("");
     private Thickness textMargin = new Thickness(10, 0, 10, 0);
-    private string text = "";
+
+    protected string text = "";
+
     private int year;
     private int month;
     private DayOfWeek dayOfWeek;
@@ -197,7 +199,7 @@ namespace Pabo.MonthCalendar.Model
       }
     }
 
-    public string Text
+    public virtual string Text
     {
       get => text;
       set

@@ -9,6 +9,7 @@ namespace Pabo.MonthCalendar.Model
   {
 
     private bool mouseOver = false;
+    private string name;
 
     public CalendarWeekday()
     {
@@ -37,19 +38,50 @@ namespace Pabo.MonthCalendar.Model
 
     public string Name
     {
-      get
+      get => name;
+      set
       {
-        if (!string.IsNullOrEmpty(Text))
+        if (value != name)
         {
-          return Text;
-        }
-        else
-        {
-          CultureInfo ci = Thread.CurrentThread.CurrentCulture;
-          return ci.DateTimeFormat.GetAbbreviatedDayName(DayOfWeek);
+          this.name = value;
+          OnPropertyChanged();
         }
       }
     }
+
+    public override string Text
+    {
+      get
+      {
+          return !string.IsNullOrEmpty(this.text) ? this.text: Name;
+      }
+      set
+      {
+        if (this.text != value)
+        {
+          this.text = value;
+          OnPropertyChanged(nameof(this.text));
+        }
+      }
+
+    }
+
+
+
+    /*     
+
+
+         if (!string.IsNullOrEmpty(Text))
+         {
+           return Text;
+         }
+         else
+         {
+           CultureInfo ci = Thread.CurrentThread.CurrentCulture;
+           return ci.DateTimeFormat.GetAbbreviatedDayName(DayOfWeek);
+         }
+       }
+     }*/
 
   }
 }

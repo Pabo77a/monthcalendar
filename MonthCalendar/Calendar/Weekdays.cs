@@ -10,6 +10,7 @@ using Pabo.MonthCalendar.Common;
 using Pabo.MonthCalendar.EventArgs;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Threading;
 
 namespace Pabo.MonthCalendar
 {
@@ -157,9 +158,10 @@ namespace Pabo.MonthCalendar
       if (!SuspendLayout)
       {
 
+        CultureInfo ci = Thread.CurrentThread.CurrentCulture;
+
         List<CalendarWeekday> days = new List<CalendarWeekday>();
 
-        CultureInfo ci = System.Threading.Thread.CurrentThread.CurrentCulture;
         DayOfWeek firstDayOfWeek = ci.DateTimeFormat.FirstDayOfWeek;
 
         for (int i = (int)firstDayOfWeek; i <= (int)DayOfWeek.Saturday; i++)
@@ -176,6 +178,10 @@ namespace Pabo.MonthCalendar
           Utils.CopyProperties<WeekdaysProperties, CalendarWeekday>(Properties, days[i]);
           days[i].Year = year;
           days[i].Month = month;
+          days[i].Name = Properties.AbbreviatedNames 
+            ? ci.DateTimeFormat.GetAbbreviatedDayName(days[i].DayOfWeek) 
+            : ci.DateTimeFormat.GetDayName(days[i].DayOfWeek);
+
           var item = items.FirstOrDefault(x => x.Year == year && x.Month == month && x.DayOfWeek == days[i].DayOfWeek);
           if (item != null)
           {

@@ -82,7 +82,7 @@
             </Grid.Background>
             <ItemsControl x:Name="PART_Host" ItemsSource="{TemplateBinding Days}">
               <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type model:Day}" x:Name="foo">
+                <DataTemplate DataType="{x:Type model:CalendarDay}" x:Name="foo">
                   <Grid>
                     <Grid.RowDefinitions>
                       <RowDefinition Height="*"></RowDefinition>
@@ -230,7 +230,7 @@
                                          Color="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Weekdays}},Path=Properties.MouseOverBackgroundColor}"/>
                       </Rectangle.Fill>
                     </Rectangle>
-                    <TextBlock Margin="{Binding TextMargin}" Text="{Binding Name}" 
+                    <TextBlock Margin="{Binding TextMargin}" Text="{Binding Text}" 
                                VerticalAlignment="{Binding TextVerticalAlignment}"
                                HorizontalAlignment="{Binding TextHorizontalAlignment}"
                                Foreground="{Binding TextColor, Converter={StaticResource BrushConverter}}" 

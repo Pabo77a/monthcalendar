@@ -13,6 +13,7 @@ namespace Pabo.MonthCalendar.Model
     private bool mouseOver = false;
 
     private bool disabled = false;
+    private bool trailing = false;
 
     private Thickness thickness = new Thickness(1, 1, 1, 1);
 
@@ -34,6 +35,21 @@ namespace Pabo.MonthCalendar.Model
       }
          
     }
+
+    public bool Trailing
+    {
+      get => this.trailing;
+      set
+      {
+        if (value != this.trailing)
+        {
+          this.trailing = value;
+          OnPropertyChanged(nameof(this.Trailing));
+        }
+      }
+
+    }
+
 
     public bool Disabled
     {

@@ -89,6 +89,8 @@ namespace MonthCalendar.Test
       //this.weekdaysProperties.FontSize = 30;
       //this.HeaderProperties.DateText = "jjj"; // .Text = "TEST TEST TEST";
 
+      //this.weekdaysProperties.AbbreviatedNames = false;
+
       this.calendarProperties.DateFontSize = 24;
       this.calendarProperties.DateColor = Colors.Green;
       this.calendarProperties.DateTextDecoration = "Underline";

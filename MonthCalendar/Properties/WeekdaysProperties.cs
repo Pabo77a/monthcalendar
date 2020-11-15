@@ -9,6 +9,9 @@ namespace Pabo.MonthCalendar.Properties
 {
   public class WeekdaysProperties : PanelProperties
   {
+
+    private bool abbreviatedNames = true;
+
     public WeekdaysProperties() : base()
     {
       this.BackgroundColor = Colors.White;
@@ -21,7 +24,20 @@ namespace Pabo.MonthCalendar.Properties
       this.MouseOverBackgroundColor = Colors.Transparent;
       this.MouseOverBorderColor = Colors.Transparent;
       this.MouseOverOpacity = .25;
+      
+    }
 
+    public bool AbbreviatedNames
+    {
+      get => this.abbreviatedNames;
+      set
+      {
+        if (abbreviatedNames != value)
+        {
+          this.abbreviatedNames = value;
+          OnPropertyChanged(nameof(this.AbbreviatedNames));
+        }
+      }
     }
   }
 }
