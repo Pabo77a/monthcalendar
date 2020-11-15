@@ -42,6 +42,9 @@ namespace Pabo.MonthCalendar
     private int year;
     private int month;
     private List<Day> dayItems;
+    private List<DateTime> disabledDays;
+    private DateTime minDate;
+    private DateTime maxDate;
 
     private bool mouseDown = false;
     private Pos startPos = new Pos();
@@ -503,15 +506,19 @@ namespace Pabo.MonthCalendar
 
     private void Setup()
     {
-      SetupDays(this.year, this.month, this.dayItems);
+      SetupDays(this.year, this.month, this.minDate, this.maxDate, this.dayItems, this.disabledDays);
     }
 
-    internal void SetupDays(int year, int month, List<Day> items)
+    internal void SetupDays(int year, int month, DateTime minDate, DateTime maxDate, List<Day> items, List<DateTime> disabledDays)
     {
 
       this.year = year;
       this.month = month;
       this.dayItems = items;
+      this.minDate = minDate;
+      this.maxDate = maxDate;
+      this.disabledDays = disabledDays;
+
       if (!SuspendLayout)
       {
 
@@ -558,15 +565,21 @@ namespace Pabo.MonthCalendar
         for (int i = 0; i < 42; i++)
         {
 
-          if (days[i].Date.Month == month)
+          var disabled = this.disabledDays.FirstOrDefault(x => x == days[i].Date);
+
+          days[i].Disabled = days[i].Date <= minDate || days[i].Date >= maxDate || disabled != default(DateTime);
+          if (!days[i].Disabled)
           {
-            days[i].DateColor = Properties.DateColor;
-            days[i].BackgroundColor = Properties.BackgroundImage != null ? Colors.Transparent : Properties.BackgroundColor;
-          }
-          else
-          {
-            days[i].DateColor = Properties.TrailingDateColor;
-            days[i].BackgroundColor = Properties.BackgroundImage != null ? Colors.Transparent : Properties.TrailingBackgroundColor;
+            if (days[i].Date.Month == month)
+            {
+              days[i].DateColor = Properties.DateColor;
+              days[i].BackgroundColor = Properties.BackgroundImage != null ? Colors.Transparent : Properties.BackgroundColor;
+            }
+            else
+            {
+              days[i].DateColor = Properties.TrailingDateColor;
+              days[i].BackgroundColor = Properties.BackgroundImage != null ? Colors.Transparent : Properties.TrailingBackgroundColor;
+            }
           }
 
           days[i].DateFontFamily = Properties.DateFontFamily;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -24,9 +25,10 @@ namespace MonthCalendar.Test
   /// <summary>
   /// Interaction logic for MainWindow.xaml
   /// </summary>
-  public partial class MainWindow : Window
+  public partial class MainWindow : Window, INotifyPropertyChanged
   {
     TrulyObservableCollection<Day> days = new TrulyObservableCollection<Day>();
+    ObservableCollection<DateTime> disabledDays = new ObservableCollection<DateTime>();
     TrulyObservableCollection<Week> weeks = new TrulyObservableCollection<Week>();
     TrulyObservableCollection<Weekday> weekdays = new TrulyObservableCollection<Weekday>();
 
@@ -35,6 +37,9 @@ namespace MonthCalendar.Test
     WeeknumberProperties weeknumberProperties = new WeeknumberProperties();
     WeekdaysProperties weekdaysProperties = new WeekdaysProperties();
     CalendarProperties calendarProperties = new CalendarProperties();
+
+    private DateTime minDate = DateTime.MinValue;
+    private DateTime maxDate = DateTime.MaxValue;
 
     public MainWindow()
     {
@@ -96,9 +101,24 @@ namespace MonthCalendar.Test
 
       this.calendarProperties.TrailingBackgroundColor = Colors.Gray;
       this.calendarProperties.TrailingDateColor = Colors.White;
+      MyCalendar.DataContext = this;
+      
     }
 
     public TrulyObservableCollection<Day> Days => days;
+
+    public ObservableCollection<DateTime> DisabledDays
+    {
+      get => disabledDays;
+      set
+      {
+        if (value != disabledDays)
+        {
+          disabledDays = value;
+          OnPropertyChanged(nameof(this.DisabledDays));
+        }
+      }
+    }
 
     public TrulyObservableCollection<Week> Weeks => weeks;
 
@@ -116,7 +136,33 @@ namespace MonthCalendar.Test
       }
     }
 
+    public DateTime MinDate
+    {
+      get => minDate;
+      set
+      {
+        if (value != minDate)
+        {
+          this.minDate = value;
+          OnPropertyChanged(nameof(this.MinDate));
+        }
+      }
+    }
 
+    public DateTime MaxDate
+    {
+      get => maxDate;
+      set
+      {
+        if (value != maxDate)
+        {
+          this.maxDate = value;
+          OnPropertyChanged(nameof(this.MaxDate));
+        }
+      }
+    }
+
+  
 
     public FooterProperties FooterProperties => footerProperties;
 
@@ -172,6 +218,13 @@ namespace MonthCalendar.Test
 
       //MyCalendar.SelectWeekday(DayOfWeek.Thursday);
       //MyCalendar.DeselectWeekday(DayOfWeek.Thursday);
+
+      //MyCalendar.MinDate = new DateTime(2020, 8, 12);
+
+      //this.MinDate = new DateTime(2020, 8, 16);
+
+      this.DisabledDays = new ObservableCollection<DateTime>() { new DateTime(2020, 8, 12), new DateTime(2020, 8, 16) };
+
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

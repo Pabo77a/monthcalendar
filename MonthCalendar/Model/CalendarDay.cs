@@ -12,6 +12,8 @@ namespace Pabo.MonthCalendar.Model
     private bool selected = false;
     private bool mouseOver = false;
 
+    private bool disabled = false;
+
     private Thickness thickness = new Thickness(1, 1, 1, 1);
 
     public CalendarDay(DateTime date) : base(date)
@@ -22,7 +24,7 @@ namespace Pabo.MonthCalendar.Model
 
     public bool Selected 
     { 
-      get => this.selected;
+      get => this.selected && !Disabled;
       set {
         if (value != this.selected)
         {
@@ -31,6 +33,20 @@ namespace Pabo.MonthCalendar.Model
         }
       }
          
+    }
+
+    public bool Disabled
+    {
+      get => this.disabled;
+      set
+      {
+        if (value != this.disabled)
+        {
+          this.disabled = value;
+          OnPropertyChanged(nameof(this.Disabled));
+        }
+      }
+
     }
 
     public bool MouseOver

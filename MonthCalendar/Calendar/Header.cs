@@ -17,6 +17,10 @@ namespace Pabo.MonthCalendar
 
     private Button left;
     private Button right;
+
+    private DateTime minDate;
+    private DateTime maxDate;
+ 
    
     #endregion
 
@@ -111,6 +115,22 @@ namespace Pabo.MonthCalendar
       }
     }
 
+    public bool CanDecreaseMonth
+    {
+      get
+      {
+        return this.minDate.ToString("MMMM yyyy") != new DateTime(this.Properties.Year, this.Properties.Month, 1).ToString("MMMM yyyy");
+      }
+    }
+
+    public bool CanIncreaseMonth
+    {
+      get
+      {
+        return this.maxDate.ToString("MMMM yyyy") != new DateTime(this.Properties.Year, this.Properties.Month, 1).ToString("MMMM yyyy");
+      }
+    }
+
 
     #endregion
 
@@ -136,6 +156,17 @@ namespace Pabo.MonthCalendar
     #endregion
 
     #region methods
+
+    public void Setup(DateTime minDate, DateTime maxDate, int year, int month)
+    {
+      this.minDate = minDate;
+      this.maxDate = maxDate;
+    
+      this.Properties.SetDate(year, month);
+
+      OnPropertyChanged(nameof(this.CanDecreaseMonth));
+      OnPropertyChanged(nameof(this.CanIncreaseMonth));
+    }
 
     #endregion
   }

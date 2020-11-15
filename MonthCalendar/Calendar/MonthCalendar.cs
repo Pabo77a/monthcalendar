@@ -53,10 +53,30 @@ namespace Pabo.MonthCalendar
                    OnYearChanged,
                    OnCoerceYearChanged, false, UpdateSourceTrigger.PropertyChanged));
 
+    public static readonly DependencyProperty MinDateProperty = DependencyProperty.Register("MinDate",
+               typeof(DateTime),
+               typeof(MonthCalendar),
+               new FrameworkPropertyMetadata(DateTime.MinValue, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                   OnMinDateChanged,
+                   OnCoerceMinDateChanged, false, UpdateSourceTrigger.PropertyChanged));
+
+    public static readonly DependencyProperty MaxDateProperty = DependencyProperty.Register("MaxDate",
+               typeof(DateTime),
+               typeof(MonthCalendar),
+               new FrameworkPropertyMetadata(DateTime.MaxValue, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                   OnMaxDateChanged,
+                   OnCoerceMaxDateChanged, false, UpdateSourceTrigger.PropertyChanged));
+
+
     public static readonly DependencyProperty DaysProperty = DependencyProperty.Register("Days",
                typeof(TrulyObservableCollection<Day>),
                typeof(MonthCalendar),
                new FrameworkPropertyMetadata(new TrulyObservableCollection<Day>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnDaysChanged));
+
+    public static readonly DependencyProperty DisabledDaysProperty = DependencyProperty.Register("DisabledDays",
+               typeof(ObservableCollection<DateTime>),
+               typeof(MonthCalendar),
+               new FrameworkPropertyMetadata(new ObservableCollection<DateTime>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnDisabledDaysChanged));
 
     public static readonly DependencyProperty WeeksProperty = DependencyProperty.Register("Weeks",
                typeof(TrulyObservableCollection<Week>),
@@ -411,7 +431,7 @@ namespace Pabo.MonthCalendar
     {
       if (this.calendar != null)
       {
-        this.calendar.SetupDays(this.Year, this.Month, this.Days.ToList());
+        this.calendar.SetupDays(this.Year, this.Month, this.MinDate, this.MaxDate, this.Days.ToList(), this.DisabledDays.ToList());
         this.calendar.SelectionMode = this.SelectionMode;
       }
     }
@@ -436,7 +456,7 @@ namespace Pabo.MonthCalendar
     {
       if (this.header != null)
       {
-        this.header.Properties.SetDate(this.Year, this.Month);
+        this.header.Setup(this.MinDate, this.MaxDate, this.Year, this.Month);
       }
     }
 
@@ -474,6 +494,37 @@ namespace Pabo.MonthCalendar
     [Description("")]
     [Category("Calendar")]
     [Browsable(true)]
+    public DateTime MinDate
+    {
+      get
+      {
+        return (DateTime)this.GetValue(MinDateProperty);
+      }
+      set
+      {
+        this.SetValue(MinDateProperty, value);
+      }
+    }
+
+    [Description("")]
+    [Category("Calendar")]
+    [Browsable(true)]
+    public DateTime MaxDate
+    {
+      get
+      {
+        return (DateTime)this.GetValue(MaxDateProperty);
+      }
+      set
+      {
+        this.SetValue(MaxDateProperty, value);
+      }
+    }
+
+
+    [Description("")]
+    [Category("Calendar")]
+    [Browsable(true)]
     public TrulyObservableCollection<Day> Days
     {
       get
@@ -483,6 +534,21 @@ namespace Pabo.MonthCalendar
       set
       {
         this.SetValue(DaysProperty, value);
+      }
+    }
+
+    [Description("")]
+    [Category("Calendar")]
+    [Browsable(true)]
+    public ObservableCollection<DateTime> DisabledDays
+    {
+      get
+      {
+        return (ObservableCollection<DateTime>)this.GetValue(DisabledDaysProperty);
+      }
+      set
+      {
+        this.SetValue(DisabledDaysProperty, value);
       }
     }
 
@@ -856,7 +922,7 @@ namespace Pabo.MonthCalendar
         this.calendar.Properties = (CalendarProperties)newValue;
         this.calendar.Properties.PropertyChanged -= CalendarPropertiesChanged;
         this.calendar.Properties.PropertyChanged += CalendarPropertiesChanged;
-        this.calendar.SetupDays(this.Year, this.Month, this.Days.ToList());
+        this.SetupCalendar();
       }
     }
 
@@ -878,13 +944,31 @@ namespace Pabo.MonthCalendar
     {
       if (this.calendar != null)
       {
-        this.calendar.SetupDays(this.Year, this.Month, this.Days.ToList());
+        this.SetupCalendar();
         this.Days.CollectionChanged += (s, e) =>
         {
-          this.calendar.SetupDays(this.Year, this.Month, this.Days.ToList());
+          this.SetupCalendar();
         };
       }
     }
+
+    private static void OnDisabledDaysChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        calendar.OnDisabledDaysChanged(e.NewValue, e.OldValue);
+    }
+
+
+    protected virtual void OnDisabledDaysChanged(object newValue, object oldValue)
+    {
+      if (this.calendar != null)
+      {
+        this.SetupCalendar();
+      }
+    }
+
 
     private static void OnWeeksChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -1018,7 +1102,70 @@ namespace Pabo.MonthCalendar
 
     protected virtual void OnYearChanged(object newValue, object oldValue)
     {
+      SetupHeader();
+      SetupCalendar();
+      SetupWeeknumbers();
+      SetupWeekdays();
     }
+
+    private static void OnMinDateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        calendar.OnMinDateChanged(e.NewValue, e.OldValue);
+    }
+
+    protected virtual void OnMinDateChanged(object newValue, object oldValue)
+    {
+      SetupHeader();
+      SetupCalendar();
+    }
+
+    private static object OnCoerceMinDateChanged(DependencyObject d, object value)
+    {
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        return calendar.OnCoerceMinDateChanged(value);
+      else
+        return value;
+    }
+
+    protected virtual object OnCoerceMinDateChanged(object value)
+    {
+      DateTime date = (DateTime)value;
+      return (date >= MaxDate) ? MaxDate.AddDays(-1) : date;
+     }
+
+      private static void OnMaxDateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        calendar.OnMaxDateChanged(e.NewValue, e.OldValue);
+    }
+
+    protected virtual void OnMaxDateChanged(object newValue, object oldValue)
+    {
+      SetupHeader();
+      SetupCalendar();
+    }
+
+    private static object OnCoerceMaxDateChanged(DependencyObject d, object value)
+    {
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        return calendar.OnCoerceMaxDateChanged(value);
+      else
+        return value;
+    }
+
+    protected virtual object OnCoerceMaxDateChanged(object value)
+    {
+      DateTime date = (DateTime)value;
+      return (date <= MinDate) ? MinDate.AddDays(1) : date;
+    }
+
 
     private static void OnMonthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

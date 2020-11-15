@@ -40,12 +40,14 @@
                 <SolidColorBrush Color="{Binding BackgroundColor}"></SolidColorBrush>
               </Rectangle.Fill>
             </Rectangle>
-            <Button x:Name="PART_Left" Margin="10,10,0,10" Width="20" Height="20" Grid.Row="0" Foreground="Black" Grid.Column="0" Focusable="False">
+            <Button x:Name="PART_Left" Margin="10,10,0,10" Width="20" Height="20" Grid.Row="0" Foreground="Black" Grid.Column="0" Focusable="False"
+                    IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Header}},Path=CanDecreaseMonth}">
               <Button.Content>
                 <Rectangle Width="16" Height="5" Fill="{StaticResource brush.scroll.left}" />
               </Button.Content>
             </Button>
-            <Button x:Name="PART_Right" Margin="0,10,10,10" Width="20" Height="20" Grid.Row="0" Grid.Column="2"  Focusable="False" >
+            <Button x:Name="PART_Right" Margin="0,10,10,10" Width="20" Height="20" Grid.Row="0" Grid.Column="2"  Focusable="False"
+                    IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Header}},Path=CanIncreaseMonth}">
               <Button.Content>
                 <Rectangle Width="16" Height="5" Fill="{StaticResource brush.scroll.right}" />
               </Button.Content>
@@ -127,8 +129,8 @@
                                Text="{Binding Text}" Margin="{Binding TextMargin}" ></TextBlock>
                     <Image Source="{Binding Image}" Stretch="{Binding ImageStretch}" VerticalAlignment="{Binding ImageVerticalAlignment}" 
                            HorizontalAlignment="{Binding ImageHorizontalAlignment}"  Margin="{Binding ImageMargin}">
-                            
-                    </Image> 
+
+                    </Image>
                     <Border  BorderThickness="{Binding BorderThickness, Mode=TwoWay}"
                              BorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Calendar}},Path=Properties.SelectedBorderColor, Converter={StaticResource BrushConverter}}"
                              Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" 
@@ -137,7 +139,24 @@
                              BorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Calendar}},Path=Properties.MouseOverBorderColor, Converter={StaticResource BrushConverter}}"
                              Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" 
                              Visibility="{Binding MouseOver, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}"></Border>
-
+                    <Viewbox Stretch="Fill" Visibility="{Binding Disabled, Converter={StaticResource visibilityConverter}, ConverterParameter=Normal}">
+                      <Canvas Background="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Calendar}},Path=Properties.DisabledBackgroundColor, Converter={StaticResource BrushConverter}}" 
+                              Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Calendar}},Path=Properties.DisabledOpacity}" 
+                              Width="100" Height="100" ClipToBounds="True">
+                        <Line
+                          X1="25" Y1="25"
+                          X2="75" Y2="75"
+                          Stroke="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Calendar}},Path=Properties.DisabledColor, Converter={StaticResource BrushConverter}}" 
+                          StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                          StrokeThickness="8" />
+                        <Line
+                          X1="25" Y1="75"
+                          X2="75" Y2="25"
+                          Stroke="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Calendar}},Path=Properties.DisabledColor, Converter={StaticResource BrushConverter}}" 
+                          StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                          StrokeThickness="8" />
+                      </Canvas>
+                    </Viewbox>
                   </Grid>
                 </DataTemplate>
               </ItemsControl.ItemTemplate>

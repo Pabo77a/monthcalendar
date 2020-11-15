@@ -28,10 +28,13 @@
                             
                             CalendarProperties="{Binding CalendarProperties, Mode=OneWay}"
                               
+                            DisabledDays="{Binding DisabledDays, Mode=OneWay}"
                             Days="{Binding Path=Days, Mode=OneWay}"
                             Weeks="{Binding Path=Weeks, Mode=OneWay}"
                             DayOfWeek="{Binding Path=Weekdays, Mode=OneWay}"
                             
+                            MinDate="{Binding MinDate}"
+                            MaxDate="{Binding MaxDate}"
                             Margin="10,10,24,-10"
                             SelectionChanged="MonthCalendar_SelectionChanged"
                             FooterEnter="MonthCalendar_FooterEnter"

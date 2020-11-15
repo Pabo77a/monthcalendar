@@ -39,6 +39,10 @@ namespace Pabo.MonthCalendar.Properties
     private Color selectedBorderColor = Colors.Blue;
     private double selectedOpacity = .25;
 
+    // Disabled
+    private Color disabledBackgroundColor = Colors.LightGray;
+    private Color disabledColor = Colors.Red;
+    private double disabledOpacity = .90;
 
     public CalendarProperties() : base()
     {
@@ -307,6 +311,48 @@ namespace Pabo.MonthCalendar.Properties
 
     #endregion
 
+    #region Disabled
+
+    public Color DisabledBackgroundColor
+    {
+      get => disabledBackgroundColor;
+      set
+      {
+        if (value != disabledBackgroundColor)
+        {
+          disabledBackgroundColor = value;
+          OnPropertyChanged(nameof(this.DisabledBackgroundColor));
+        }
+      }
+    }
+
+    public Color DisabledColor
+    {
+      get => disabledColor;
+      set
+      {
+        if (value != disabledColor)
+        {
+          disabledColor = value;
+          OnPropertyChanged(nameof(this.DisabledColor));
+        }
+      }
+    }
+
+    public double DisabledOpacity
+    {
+      get => disabledOpacity;
+      set
+      {
+        if (value != disabledOpacity)
+        {
+          disabledOpacity = value;
+          OnPropertyChanged(nameof(this.DisabledOpacity));
+        }
+      }
+    }
+
+    #endregion
 
 
   }

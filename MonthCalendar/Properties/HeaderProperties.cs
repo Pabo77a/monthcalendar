@@ -21,9 +21,9 @@ namespace Pabo.MonthCalendar.Properties
     }
 
 
-    internal int Month { private get; set; }
+    internal int Month { get; set; }
 
-    internal int Year { private get; set; }
+    internal int Year {  get; set; }
 
     public string DateFormat
     {
