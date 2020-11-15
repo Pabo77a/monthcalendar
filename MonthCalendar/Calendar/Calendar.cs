@@ -521,7 +521,6 @@ namespace Pabo.MonthCalendar
 
       if (!SuspendLayout)
       {
-
         var firstDay = new DateTime(year, month, 1);
         items = items.Where(x => x.Date > firstDay.AddDays(-15) && x.Date < firstDay.AddDays(45)).ToList();
 
@@ -566,7 +565,9 @@ namespace Pabo.MonthCalendar
         {
 
           var disabled = this.disabledDays.FirstOrDefault(x => x == days[i].Date);
+          var selected = this.Days.FirstOrDefault(x => x.Selected && x.Date == days[i].Date);
 
+          days[i].Selected = this.Days.FirstOrDefault(x => x.Selected && x.Date == days[i].Date) != null;
           days[i].Disabled = days[i].Date <= minDate || days[i].Date >= maxDate || disabled != default(DateTime);
           days[i].Trailing = days[i].Date.Month != month;
           if (!days[i].Disabled)
@@ -601,7 +602,8 @@ namespace Pabo.MonthCalendar
           days[i].TextVerticalAlignment = Properties.TextVerticalAlignment;
           days[i].TextHorizontalAlignment = Properties.TextHorizontalAlignment;
 
-
+          if (days[i].Selected)
+            this.SetupSelectedBorders(days[i]);
         }
 
         foreach (Day item in items)
