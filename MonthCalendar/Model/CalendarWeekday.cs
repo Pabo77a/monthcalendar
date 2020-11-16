@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace Pabo.MonthCalendar.Model
 {
-  internal class CalendarWeekday : Weekday, INotifyPropertyChanged
+  public class CalendarWeekday : Weekday, INotifyPropertyChanged
   {
 
     private bool mouseOver = false;
@@ -65,23 +65,6 @@ namespace Pabo.MonthCalendar.Model
       }
 
     }
-
-
-
-    /*     
-
-
-         if (!string.IsNullOrEmpty(Text))
-         {
-           return Text;
-         }
-         else
-         {
-           CultureInfo ci = Thread.CurrentThread.CurrentCulture;
-           return ci.DateTimeFormat.GetAbbreviatedDayName(DayOfWeek);
-         }
-       }
-     }*/
 
   }
 }

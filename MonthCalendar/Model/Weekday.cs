@@ -27,7 +27,7 @@ namespace Pabo.MonthCalendar.Model
     private DayOfWeek dayOfWeek;
 
     private Color backgroundColor;
-
+    private DataTemplate template;
 
     public DayOfWeek DayOfWeek
     {
@@ -212,6 +212,19 @@ namespace Pabo.MonthCalendar.Model
       }
     }
 
+    public DataTemplate Template
+    {
+      get => this.template;
+      set
+      {
+        if (value != this.template)
+        {
+          this.template = value;
+          OnPropertyChanged(nameof(this.Template));
+        }
+      }
+
+    }
 
   }
 }

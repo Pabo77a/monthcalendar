@@ -11,6 +11,7 @@ using Pabo.MonthCalendar.EventArgs;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Threading;
+using System.Windows.Media;
 
 namespace Pabo.MonthCalendar
 {
@@ -29,12 +30,13 @@ namespace Pabo.MonthCalendar
                typeof(WeekdaysProperties),
                typeof(Weekdays),
                new FrameworkPropertyMetadata(new WeekdaysProperties(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
+        
     #endregion
 
 
     public Weekdays() : base(7,1)
     {
+
       this.Click += (sender, e) =>
       {
         this.OnWeekdayClick(new CalendarWeekdayEventArgs(clickWeekday));
@@ -48,6 +50,7 @@ namespace Pabo.MonthCalendar
     private int year;
     private int month;
     private List<Weekday> weekdayItems;
+    private DataTemplate template;
 
     #region constructor
 
@@ -112,6 +115,7 @@ namespace Pabo.MonthCalendar
       }
     }
 
+    
     internal WeekdaysProperties Properties
     {
       get
@@ -149,11 +153,12 @@ namespace Pabo.MonthCalendar
 
     #endregion
 
-    internal void SetupDays(int year, int month, List<Weekday> items)
+    internal void SetupDays(int year, int month, List<Weekday> items, DataTemplate template)
     {
       this.year = year;
       this.month = month;
       this.weekdayItems = items;
+      this.template = template;
 
       if (!SuspendLayout)
       {
@@ -175,6 +180,7 @@ namespace Pabo.MonthCalendar
 
         for (int i = 0; i < 7; i++)
         {
+          days[i].Template = this.template;
           Utils.CopyProperties<WeekdaysProperties, CalendarWeekday>(Properties, days[i]);
           days[i].Year = year;
           days[i].Month = month;
@@ -188,7 +194,7 @@ namespace Pabo.MonthCalendar
             Utils.CopyProperties<Weekday, CalendarWeekday>(item, days[i]);
           }
         }
-
+        
         this.Days = days.ToList<CalendarWeekday>();
       }
     }
@@ -196,7 +202,7 @@ namespace Pabo.MonthCalendar
     private void Setup()
     {
       this.Height = this.Properties.TextFontSize + 20;
-      SetupDays(this.year, this.month, this.weekdayItems);
+      SetupDays(this.year, this.month, this.weekdayItems, this.template);
     }
 
     private void OnWeekdayLeave(CalendarWeekdayEventArgs e)

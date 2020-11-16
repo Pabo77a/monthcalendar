@@ -19,7 +19,7 @@ namespace Pabo.MonthCalendar
 {
   [TemplatePart(Name = "PART_Panel", Type = typeof(CalendarWrapPanel))]
   [ToolboxItem(false)]
-  internal class Calendar : ItemsControl
+  public class Calendar : ItemsControl
   {
 
     public Calendar() : base(7, 6)
@@ -50,6 +50,8 @@ namespace Pabo.MonthCalendar
     private Pos startPos = new Pos();
     private Pos endPos = new Pos();
     private List<Day> prevSelected = new List<Day>();
+
+    private DataTemplate template;
 
     #endregion
 
@@ -506,10 +508,10 @@ namespace Pabo.MonthCalendar
 
     private void Setup()
     {
-      SetupDays(this.year, this.month, this.minDate, this.maxDate, this.dayItems, this.disabledDays);
+      SetupDays(this.year, this.month, this.minDate, this.maxDate, this.dayItems, this.disabledDays, this.template);
     }
 
-    internal void SetupDays(int year, int month, DateTime minDate, DateTime maxDate, List<Day> items, List<DateTime> disabledDays)
+    internal void SetupDays(int year, int month, DateTime minDate, DateTime maxDate, List<Day> items, List<DateTime> disabledDays, DataTemplate template)
     {
 
       this.year = year;
@@ -518,6 +520,7 @@ namespace Pabo.MonthCalendar
       this.minDate = minDate;
       this.maxDate = maxDate;
       this.disabledDays = disabledDays;
+      this.template = template;
 
       if (!SuspendLayout)
       {
@@ -566,6 +569,8 @@ namespace Pabo.MonthCalendar
 
           var disabled = this.disabledDays.FirstOrDefault(x => x == days[i].Date);
           var selected = this.Days.FirstOrDefault(x => x.Selected && x.Date == days[i].Date);
+
+          days[i].Template = this.template;
 
           days[i].Selected = this.Days.FirstOrDefault(x => x.Selected && x.Date == days[i].Date) != null;
           days[i].Disabled = days[i].Date <= minDate || days[i].Date >= maxDate || disabled != default(DateTime);

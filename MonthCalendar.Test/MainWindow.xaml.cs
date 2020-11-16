@@ -65,16 +65,19 @@ namespace MonthCalendar.Test
         DateFontSize = 22,
         Text = "BIDEN",
         TextColor = Colors.White,
-        TextFontSize = 36
-      });
+        TextFontSize = 36 //,
+        //Template = (DataTemplate)Application.Current.FindResource("myDayTemplate2")
+    });
       this.days.Add(new Day() { Date = new DateTime(2020, 8, 16), BackgroundColor = Colors.Linen, DateColor = Colors.DarkOrange, Text = "TRUMP", TextColor = Colors.Ivory, TextFontSize = 22 });
 
       this.days.Add(new Day() { Date = new DateTime(2020, 7, 28), DateColor = Colors.Red, Text = "yyy", TextColor = Colors.Black });
 
 
-      this.weeks.Add(new Week() { TextColor = Colors.White, BackgroundColor = Colors.Green, TextFontWeight = FontWeights.Bold, Number = 32, Year = 2020 });
+      this.weeks.Add(new Week() { TextColor = Colors.White, BackgroundColor = Colors.Green, TextFontWeight = FontWeights.Bold, 
+        Number = 32, Year = 2020 });
 
-      this.weekdays.Add(new Weekday() { BackgroundColor = Colors.Green, TextColor = Colors.White, TextFontSize = 16, TextFontWeight = FontWeights.Bold, Year = 2020, Month = 8, DayOfWeek = DayOfWeek.Tuesday });
+        this.weekdays.Add(new Weekday() { /*Template = (DataTemplate)Application.Current.FindResource("myWeekdayTemplate"),*/
+          BackgroundColor = Colors.Orange, TextColor = Colors.White, TextFontSize = 16, TextFontWeight = FontWeights.Bold, Year = 2020, Month = 8, DayOfWeek = DayOfWeek.Monday });
 
       //this.weeknumberProperties.TextColor = Colors.DarkOliveGreen;
       //this.weeknumberProperties.FontSize = 32;

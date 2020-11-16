@@ -5,6 +5,7 @@
     xmlns:calendar="clr-namespace:Pabo.MonthCalendar"
     xmlns:common="clr-namespace:Pabo.MonthCalendar.Common"
     xmlns:converters="clr-namespace:Pabo.MonthCalendar.Converters"
+   xmlns:selectors="clr-namespace:Pabo.MonthCalendar.Selectors"
     xmlns:controls="clr-namespace:Pabo.MonthCalendar.Controls"
     xmlns:model="clr-namespace:Pabo.MonthCalendar.Model">
 
@@ -72,6 +73,7 @@
       <converters:DateTimeToDayConverter x:Key="DayConverter" />
       <converters:BoolToVisibilityConverter x:Key="visibilityConverter" />
       <converters:BorderThicknessConverter x:Key="borderThicknessConverter" />
+      <selectors:DayTemplateSelector x:Key="DayTemplateSelector" />
     </Style.Resources>
     <Setter Property="Template">
       <Setter.Value>
@@ -80,9 +82,11 @@
             <Grid.Background>
               <ImageBrush ImageSource="{Binding BackgroundImage}" />
             </Grid.Background>
-            <ItemsControl x:Name="PART_Host" ItemsSource="{TemplateBinding Days}">
-              <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type model:CalendarDay}" x:Name="foo">
+            <ItemsControl x:Name="PART_Host"
+                          ItemTemplateSelector="{StaticResource DayTemplateSelector}"
+                          ItemsSource="{TemplateBinding Days}">
+              <ItemsControl.Resources>
+                <DataTemplate x:Key="DayDefaultTemplate" DataType="{x:Type model:CalendarDay}">
                   <Grid>
                     <Grid.RowDefinitions>
                       <RowDefinition Height="*"></RowDefinition>
@@ -159,7 +163,8 @@
                     </Viewbox>
                   </Grid>
                 </DataTemplate>
-              </ItemsControl.ItemTemplate>
+              </ItemsControl.Resources>
+              
               <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                   <controls:CalendarWrapPanel x:Name="PART_Panel" Rows="6" Cols="7"></controls:CalendarWrapPanel>
@@ -209,21 +214,23 @@
     <Style.Resources>
       <converters:ColorToSolidColorBrushConverter x:Key="BrushConverter" />
       <converters:BoolToVisibilityConverter x:Key="visibilityConverter" />
+      <selectors:WeekdayTemplateSelector x:Key="WeekdayTemplateSelector" />
     </Style.Resources>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type calendar:Weekdays}">
           <Grid>
-            <Rectangle>
+            <!--<Rectangle>
               <Rectangle.Fill>
                 <SolidColorBrush Color="White"/>
               </Rectangle.Fill>
-            </Rectangle>
+            </Rectangle>-->
             <ItemsControl Background="{Binding BackgroundColor, Converter={StaticResource BrushConverter}}"
+                           ItemTemplateSelector="{StaticResource WeekdayTemplateSelector}"
                           x:Name="PART_Host" ItemsSource="{TemplateBinding Days}">
-              <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type model:CalendarWeekday}">
-                  <Grid  Background="{Binding BackgroundColor, Converter={StaticResource BrushConverter}}">
+              <ItemsControl.Resources>
+                <DataTemplate x:Key="WeekdayDefaultTemplate" DataType="{x:Type model:CalendarWeekday}">
+                  <Grid Background="{Binding BackgroundColor, Converter={StaticResource BrushConverter}}">
                     <Rectangle Visibility="{Binding MouseOver, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}">
                       <Rectangle.Fill>
                         <SolidColorBrush Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Weekdays}},Path=Properties.MouseOverOpacity}"
@@ -241,7 +248,7 @@
                                TextDecorations="{Binding TextTextDecoration}"/>
                   </Grid>
                 </DataTemplate>
-              </ItemsControl.ItemTemplate>
+              </ItemsControl.Resources>
               <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                   <controls:CalendarWrapPanel x:Name="PART_Panel" Rows="1" Cols="7"></controls:CalendarWrapPanel>
@@ -260,15 +267,17 @@
     <Style.Resources>
       <converters:ColorToSolidColorBrushConverter x:Key="BrushConverter" />
       <converters:BoolToVisibilityConverter x:Key="visibilityConverter" />
+      <selectors:WeekTemplateSelector x:Key="WeekTemplateSelector" />
     </Style.Resources>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type calendar:Weeknumbers}">
           <Grid>
-            <ItemsControl x:Name="PART_Host" Background="{Binding BackgroundColor, Converter={StaticResource BrushConverter}}" 
+            <ItemsControl x:Name="PART_Host" 
+                          ItemTemplateSelector="{StaticResource WeekTemplateSelector}"
                           ItemsSource="{TemplateBinding Weeks}">
-              <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type model:CalendarWeek}">
+              <ItemsControl.Resources>
+                <DataTemplate x:Key="WeekDefaultTemplate" DataType="{x:Type model:CalendarWeek}">
                   <Grid Background="{Binding BackgroundColor, Converter={StaticResource BrushConverter}}">
                     <Rectangle Visibility="{Binding MouseOver, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}">
                       <Rectangle.Fill>
@@ -290,8 +299,8 @@
                              Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" 
                              Visibility="{Binding MouseOver, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}"></Border>
                   </Grid>
-                </DataTemplate>
-              </ItemsControl.ItemTemplate>
+                </DataTemplate>       
+              </ItemsControl.Resources>
               <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                   <controls:CalendarWrapPanel x:Name="PART_Panel" Rows="6" Cols="1"></controls:CalendarWrapPanel>
@@ -313,8 +322,7 @@
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type calendar:MonthCalendar}">
-          <Grid DataContext="{TemplateBinding WeekdaysProperties }"
-                Background="{Binding BackgroundColor, Converter={StaticResource BrushConverter}}">
+          <Grid Background="{TemplateBinding Background}">
             <Grid.RowDefinitions>
               <RowDefinition Height="Auto" />
               <RowDefinition Height="Auto"  />

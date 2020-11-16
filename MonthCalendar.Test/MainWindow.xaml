@@ -1,8 +1,11 @@
 ﻿<Window x:Class="MonthCalendar.Test.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:model="clr-namespace:Pabo.MonthCalendar.Model;assembly=Pabo.MonthCalendar"
         xmlns:calendar="clr-namespace:Pabo.MonthCalendar;assembly=Pabo.MonthCalendar"
         Title="MainWindow" Height="796" Width="896">
+  <Window.Resources>
+  </Window.Resources>
   <Grid Margin="0,0,23,29">
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
@@ -14,6 +17,7 @@
 
 
     <calendar:MonthCalendar Grid.Row="0"
+                            Background="White"
                             Name="MyCalendar"
                             Year="2020" Month="8" 
                             Header="true"
@@ -25,17 +29,13 @@
                             HeaderProperties="{Binding HeaderProperties, Mode=OneWay}"
                             WeeknumberProperties="{Binding WeeknumberProperties, Mode=OneWay}"
                             WeekdaysProperties="{Binding WeekdaysProperties, Mode=OneWay}"
-                            
                             CalendarProperties="{Binding CalendarProperties, Mode=OneWay}"
-                              
                             DisabledDays="{Binding DisabledDays, Mode=OneWay}"
                             Days="{Binding Path=Days, Mode=OneWay}"
                             Weeks="{Binding Path=Weeks, Mode=OneWay}"
                             DayOfWeek="{Binding Path=Weekdays, Mode=OneWay}"
-                            
                             MinDate="{Binding MinDate}"
                             MaxDate="{Binding MaxDate}"
-                            Margin="10,10,24,-10"
                             SelectionChanged="MonthCalendar_SelectionChanged"
                             FooterEnter="MonthCalendar_FooterEnter"
                             FooterLeave="MonthCalendar_FooterLeave"
@@ -51,7 +51,7 @@
                             WeekdayClick="MonthCalendar_WeekdayClick"
                             WeekdayDoubleClick="MonthCalendar_WeekdayDoubleClick"
                             WeekDoubleClick="MonthCalendar_WeekDoubleClick"
-                            MonthChanged="MonthCalendar_MonthChanged" >
+                            MonthChanged="MonthCalendar_MonthChanged" Grid.RowSpan="2" >
     </calendar:MonthCalendar>
     <Button Grid.Row="1" Click="Button_Click">TEST</Button>
   </Grid>

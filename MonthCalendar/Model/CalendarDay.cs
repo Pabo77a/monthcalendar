@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace Pabo.MonthCalendar.Model
 {
-  internal class CalendarDay : Day, INotifyPropertyChanged
+  public class CalendarDay : Day, INotifyPropertyChanged
   {
 
 
@@ -35,6 +35,7 @@ namespace Pabo.MonthCalendar.Model
       }
          
     }
+   
 
     public bool Trailing
     {

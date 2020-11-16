@@ -42,7 +42,7 @@ namespace Pabo.MonthCalendar.Model
     private HorizontalAlignment dateHorizontalAlignment = HorizontalAlignment.Right;
     private Thickness dateMargin = new Thickness(0, 4, 7, 0);
 
-
+    private DataTemplate template;
     public Day()
     {
     }
@@ -64,6 +64,21 @@ namespace Pabo.MonthCalendar.Model
         }
       }
     }
+
+    public DataTemplate Template
+    {
+      get => this.template;
+      set
+      {
+        if (value != this.template)
+        {
+          this.template = value;
+          OnPropertyChanged(nameof(this.Template));
+        }
+      }
+
+    }
+
 
     #region Date
 

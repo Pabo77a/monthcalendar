@@ -33,11 +33,31 @@ namespace Pabo.MonthCalendar
     private Calendar calendar;
     private Weekdays weekdays;
     private Weeknumbers weeknumbers;
- 
+
     #endregion
 
 
     #region dependency properties
+   
+
+    public static readonly DependencyProperty DayTemplateProperty = DependencyProperty.Register("DayTemplate",
+               typeof(DataTemplate),
+               typeof(MonthCalendar),
+               new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                   OnDayTemplateChanged));
+
+    public static readonly DependencyProperty WeekTemplateProperty = DependencyProperty.Register("WeekTemplate",
+               typeof(DataTemplate),
+               typeof(MonthCalendar),
+               new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                   OnWeekTemplateChanged));
+
+    public static readonly DependencyProperty WeekdayTemplateProperty = DependencyProperty.Register("WeekdayTemplate",
+               typeof(DataTemplate),
+               typeof(MonthCalendar),
+               new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                   OnWeekdayTemplateChanged));
+
 
     public static readonly DependencyProperty MonthProperty = DependencyProperty.Register("Month",
                typeof(int),
@@ -79,9 +99,10 @@ namespace Pabo.MonthCalendar
                new FrameworkPropertyMetadata(new ObservableCollection<DateTime>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnDisabledDaysChanged));
 
     public static readonly DependencyProperty WeeksProperty = DependencyProperty.Register("Weeks",
-               typeof(TrulyObservableCollection<Week>),
-               typeof(MonthCalendar),
-               new FrameworkPropertyMetadata(new TrulyObservableCollection<Week>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnWeeksChanged));
+              typeof(TrulyObservableCollection<Week>),
+              typeof(MonthCalendar),
+              new FrameworkPropertyMetadata(new TrulyObservableCollection<Week>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnWeeksChanged));
+
 
     public static readonly DependencyProperty DayOfWeekProperty = DependencyProperty.Register("DayOfWeek",
                typeof(TrulyObservableCollection<Weekday>),
@@ -142,7 +163,7 @@ namespace Pabo.MonthCalendar
                typeof(MonthCalendar),
                new FrameworkPropertyMetadata(new CalendarProperties(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnCalendarPropertiesChanged));
 
-
+ 
 
 
     #endregion
@@ -431,7 +452,7 @@ namespace Pabo.MonthCalendar
     {
       if (this.calendar != null)
       {
-        this.calendar.SetupDays(this.Year, this.Month, this.MinDate, this.MaxDate, this.Days.ToList(), this.DisabledDays.ToList());
+        this.calendar.SetupDays(this.Year, this.Month, this.MinDate, this.MaxDate, this.Days.ToList(), this.DisabledDays.ToList(), this.DayTemplate);
         this.calendar.SelectionMode = this.SelectionMode;
       }
     }
@@ -440,7 +461,7 @@ namespace Pabo.MonthCalendar
     {
       if (this.weekdays != null)
       {
-        this.weekdays.SetupDays(this.Year, this.Month, this.DayOfWeek.ToList());
+        this.weekdays.SetupDays(this.Year, this.Month, this.DayOfWeek.ToList(), this.WeekdayTemplate);
       }
     }
 
@@ -448,7 +469,7 @@ namespace Pabo.MonthCalendar
     {
       if (this.weeknumbers != null)
       {
-        this.weeknumbers.SetupWeeks(this.calendar.Days.First().Date, this.Weeks.ToList());
+        this.weeknumbers.SetupWeeks(this.calendar.Days.First().Date, this.Weeks.ToList(), this.WeekTemplate);
       }
     }
 
@@ -490,6 +511,51 @@ namespace Pabo.MonthCalendar
     #endregion
 
     #region public properties
+
+    [Description("")]
+    [Category("Calendar")]
+    [Browsable(true)]
+    public DataTemplate DayTemplate
+    {
+      get
+      {
+        return (DataTemplate)this.GetValue(DayTemplateProperty);
+      }
+      set
+      {
+        this.SetValue(DayTemplateProperty, value);
+      }
+    }
+
+    [Description("")]
+    [Category("Calendar")]
+    [Browsable(true)]
+    public DataTemplate WeekdayTemplate
+    {
+      get
+      {
+        return (DataTemplate)this.GetValue(WeekdayTemplateProperty);
+      }
+      set
+      {
+        this.SetValue(WeekdayTemplateProperty, value);
+      }
+    }
+
+    [Description("")]
+    [Category("Calendar")]
+    [Browsable(true)]
+    public DataTemplate WeekTemplate
+    {
+      get
+      {
+        return (DataTemplate)this.GetValue(WeekTemplateProperty);
+      }
+      set
+      {
+        this.SetValue(WeekTemplateProperty, value);
+      }
+    }
 
     [Description("")]
     [Category("Calendar")]
@@ -984,12 +1050,12 @@ namespace Pabo.MonthCalendar
       if (this.weeknumbers != null)
       {
 
-        this.weeknumbers.SetupWeeks(this.calendar.Days.First().Date, this.Weeks.ToList());
+        this.weeknumbers.SetupWeeks(this.calendar.Days.First().Date, this.Weeks.ToList(), this.WeekTemplate);
         this.Weeks.CollectionChanged += (s, e) =>
         {
           if (this.calendar != null && this.weeknumbers != null)
           {
-            this.weeknumbers.SetupWeeks(this.calendar.Days.First().Date, this.Weeks.ToList());
+            this.weeknumbers.SetupWeeks(this.calendar.Days.First().Date, this.Weeks.ToList(), this.WeekTemplate);
           }
         };
       }
@@ -1009,12 +1075,12 @@ namespace Pabo.MonthCalendar
       if (this.weekdays != null)
       {
 
-        this.weekdays.SetupDays(this.Year, this.Month, this.DayOfWeek.ToList());
+        this.weekdays.SetupDays(this.Year, this.Month, this.DayOfWeek.ToList(), this.WeekdayTemplate);
         this.Weeks.CollectionChanged += (s, e) =>
         {
           if (this.calendar != null && this.weekdays != null)
           {
-            this.weekdays.SetupDays(this.Year, this.Month, this.DayOfWeek.ToList());
+            this.weekdays.SetupDays(this.Year, this.Month, this.DayOfWeek.ToList(), this.WeekdayTemplate);
           }
         };
       }
@@ -1181,6 +1247,55 @@ namespace Pabo.MonthCalendar
       SetupCalendar();
       SetupWeeknumbers();
       SetupWeekdays();
+    }
+
+    private static void OnDayTemplateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        calendar.OnDayTemplateChanged(e.NewValue, e.OldValue);
+    }
+
+    protected virtual void OnDayTemplateChanged(object newValue, object oldValue)
+    {
+      if (this.calendar != null)
+      {
+        
+        SetupCalendar();
+      }
+    }
+
+    private static void OnWeekTemplateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        calendar.OnWeekTemplateChanged(e.NewValue, e.OldValue);
+    }
+
+    protected virtual void OnWeekTemplateChanged(object newValue, object oldValue)
+    {
+      if (this.weeknumbers != null)
+      {
+        SetupWeeknumbers();
+      }
+    }
+
+    private static void OnWeekdayTemplateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        calendar.OnWeekdayTemplateChanged(e.NewValue, e.OldValue);
+    }
+
+    protected virtual void OnWeekdayTemplateChanged(object newValue, object oldValue)
+    {
+      if (this.weekdays != null)
+      {
+        SetupWeekdays();
+      }
     }
 
     private static object OnCoerceMonthChanged(DependencyObject d, object value)

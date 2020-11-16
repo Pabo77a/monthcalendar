@@ -2,8 +2,30 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:MonthCalendar.Test"
+             xmlns:model="clr-namespace:Pabo.MonthCalendar.Model;assembly=Pabo.MonthCalendar"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
-    </Application.Resources>
+      
+    <DataTemplate x:Key="myDayTemplate" DataType="{x:Type model:CalendarDay}" >
+      <Grid Background="Azure">
+        <TextBlock Text="{Binding Date.Day}"></TextBlock>
+      </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="myDayTemplate2" DataType="{x:Type model:CalendarDay}" >
+      <Grid Background="GreenYellow">
+        <TextBlock Text="{Binding Date.Day}"></TextBlock>
+      </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="myWeekTemplate" DataType="{x:Type model:CalendarWeek}" >
+      <Grid Background="Azure">
+        <TextBlock Text="{Binding Date.Weeknumber}"></TextBlock>
+      </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="myWeekdayTemplate" DataType="{x:Type model:CalendarWeekday}" >
+      <Grid Background="LimeGreen">
+        <TextBlock Text="{Binding Text}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10" Foreground="White"></TextBlock>
+      </Grid>
+    </DataTemplate>
+
+  </Application.Resources>
 </Application>

@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace Pabo.MonthCalendar.Model
 {
-  internal class CalendarWeek : Week, INotifyPropertyChanged
+  public class CalendarWeek : Week, INotifyPropertyChanged
   {
     private bool mouseOver;
 

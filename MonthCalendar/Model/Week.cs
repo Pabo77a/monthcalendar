@@ -24,7 +24,7 @@ namespace Pabo.MonthCalendar.Model
     private int year;
 
     private Color backgroundColor;
-
+    private DataTemplate template;
 
     public int Number
     {
@@ -196,6 +196,19 @@ namespace Pabo.MonthCalendar.Model
       }
     }
 
+    public DataTemplate Template
+    {
+      get => this.template;
+      set
+      {
+        if (value != this.template)
+        {
+          this.template = value;
+          OnPropertyChanged(nameof(this.Template));
+        }
+      }
+
+    }
 
   }
 }

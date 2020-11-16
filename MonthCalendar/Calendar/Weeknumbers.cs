@@ -42,6 +42,7 @@ namespace Pabo.MonthCalendar
     private DateTime firstDate;
     private List<Week> weekItems;
     private bool suspendLayout = false;
+    private DataTemplate template;
 
     public Weeknumbers() : base(1, 6)
     {
@@ -147,13 +148,13 @@ namespace Pabo.MonthCalendar
 
     #endregion
 
-    internal void SetupWeeks(DateTime firstDate, List<Week> weekItems)
+    internal void SetupWeeks(DateTime firstDate, List<Week> weekItems, DataTemplate template)
     {
       if (!SuspendLayout)
       {
         this.firstDate = firstDate;
         this.weekItems = weekItems;
-
+        this.template = template;
         this.Width = this.Properties.TextFontSize + 25;
 
         var year = firstDate.Year;
@@ -164,6 +165,7 @@ namespace Pabo.MonthCalendar
         {
           var week = new CalendarWeek(date);
           var number = ISOWeek.GetWeekOfYear(date);
+          week.Template = this.template;
           week.Number = number;
           var item = weekItems.FirstOrDefault(x => x.Year == year && x.Number == number);
           Utils.CopyProperties<WeeknumberProperties, CalendarWeek>(Properties, week);
@@ -182,7 +184,7 @@ namespace Pabo.MonthCalendar
     
     private void Setup()
     {
-      this.SetupWeeks(this.firstDate, this.weekItems);
+      this.SetupWeeks(this.firstDate, this.weekItems, this.template);
     }
 
     private void OnWeekClick(CalendarWeekEventArgs e)
