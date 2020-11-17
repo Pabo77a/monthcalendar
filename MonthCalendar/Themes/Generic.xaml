@@ -83,9 +83,15 @@
               <ImageBrush ImageSource="{Binding BackgroundImage}" />
             </Grid.Background>
             <ItemsControl x:Name="PART_Host"
+                          ToolTipService.ShowDuration="100000"
                           ItemTemplateSelector="{StaticResource DayTemplateSelector}"
                           ItemsSource="{TemplateBinding Days}">
               <ItemsControl.Resources>
+                <Popup x:Key="popup" >
+                  <Border Background="white" BorderBrush="black" BorderThickness="1,1,1,1">
+                    <TextBlock Margin="2,2,2,2"></TextBlock>
+                  </Border>
+                </Popup>
                 <DataTemplate x:Key="DayDefaultTemplate" DataType="{x:Type model:CalendarDay}">
                   <Grid>
                     <Grid.RowDefinitions>

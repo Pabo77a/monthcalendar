@@ -14,10 +14,12 @@ using Pabo.MonthCalendar.Controls;
 using Point = System.Windows.Point;
 using Pabo.MonthCalendar.EventArgs;
 using Pabo.MonthCalendar.Properties;
+using System.Windows.Controls.Primitives;
 
 namespace Pabo.MonthCalendar
 {
-  [TemplatePart(Name = "PART_Panel", Type = typeof(CalendarWrapPanel))]
+  [TemplatePart(Name = "PART_Host", Type = typeof(CalendarWrapPanel))]
+  [TemplatePart(Name = "PART_Tooltip", Type = typeof(Popup))]
   [ToolboxItem(false)]
   public class Calendar : ItemsControl
   {
@@ -33,6 +35,7 @@ namespace Pabo.MonthCalendar
     #region private members
 
     private System.Windows.Controls.ItemsControl itemsControl;
+    private Popup popup;
     private MonthCalendarSelectionMode selectionMode = MonthCalendarSelectionMode.Single;
 
     private CalendarDay activeDay;
@@ -113,10 +116,11 @@ namespace Pabo.MonthCalendar
         this.itemsControl.MouseEnter += ItemsControl_MouseEnter;
         this.itemsControl.MouseLeave += ItemsControl_MouseLeave;
         this.itemsControl.MouseDoubleClick += ItemsControl_MouseDoubleClick;
+
+        this.popup = this.itemsControl.Resources["popup"] as Popup;
+
       }
     }
-
-
 
     #endregion
 
@@ -130,11 +134,14 @@ namespace Pabo.MonthCalendar
         this.OnDayLeave(new CalendarDayEventArgs(this.activeDay));
       }
       this.activeDay = null;
+      this.popup.IsOpen = false;
+   
     }
 
     private void ItemsControl_MouseEnter(object sender, MouseEventArgs e)
     {
       var day = this.Days[GetItem(e.GetPosition(this))];
+      
       this.activeDay = day;
       this.activeDay.MouseOver = true;
       this.OnDayEnter(new CalendarDayEventArgs(day));
@@ -143,8 +150,18 @@ namespace Pabo.MonthCalendar
 
     private void ItemsControl_MouseMove(object sender, MouseEventArgs e)
     {
+     
+      popup.PlacementTarget = sender as UIElement; ;
+      popup.VerticalOffset = e.GetPosition(this).Y + 16;
+      popup.HorizontalOffset = e.GetPosition(this).X + 16;
+      popup.Placement = PlacementMode.Relative;
+    
+      var textBlock = ((Border)popup.Child).Child as TextBlock;
 
       var day = this.Days[GetItem(e.GetPosition(this))];
+      
+      textBlock.Text = day.Tooltip;
+      popup.IsOpen = !string.IsNullOrEmpty(day.Tooltip) && !this.mouseDown;
 
       if (this.mouseDown && this.SelectionMode > MonthCalendarSelectionMode.Single)
       {

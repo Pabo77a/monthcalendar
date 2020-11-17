@@ -27,7 +27,6 @@ namespace Pabo.MonthCalendar.Properties
     private double mouseOverOpacity = .25;
 
 
-
     public PanelProperties()
     {
     }

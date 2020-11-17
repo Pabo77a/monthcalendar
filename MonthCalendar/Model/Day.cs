@@ -42,6 +42,8 @@ namespace Pabo.MonthCalendar.Model
     private HorizontalAlignment dateHorizontalAlignment = HorizontalAlignment.Right;
     private Thickness dateMargin = new Thickness(0, 4, 7, 0);
 
+    private string toolTip = string.Empty;
+
     private DataTemplate template;
     public Day()
     {
@@ -61,6 +63,19 @@ namespace Pabo.MonthCalendar.Model
         {
           this.backgroundColor = value;
           OnPropertyChanged(nameof(this.BackgroundColor));
+        }
+      }
+    }
+
+    public string Tooltip
+    {
+      get => toolTip;
+      set
+      {
+        if (value != toolTip)
+        {
+          this.toolTip = value;
+          OnPropertyChanged(nameof(this.Tooltip));
         }
       }
     }

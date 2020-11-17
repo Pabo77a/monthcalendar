@@ -64,11 +64,13 @@ namespace MonthCalendar.Test
         Image = new BitmapImage(new Uri("pack://application:,,,/Resources/star.png", UriKind.Absolute)),
         DateFontSize = 22,
         Text = "BIDEN",
+        Tooltip = "This is a test.",
         TextColor = Colors.White,
         TextFontSize = 36 //,
         //Template = (DataTemplate)Application.Current.FindResource("myDayTemplate2")
     });
-      this.days.Add(new Day() { Date = new DateTime(2020, 8, 16), BackgroundColor = Colors.Linen, DateColor = Colors.DarkOrange, Text = "TRUMP", TextColor = Colors.Ivory, TextFontSize = 22 });
+      this.days.Add(new Day() { Date = new DateTime(2020, 8, 16), Tooltip = "Make americagreat again!", 
+        BackgroundColor = Colors.Linen, DateColor = Colors.DarkOrange, Text = "TRUMP", TextColor = Colors.Ivory, TextFontSize = 22 });
 
       this.days.Add(new Day() { Date = new DateTime(2020, 7, 28), DateColor = Colors.Red, Text = "yyy", TextColor = Colors.Black });
 
