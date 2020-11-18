@@ -98,6 +98,8 @@ namespace MonthCalendar.Test
 
       //this.weekdaysProperties.AbbreviatedNames = false;
 
+      this.calendarProperties.ShowNotCurrentMonth = true;
+
       this.calendarProperties.DateFontSize = 24;
       this.calendarProperties.DateColor = Colors.Green;
       this.calendarProperties.DateTextDecoration = "Underline";
@@ -108,8 +110,8 @@ namespace MonthCalendar.Test
 
       //this.calendarProperties.BackgroundImage = new BitmapImage(new Uri("pack://application:,,,/Resources/bricks.jpeg", UriKind.Absolute));
 
-      this.calendarProperties.TrailingBackgroundColor = Colors.Gray;
-      this.calendarProperties.TrailingDateColor = Colors.White;
+      this.calendarProperties.NotCurrentMonthBackgroundColor = Colors.Gray;
+      this.calendarProperties.NotCurrentMonthDateColor = Colors.White;
       MyCalendar.DataContext = this;
       
     }

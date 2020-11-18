@@ -89,7 +89,7 @@
               <ItemsControl.Resources>
                
                 <DataTemplate x:Key="DayDefaultTemplate" DataType="{x:Type model:CalendarDay}">
-                  <Grid>
+                  <Grid Visibility="{Binding Visible,Converter={StaticResource visibilityConverter}, ConverterParameter=Normal}">
                     <Grid.RowDefinitions>
                       <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>

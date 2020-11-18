@@ -13,7 +13,8 @@ namespace Pabo.MonthCalendar.Model
     private bool mouseOver = false;
 
     private bool disabled = false;
-    private bool trailing = false;
+    private bool notCurrentMonth = false;
+    private bool visible = true;
 
     private Thickness thickness = new Thickness(1, 1, 1, 1);
 
@@ -37,15 +38,15 @@ namespace Pabo.MonthCalendar.Model
     }
    
 
-    public bool Trailing
+    public bool NotCurrentMonth
     {
-      get => this.trailing;
+      get => this.notCurrentMonth;
       set
       {
-        if (value != this.trailing)
+        if (value != this.notCurrentMonth)
         {
-          this.trailing = value;
-          OnPropertyChanged(nameof(this.Trailing));
+          this.notCurrentMonth = value;
+          OnPropertyChanged(nameof(this.NotCurrentMonth));
         }
       }
 
@@ -61,6 +62,20 @@ namespace Pabo.MonthCalendar.Model
         {
           this.disabled = value;
           OnPropertyChanged(nameof(this.Disabled));
+        }
+      }
+
+    }
+
+    public bool Visible
+    {
+      get => this.visible;
+      set
+      {
+        if (value != this.visible)
+        {
+          this.visible = value;
+          OnPropertyChanged(nameof(this.Visible));
         }
       }
 

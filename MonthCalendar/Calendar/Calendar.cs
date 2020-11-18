@@ -211,6 +211,7 @@ namespace Pabo.MonthCalendar
     {
 
       var selected = this.Days.Where(x => x.Selected).ToList();
+      var mouseOver = this.Days.Where(x => x.MouseOver).ToList();
       if (SelectionMode > MonthCalendarSelectionMode.None)
       {
         if (SelectionMode == MonthCalendarSelectionMode.Single)
@@ -228,7 +229,7 @@ namespace Pabo.MonthCalendar
         {
           foreach (CalendarDay day in days)
           {
-            day.Selected = day == activeDay && activeDay.Selected ? false : true;
+            day.Selected =  day == activeDay && activeDay.Selected && mouseOver.Count() == 1 ? false : true;
             day.MouseOver = false;
           }
         }
@@ -578,14 +579,15 @@ namespace Pabo.MonthCalendar
 
           days[i].Selected = this.Days.FirstOrDefault(x => x.Selected && x.Date == days[i].Date) != null;
           days[i].Disabled = days[i].Date <= minDate || days[i].Date >= maxDate || disabled != default(DateTime);
-          days[i].Trailing = days[i].Date.Month != month;
+          days[i].NotCurrentMonth = days[i].Date.Month != month;
+          days[i].Visible = !days[i].NotCurrentMonth || (days[i].NotCurrentMonth && Properties.ShowNotCurrentMonth);
           if (!days[i].Disabled)
           {
      
-            days[i].DateColor = days[i].Trailing ? Properties.TrailingDateColor : Properties.DateColor;
+            days[i].DateColor = days[i].NotCurrentMonth ? Properties.NotCurrentMonthDateColor : Properties.DateColor;
             days[i].BackgroundColor = Properties.BackgroundImage != null ?
                     Colors.Transparent :
-                    days[i].Trailing ? Properties.TrailingBackgroundColor : Properties.BackgroundColor;
+                    days[i].NotCurrentMonth ? Properties.NotCurrentMonthBackgroundColor : Properties.BackgroundColor;
           }
 
           days[i].DateFontFamily = Properties.DateFontFamily;

@@ -30,9 +30,10 @@ namespace Pabo.MonthCalendar.Properties
 
     private BitmapImage backgroundImage = null;
 
-    // Trailing
-    private Color trailingDateColor = Colors.White;
-    private Color trailingBackgroundColor = Colors.LightGray;
+    // Not current month
+    private Color notCurrentMonthDateColor = Colors.White;
+    private Color notCurrentMonthBackgroundColor = Colors.LightGray;
+    private bool showNotCurrentMonth = true;
 
     // Selected
     private Color selectedBackgroundColor = Colors.LightBlue;
@@ -76,28 +77,41 @@ namespace Pabo.MonthCalendar.Properties
       }
     }
 
-    public Color TrailingBackgroundColor
+    public Color NotCurrentMonthBackgroundColor
     {
-      get => trailingBackgroundColor;
+      get => notCurrentMonthBackgroundColor;
       set
       {
-        if (value != trailingBackgroundColor)
+        if (value != notCurrentMonthBackgroundColor)
         {
-          trailingBackgroundColor = value;
-          OnPropertyChanged(nameof(this.TrailingBackgroundColor));
+          notCurrentMonthBackgroundColor = value;
+          OnPropertyChanged(nameof(this.NotCurrentMonthBackgroundColor));
         }
       }
     }
 
-    public Color TrailingDateColor
+    public Color NotCurrentMonthDateColor
     {
-      get => trailingDateColor;
+      get => notCurrentMonthDateColor;
       set
       {
-        if (value != trailingDateColor)
+        if (value != notCurrentMonthDateColor)
         {
-          trailingDateColor = value;
-          OnPropertyChanged(nameof(this.TrailingDateColor));
+          notCurrentMonthDateColor = value;
+          OnPropertyChanged(nameof(this.NotCurrentMonthDateColor));
+        }
+      }
+    }
+
+    public bool ShowNotCurrentMonth
+    {
+      get => showNotCurrentMonth;
+      set
+      {
+        if (value != showNotCurrentMonth)
+        {
+          showNotCurrentMonth = value;
+          OnPropertyChanged(nameof(this.ShowNotCurrentMonth));
         }
       }
     }
