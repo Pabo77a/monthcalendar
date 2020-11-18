@@ -89,6 +89,8 @@ namespace Pabo.MonthCalendar
         this.itemsControl.MouseLeave += ItemsControl_MouseLeave;
         this.itemsControl.MouseDown += ItemsControl_MouseDown;
         this.itemsControl.MouseDoubleClick += ItemsControl_MouseDoubleClick;
+
+        this.popup = CreatePopup(this.Properties);
       }
 
       Setup();
@@ -245,6 +247,7 @@ namespace Pabo.MonthCalendar
         this.OnWeekdayLeave(new CalendarWeekdayEventArgs(this.activeWeekday));
       }
       this.activeWeekday = null;
+      this.popup.IsOpen = false;
     }
 
     private void ItemsControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -273,6 +276,7 @@ namespace Pabo.MonthCalendar
     private void ItemsControl_MouseMove(object sender, MouseEventArgs e)
     {
       var weekday = this.Days[GetItem(e.GetPosition(this))];
+      SetTooltip(weekday.Tooltip);
       if (this.activeWeekday != weekday)
       {
         this.activeWeekday.MouseOver = false;

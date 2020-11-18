@@ -76,10 +76,12 @@ namespace MonthCalendar.Test
 
 
       this.weeks.Add(new Week() { TextColor = Colors.White, BackgroundColor = Colors.Green, TextFontWeight = FontWeights.Bold, 
-        Number = 32, Year = 2020 });
+        Number = 32, Year = 2020, Tooltip = "Denna vecka är den först i ...." });
 
         this.weekdays.Add(new Weekday() { /*Template = (DataTemplate)Application.Current.FindResource("myWeekdayTemplate"),*/
-          BackgroundColor = Colors.Orange, TextColor = Colors.White, TextFontSize = 16, TextFontWeight = FontWeights.Bold, Year = 2020, Month = 8, DayOfWeek = DayOfWeek.Monday });
+          BackgroundColor = Colors.Orange,
+          Tooltip = "Detta är en veckodag.",
+          TextColor = Colors.White, TextFontSize = 16, TextFontWeight = FontWeights.Bold, Year = 2020, Month = 8, DayOfWeek = DayOfWeek.Monday });
 
       //this.weeknumberProperties.TextColor = Colors.DarkOliveGreen;
       //this.weeknumberProperties.FontSize = 32;

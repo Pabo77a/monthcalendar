@@ -6,17 +6,17 @@ using System.Windows.Media;
 
 namespace Pabo.MonthCalendar.Properties
 {
-  public class PanelProperties : PropertiesBase
+  public class PanelProperties : PropertiesBase, ITooltipProperties
   {
 
-     // Text
+    // Text
     private int textFontSize = 16;
     private FontWeight textFontWeight = FontWeights.Normal;
     private FontStyle textFontStyle = FontStyles.Normal;
     private FontFamily textFontFamily = new FontFamily(string.Empty);
     private String textTextDecoration = string.Empty;
     private Color textColor = Colors.White;
-    private Color backGroundColor = Colors.Blue;
+    private Color backgroundColor = Colors.Blue;
     private VerticalAlignment textVerticalAlignment = VerticalAlignment.Center;
     private HorizontalAlignment textHorizontalAlignment = HorizontalAlignment.Center;
     private Thickness textMargin = new Thickness(0, 0, 0, 0);
@@ -26,6 +26,14 @@ namespace Pabo.MonthCalendar.Properties
     private Color mouseOverBorderColor = Colors.Transparent;
     private double mouseOverOpacity = .25;
 
+    //Tooltip
+    private int tooltipFontSize = 12;
+    private FontWeight tooltipFontWeight = FontWeights.Normal;
+    private FontStyle tooltipFontStyle = FontStyles.Normal;
+    private FontFamily tooltipFontFamily = new FontFamily(string.Empty);
+    private Color tooltipTextColor = Colors.Black;
+    private Color tooltipBackgroundColor = Colors.White;
+    private Color tooltipBorderColor = Colors.Black;
 
     public PanelProperties()
     {
@@ -61,12 +69,12 @@ namespace Pabo.MonthCalendar.Properties
 
     public Color BackgroundColor
     {
-      get => backGroundColor;
+      get => backgroundColor;
       set
       {
-        if (value != backGroundColor)
+        if (value != backgroundColor)
         {
-          backGroundColor = value;
+          backgroundColor = value;
           OnPropertyChanged(nameof(this.BackgroundColor));
         }
       }
@@ -208,5 +216,100 @@ namespace Pabo.MonthCalendar.Properties
 
     #endregion
 
+
+    #region Tooltip
+
+    public Color TooltipTextColor
+    {
+      get => tooltipTextColor;
+      set
+      {
+        if (value != tooltipTextColor)
+        {
+          tooltipTextColor = value;
+          OnPropertyChanged(nameof(this.TooltipTextColor));
+        }
+      }
+    }
+
+    public Color TooltipBackgroundColor
+    {
+      get => tooltipBackgroundColor;
+      set
+      {
+        if (value != tooltipBackgroundColor)
+        {
+          tooltipBackgroundColor = value;
+          OnPropertyChanged(nameof(this.TooltipBackgroundColor));
+        }
+      }
+    }
+
+    public Color TooltipBorderColor
+    {
+      get => tooltipBorderColor;
+      set
+      {
+        if (value != tooltipBorderColor)
+        {
+          tooltipBorderColor = value;
+          OnPropertyChanged(nameof(this.TooltipBorderColor));
+        }
+      }
+    }
+
+    public int TooltipFontSize
+    {
+      get => tooltipFontSize;
+      set
+      {
+        if (value != tooltipFontSize)
+        {
+          tooltipFontSize = value;
+          OnPropertyChanged(nameof(this.TooltipFontSize));
+        }
+      }
+    }
+
+    public FontFamily TooltipFontFamily
+    {
+      get => tooltipFontFamily;
+      set
+      {
+        if (value != tooltipFontFamily)
+        {
+          tooltipFontFamily = value;
+          OnPropertyChanged(nameof(this.TooltipFontFamily));
+        }
+      }
+    }
+
+    public FontWeight TooltipFontWeight
+    {
+      get => tooltipFontWeight;
+      set
+      {
+        if (value != tooltipFontWeight)
+        {
+          tooltipFontWeight = value;
+          OnPropertyChanged(nameof(this.TooltipFontWeight));
+        }
+      }
+    }
+
+    public FontStyle TooltipFontStyle
+    {
+      get => tooltipFontStyle;
+      set
+      {
+        if (value != tooltipFontStyle)
+        {
+          tooltipFontStyle = value;
+          OnPropertyChanged(nameof(this.TooltipFontStyle));
+        }
+      }
+    }
+
+    #endregion
   }
 }

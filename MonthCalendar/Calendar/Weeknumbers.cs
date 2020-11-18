@@ -90,6 +90,8 @@ namespace Pabo.MonthCalendar
         this.itemsControl.MouseDown += ItemsControl_MouseDown;
         this.itemsControl.MouseEnter += ItemsControl_MouseEnter;
         this.itemsControl.MouseLeave += ItemsControl_MouseLeave;
+
+        this.popup = CreatePopup(this.Properties);
       }
 
     }
@@ -228,6 +230,7 @@ namespace Pabo.MonthCalendar
         this.OnWeekLeave(new CalendarWeekEventArgs(this.activeWeek));
       }
       this.activeWeek = null;
+      this.popup.IsOpen = false;
     }
 
     private void ItemsControl_MouseEnter(object sender, MouseEventArgs e)
@@ -242,6 +245,8 @@ namespace Pabo.MonthCalendar
     private void ItemsControl_MouseMove(object sender, MouseEventArgs e)
     {
       var week = this.Weeks[GetItem(e.GetPosition(this))];
+      SetTooltip(week.Tooltip);
+
       if (this.activeWeek != week)
       {
         this.activeWeek.MouseOver = false;

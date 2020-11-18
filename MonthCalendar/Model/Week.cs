@@ -26,6 +26,8 @@ namespace Pabo.MonthCalendar.Model
     private Color backgroundColor;
     private DataTemplate template;
 
+    private string toolTip;
+
     public int Number
     {
       get => number;
@@ -208,6 +210,19 @@ namespace Pabo.MonthCalendar.Model
         }
       }
 
+    }
+
+    public string Tooltip
+    {
+      get => toolTip;
+      set
+      {
+        if (value != toolTip)
+        {
+          this.toolTip = value;
+          OnPropertyChanged(nameof(this.Tooltip));
+        }
+      }
     }
 
   }

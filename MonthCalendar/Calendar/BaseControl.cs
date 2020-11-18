@@ -9,6 +9,9 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
+using Pabo.MonthCalendar.Properties;
 
 namespace Pabo.MonthCalendar
 {
@@ -58,6 +61,8 @@ namespace Pabo.MonthCalendar
       EventHandler handler = this.Click; ;
       handler?.Invoke(this, new System.EventArgs());
     }
+
+   
 
   }
 }

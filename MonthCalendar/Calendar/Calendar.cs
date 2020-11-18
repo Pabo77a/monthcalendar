@@ -35,7 +35,6 @@ namespace Pabo.MonthCalendar
     #region private members
 
     private System.Windows.Controls.ItemsControl itemsControl;
-    private Popup popup;
     private MonthCalendarSelectionMode selectionMode = MonthCalendarSelectionMode.Single;
 
     private CalendarDay activeDay;
@@ -49,7 +48,6 @@ namespace Pabo.MonthCalendar
     private DateTime minDate;
     private DateTime maxDate;
 
-    private bool mouseDown = false;
     private Pos startPos = new Pos();
     private Pos endPos = new Pos();
     private List<Day> prevSelected = new List<Day>();
@@ -117,8 +115,7 @@ namespace Pabo.MonthCalendar
         this.itemsControl.MouseLeave += ItemsControl_MouseLeave;
         this.itemsControl.MouseDoubleClick += ItemsControl_MouseDoubleClick;
 
-        this.popup = this.itemsControl.Resources["popup"] as Popup;
-
+        this.popup = CreatePopup(this.Properties);
       }
     }
 
@@ -150,19 +147,9 @@ namespace Pabo.MonthCalendar
 
     private void ItemsControl_MouseMove(object sender, MouseEventArgs e)
     {
-     
-      popup.PlacementTarget = sender as UIElement; ;
-      popup.VerticalOffset = e.GetPosition(this).Y + 16;
-      popup.HorizontalOffset = e.GetPosition(this).X + 16;
-      popup.Placement = PlacementMode.Relative;
-    
-      var textBlock = ((Border)popup.Child).Child as TextBlock;
-
       var day = this.Days[GetItem(e.GetPosition(this))];
-      
-      textBlock.Text = day.Tooltip;
-      popup.IsOpen = !string.IsNullOrEmpty(day.Tooltip) && !this.mouseDown;
-
+      SetTooltip(day.Tooltip);
+  
       if (this.mouseDown && this.SelectionMode > MonthCalendarSelectionMode.Single)
       {
         EndPos = this.GetItemPos(e.GetPosition(this));
