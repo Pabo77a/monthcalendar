@@ -319,6 +319,7 @@
   <Style TargetType="{x:Type calendar:MonthCalendar}">
     <Style.Resources>
       <converters:BoolToVisibilityConverter x:Key="visibilityConverter" />
+      <converters:VisualModeToVisibilityConverter x:Key="visualModeConverter" />
       <converters:ColorToSolidColorBrushConverter x:Key="BrushConverter" />
     </Style.Resources>
     <Setter Property="Template">
@@ -345,7 +346,8 @@
             </monthcalendar:Weekdays>
 
 
-            <calendar:Calendar x:Name="PART_Calendar" Grid.Row="2" Grid.Column="1" />
+            <calendar:Calendar Visibility="{TemplateBinding VisualMode, Converter={StaticResource visualModeConverter}, ConverterParameter=Days}" 
+              x:Name="PART_Calendar" Grid.Row="2" Grid.Column="1" />
 
             <monthcalendar:Weeknumbers x:Name="PART_Weeknumbers" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top"
                                        Height="{Binding Path=ActualHeight, ElementName=PART_Calendar}"

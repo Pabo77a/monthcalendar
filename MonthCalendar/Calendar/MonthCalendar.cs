@@ -46,6 +46,12 @@ namespace Pabo.MonthCalendar
                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                    OnDayTemplateChanged));
 
+    public static readonly DependencyProperty VisualModeProperty = DependencyProperty.Register("VisualMode",
+               typeof(VisualMode),
+               typeof(MonthCalendar),
+               new FrameworkPropertyMetadata(VisualMode.Days, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                   OnVisualModeChanged));
+
     public static readonly DependencyProperty WeekTemplateProperty = DependencyProperty.Register("WeekTemplate",
                typeof(DataTemplate),
                typeof(MonthCalendar),
@@ -511,6 +517,21 @@ namespace Pabo.MonthCalendar
     #endregion
 
     #region public properties
+
+    [Description("")]
+    [Category("Calendar")]
+    [Browsable(true)]
+    public VisualMode VisualMode
+    {
+      get
+      {
+        return (VisualMode)this.GetValue(VisualModeProperty);
+      }
+      set
+      {
+        this.SetValue(VisualModeProperty, value);
+      }
+    }
 
     [Description("")]
     [Category("Calendar")]
@@ -1263,6 +1284,22 @@ namespace Pabo.MonthCalendar
       {
         
         SetupCalendar();
+      }
+    }
+
+    private static void OnVisualModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        calendar.OnVisualModeChanged(e.NewValue, e.OldValue);
+    }
+
+    protected virtual void OnVisualModeChanged(object newValue, object oldValue)
+    {
+      if (this.calendar != null)
+      {
+
       }
     }
 
