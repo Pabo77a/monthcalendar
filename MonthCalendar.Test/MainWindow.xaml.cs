@@ -69,7 +69,7 @@ namespace MonthCalendar.Test
         TextFontSize = 36 //,
         //Template = (DataTemplate)Application.Current.FindResource("myDayTemplate2")
     });
-      this.days.Add(new Day() { Date = new DateTime(2020, 8, 16), Tooltip = "Make americagreat again!", 
+      this.days.Add(new Day() { Date = new DateTime(2020, 8, 16), Tooltip = "Make america great again!", 
         BackgroundColor = Colors.Linen, DateColor = Colors.DarkOrange, Text = "TRUMP", TextColor = Colors.Ivory, TextFontSize = 22 });
 
       this.days.Add(new Day() { Date = new DateTime(2020, 7, 28), DateColor = Colors.Red, Text = "yyy", TextColor = Colors.Black });

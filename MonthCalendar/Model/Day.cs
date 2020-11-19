@@ -9,28 +9,15 @@ using System.Windows.Media.Imaging;
 
 namespace Pabo.MonthCalendar.Model
 {
-  public class Day : NotificationHandler , INotifyPropertyChanged
+  public class Day : Common
   {
-
-    private Color textColor = Colors.Black;
-    private FontStyle textFontStyle = FontStyles.Normal;
-    private FontWeight textFontWeight = FontWeights.Normal;
-    private int textFontSize = 16;
-    private string textTextDecoration = "";
-    private VerticalAlignment  textVerticalAlignment = VerticalAlignment.Bottom;
-    private HorizontalAlignment textHorizontalAlignment = HorizontalAlignment.Left;
-    private FontFamily textFontFamily = new FontFamily("");
-    private string text = "";
-    private Thickness textMargin = new Thickness(2, 0, 0, 2);
-
+ 
     private BitmapImage image = null;
     private VerticalAlignment imageVerticalAlignment = VerticalAlignment.Top;
     private HorizontalAlignment imageHorizontalAlignment = HorizontalAlignment.Left;
     private Stretch imageStretch = Stretch.None;
     private Thickness imageMargin = new Thickness(2,2,0,0);
-   
-    private Color backgroundColor;
-
+  
     private Color dateColor = Colors.Black;
     private FontStyle dateFontStyle = FontStyles.Normal;
     private FontWeight dateFontWeight = FontWeights.Normal;
@@ -42,56 +29,16 @@ namespace Pabo.MonthCalendar.Model
     private HorizontalAlignment dateHorizontalAlignment = HorizontalAlignment.Right;
     private Thickness dateMargin = new Thickness(0, 4, 7, 0);
 
-    private string toolTip = string.Empty;
-
-    private DataTemplate template;
     public Day()
     {
+      TextVerticalAlignment = VerticalAlignment.Bottom;
+      TextHorizontalAlignment = HorizontalAlignment.Left;
+      TextMargin = new Thickness(2, 0, 0, 2);
     }
 
     public Day(DateTime date) : this()
     {
       this.date = date;
-    }
-
-    public Color BackgroundColor
-    {
-      get => backgroundColor;
-      set
-      {
-        if (value != backgroundColor)
-        {
-          this.backgroundColor = value;
-          OnPropertyChanged(nameof(this.BackgroundColor));
-        }
-      }
-    }
-
-    public string Tooltip
-    {
-      get => toolTip;
-      set
-      {
-        if (value != toolTip)
-        {
-          this.toolTip = value;
-          OnPropertyChanged(nameof(this.Tooltip));
-        }
-      }
-    }
-
-    public DataTemplate Template
-    {
-      get => this.template;
-      set
-      {
-        if (value != this.template)
-        {
-          this.template = value;
-          OnPropertyChanged(nameof(this.Template));
-        }
-      }
-
     }
 
 
@@ -228,140 +175,7 @@ namespace Pabo.MonthCalendar.Model
     }
 
     #endregion
-
-    #region Text
-
-    public Color TextColor
-    {
-      get => textColor;
-      set
-      {
-        if (value != textColor)
-        {
-          this.textColor = value;
-          OnPropertyChanged(nameof(this.TextColor));
-        }
-      }
-    }
-
-    public Thickness TextMargin
-    {
-      get => textMargin;
-      set
-      {
-        if (value != textMargin)
-        {
-          textMargin = value;
-          OnPropertyChanged(nameof(this.TextMargin));
-        }
-      }
-    }
-
-    public int TextFontSize
-    {
-      get => textFontSize;
-      set
-      {
-        if (value != textFontSize)
-        {
-          this.textFontSize = value;
-          OnPropertyChanged(nameof(this.TextFontSize));
-        }
-      }
-    }
-
-    public FontWeight TextFontWeight
-    {
-      get => textFontWeight;
-      set
-      {
-        if (value != textFontWeight)
-        {
-          this.textFontWeight = value;
-          OnPropertyChanged(nameof(this.TextFontWeight));
-        }
-      }
-    }
-
-    public FontStyle TextFontStyle
-    {
-      get => textFontStyle;
-      set
-      {
-        if (value != textFontStyle)
-        {
-          this.textFontStyle = value;
-          OnPropertyChanged(nameof(this.TextFontStyle));
-        }
-      }
-    }
-
-    public FontFamily TextFontFamily
-    {
-      get => textFontFamily;
-      set
-      {
-        if (value != textFontFamily)
-        {
-          this.textFontFamily = value;
-          OnPropertyChanged(nameof(this.TextFontFamily));
-        }
-      }
-    }
-
-    public string TextTextDecoration
-    {
-      get => textTextDecoration;
-      set
-      {
-        if (value != textTextDecoration)
-        {
-          this.textTextDecoration = value;
-          OnPropertyChanged(nameof(this.TextTextDecoration));
-        }
-      }
-    }
-
-    public VerticalAlignment TextVerticalAlignment
-    {
-      get => textVerticalAlignment;
-      set
-      {
-        if (value != textVerticalAlignment)
-        {
-          this.textVerticalAlignment = value;
-          OnPropertyChanged(nameof(this.TextVerticalAlignment));
-        }
-      }
-    }
-
-    public HorizontalAlignment TextHorizontalAlignment
-    {
-      get => textHorizontalAlignment;
-      set
-      {
-        if (value != textHorizontalAlignment)
-        {
-          this.textHorizontalAlignment = value;
-          OnPropertyChanged(nameof(this.TextHorizontalAlignment));
-        }
-      }
-    }
-
-    public string Text
-    {
-      get => text;
-      set
-      {
-        if (value != text)
-        {
-          this.text = value;
-          OnPropertyChanged(nameof(this.Text));
-        }
-      }
-    }
-
-    #endregion
+       
 
     #region Image
 
