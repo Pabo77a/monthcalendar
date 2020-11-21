@@ -20,6 +20,7 @@ namespace Pabo.MonthCalendar
   [TemplatePart(Name = "PART_Header", Type = typeof(Header))]
   [TemplatePart(Name = "PART_Footer", Type = typeof(Footer))]
   [TemplatePart(Name = "PART_Calendar", Type = typeof(Calendar))]
+  [TemplatePart(Name = "PART_Months", Type = typeof(MonthView))]
   [TemplatePart(Name = "PART_Weekdays", Type = typeof(Weekdays))]
   [TemplatePart(Name = "PART_Weeknumbers", Type = typeof(Weeknumbers))]
   [ToolboxItem(true)]
@@ -31,6 +32,7 @@ namespace Pabo.MonthCalendar
     private Header header;
     private Footer footer;
     private Calendar calendar;
+    private MonthView monthView;
     private Weekdays weekdays;
     private Weeknumbers weeknumbers;
 
@@ -38,7 +40,14 @@ namespace Pabo.MonthCalendar
 
 
     #region dependency properties
-   
+
+
+    public static readonly DependencyProperty MonthTemplateProperty = DependencyProperty.Register("MonthTemplate",
+           typeof(DataTemplate),
+           typeof(MonthCalendar),
+           new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+               OnMonthTemplateChanged));
+
 
     public static readonly DependencyProperty DayTemplateProperty = DependencyProperty.Register("DayTemplate",
                typeof(DataTemplate),
@@ -93,6 +102,11 @@ namespace Pabo.MonthCalendar
                    OnMaxDateChanged,
                    OnCoerceMaxDateChanged, false, UpdateSourceTrigger.PropertyChanged));
 
+    public static readonly DependencyProperty MonthsProperty = DependencyProperty.Register("Months",
+               typeof(TrulyObservableCollection<Month>),
+               typeof(MonthCalendar),
+               new FrameworkPropertyMetadata(new TrulyObservableCollection<Month>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnMonthsChanged));
+
 
     public static readonly DependencyProperty DaysProperty = DependencyProperty.Register("Days",
                typeof(TrulyObservableCollection<Day>),
@@ -130,12 +144,16 @@ namespace Pabo.MonthCalendar
     public static readonly DependencyProperty WeekdaysVisibleProperty = DependencyProperty.Register("Weekdays",
                typeof(bool),
                typeof(MonthCalendar),
-               new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+               new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                 OnWeekdaysVisibleChanged,
+                 OnCoerceWeekdaysVisibleChanged, false, UpdateSourceTrigger.PropertyChanged));
 
     public static readonly DependencyProperty WeeknumbersVisibleProperty = DependencyProperty.Register("Weeknumbers",
                typeof(bool),
                typeof(MonthCalendar),
-               new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+               new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                 OnWeeknumbersVisibleChanged,
+                 OnCoerceWeeknumbersVisibleChanged, false, UpdateSourceTrigger.PropertyChanged));
 
 
     public static readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register("SelectionMode",
@@ -169,7 +187,13 @@ namespace Pabo.MonthCalendar
                typeof(MonthCalendar),
                new FrameworkPropertyMetadata(new CalendarProperties(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnCalendarPropertiesChanged));
 
- 
+    public static readonly DependencyProperty MonthPropertiesProperty = DependencyProperty.Register("MonthProperties",
+               typeof(MonthProperties),
+               typeof(MonthCalendar),
+               new FrameworkPropertyMetadata(new MonthProperties(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnMonthPropertiesChanged));
+
+
+
 
 
     #endregion
@@ -417,6 +441,12 @@ namespace Pabo.MonthCalendar
         this.calendar.DayClick += Calendar_DayClick;
         this.calendar.DayDoubleClick += Calendar_DayDoubleClick;
       }
+      this.monthView = GetTemplateChild("PART_Months") as MonthView;
+      if (this.monthView != null)
+      {
+      }
+
+
       this.weekdays = GetTemplateChild("PART_Weekdays") as Weekdays;
       if (this.weekdays != null)
       {
@@ -449,9 +479,22 @@ namespace Pabo.MonthCalendar
     {
       SetupHeader();
       SetupFooter();
-      SetupCalendar();
-      SetupWeekdays();
-      SetupWeeknumbers();
+      if (VisualMode == VisualMode.Days)
+      {
+        SetupCalendar();
+      }
+      if (VisualMode == VisualMode.Months)
+      {
+        SetupMonthView();
+      }
+      if (Weekdays)
+      {
+        SetupWeekdays();
+      }
+      if (Weeknumbers)
+      {
+        SetupWeeknumbers();
+      }
     }
 
     private void SetupCalendar()
@@ -460,6 +503,15 @@ namespace Pabo.MonthCalendar
       {
         this.calendar.SetupDays(this.Year, this.Month, this.MinDate, this.MaxDate, this.Days.ToList(), this.DisabledDays.ToList(), this.DayTemplate);
         this.calendar.SelectionMode = this.SelectionMode;
+      }
+    }
+
+    private void SetupMonthView()
+    {
+      if (this.monthView != null)
+      {
+        this.monthView.SetupMonths(this.Year, this.Months.ToList(), this.MonthTemplate);
+        this.monthView.SelectionMode = this.SelectionMode;
       }
     }
 
@@ -530,6 +582,21 @@ namespace Pabo.MonthCalendar
       set
       {
         this.SetValue(VisualModeProperty, value);
+      }
+    }
+
+    [Description("")]
+    [Category("Calendar")]
+    [Browsable(true)]
+    public DataTemplate MonthTemplate
+    {
+      get
+      {
+        return (DataTemplate)this.GetValue(MonthTemplateProperty);
+      }
+      set
+      {
+        this.SetValue(MonthTemplateProperty, value);
       }
     }
 
@@ -621,6 +688,21 @@ namespace Pabo.MonthCalendar
       set
       {
         this.SetValue(DaysProperty, value);
+      }
+    }
+
+    [Description("")]
+    [Category("Calendar")]
+    [Browsable(true)]
+    public TrulyObservableCollection<Month> Months
+    {
+      get
+      {
+        return (TrulyObservableCollection<Month>)this.GetValue(MonthsProperty);
+      }
+      set
+      {
+        this.SetValue(MonthsProperty, value);
       }
     }
 
@@ -766,8 +848,8 @@ namespace Pabo.MonthCalendar
     {
       get
       {
-        return (bool)this.GetValue(WeekdaysVisibleProperty);
-      }
+        return (bool)this.GetValue(WeekdaysVisibleProperty) && (VisualMode)this.GetValue(VisualModeProperty) == VisualMode.Days;
+      }       
       set
       {
         this.SetValue(WeekdaysVisibleProperty, value);
@@ -781,7 +863,7 @@ namespace Pabo.MonthCalendar
     {
       get
       {
-        return (bool)this.GetValue(WeeknumbersVisibleProperty);
+        return (bool)this.GetValue(WeeknumbersVisibleProperty) && (VisualMode)this.GetValue(VisualModeProperty) == VisualMode.Days; ;
       }
       set
       {
@@ -849,6 +931,21 @@ namespace Pabo.MonthCalendar
       set
       {
         this.SetValue(CalendarPropertiesProperty, value);
+      }
+    }
+
+    [Description("")]
+    [Category("Calendar")]
+    [Browsable(true)]
+    public MonthProperties MonthProperties
+    {
+      get
+      {
+        return (MonthProperties)this.GetValue(MonthPropertiesProperty);
+      }
+      set
+      {
+        this.SetValue(MonthPropertiesProperty, value);
       }
     }
 
@@ -1013,6 +1110,31 @@ namespace Pabo.MonthCalendar
       }
     }
 
+    private static void OnMonthPropertiesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        calendar.OnMonthPropertiesChanged(e.NewValue, e.OldValue);
+    }
+
+
+    protected virtual void OnMonthPropertiesChanged(object newValue, object oldValue)
+    {
+      if (this.monthView != null)
+      {
+        this.monthView.Properties = (MonthProperties)newValue;
+        this.monthView.Properties.PropertyChanged -= MonthPropertiesChanged;
+        this.monthView.Properties.PropertyChanged += MonthPropertiesChanged;
+        this.SetupMonthView();
+      }
+    }
+
+    private void MonthPropertiesChanged(object sender, PropertyChangedEventArgs e)
+    {
+      SetupMonthView();
+    }
+
     private void CalendarPropertiesChanged(object sender, PropertyChangedEventArgs e)
     {
       SetupCalendar();
@@ -1038,6 +1160,28 @@ namespace Pabo.MonthCalendar
         };
       }
     }
+
+    private static void OnMonthsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        calendar.OnMonthsChanged(e.NewValue, e.OldValue);
+    }
+
+
+    protected virtual void OnMonthsChanged(object newValue, object oldValue)
+    {
+      if (this.monthView != null)
+      {
+        this.SetupMonthView();
+        this.Months.CollectionChanged += (s, e) =>
+        {
+          this.SetupMonthView();
+        };
+      }
+    }
+
 
     private static void OnDisabledDaysChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -1168,6 +1312,10 @@ namespace Pabo.MonthCalendar
       {
         this.calendar.SelectionMode = (MonthCalendarSelectionMode)newValue;
       }
+      if (this.monthView != null)
+      {
+        this.monthView.SelectionMode = (MonthCalendarSelectionMode)newValue;
+      }
     }
 
     private static void OnSelectionModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -1224,7 +1372,7 @@ namespace Pabo.MonthCalendar
       return (date >= MaxDate) ? MaxDate.AddDays(-1) : date;
      }
 
-      private static void OnMaxDateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnMaxDateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
 
       MonthCalendar calendar = d as MonthCalendar;
@@ -1252,6 +1400,65 @@ namespace Pabo.MonthCalendar
       DateTime date = (DateTime)value;
       return (date <= MinDate) ? MinDate.AddDays(1) : date;
     }
+
+    private static void OnWeekdaysVisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        calendar.OnWeekdaysVisibleChanged(e.NewValue, e.OldValue);
+    }
+
+    protected virtual void OnWeekdaysVisibleChanged(object newValue, object oldValue)
+    {
+      //SetupHeader();
+      //SetupCalendar();
+    }
+
+    private static object OnCoerceWeekdaysVisibleChanged(DependencyObject d, object value)
+    {
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        return calendar.OnCoerceWeekdaysVisibleChanged(value);
+      else
+        return value;
+    }
+
+    protected virtual object OnCoerceWeekdaysVisibleChanged(object value)
+    {
+      bool visible = (bool)value;
+      return visible && VisualMode == VisualMode.Days;
+    }
+
+    private static void OnWeeknumbersVisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        calendar.OnWeeknumberVisibleChanged(e.NewValue, e.OldValue);
+    }
+
+    protected virtual void OnWeeknumberVisibleChanged(object newValue, object oldValue)
+    {
+      //SetupHeader();
+      //SetupCalendar();
+    }
+
+    private static object OnCoerceWeeknumbersVisibleChanged(DependencyObject d, object value)
+    {
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        return calendar.OnCoerceWeeknumbersVisibleChanged(value);
+      else
+        return value;
+    }
+
+    protected virtual object OnCoerceWeeknumbersVisibleChanged(object value)
+    {
+      bool visible = (bool)value;
+      return visible && VisualMode == VisualMode.Days;
+    }
+
 
 
     private static void OnMonthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -1286,13 +1493,34 @@ namespace Pabo.MonthCalendar
         SetupCalendar();
       }
     }
+    private static void OnMonthTemplateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthCalendar calendar = d as MonthCalendar;
+      if (calendar != null)
+        calendar.OnMonthTemplateChanged(e.NewValue, e.OldValue);
+    }
+
+    protected virtual void OnMonthTemplateChanged(object newValue, object oldValue)
+    {
+      if (this.monthView != null)
+      {
+
+        SetupMonthView();
+      }
+    }
+
 
     private static void OnVisualModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
 
       MonthCalendar calendar = d as MonthCalendar;
       if (calendar != null)
+      {
+        d.CoerceValue(WeeknumbersVisibleProperty);
+        d.CoerceValue(WeekdaysVisibleProperty);
         calendar.OnVisualModeChanged(e.NewValue, e.OldValue);
+      }
     }
 
     protected virtual void OnVisualModeChanged(object newValue, object oldValue)

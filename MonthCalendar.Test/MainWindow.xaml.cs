@@ -37,6 +37,7 @@ namespace MonthCalendar.Test
     WeeknumberProperties weeknumberProperties = new WeeknumberProperties();
     WeekdaysProperties weekdaysProperties = new WeekdaysProperties();
     CalendarProperties calendarProperties = new CalendarProperties();
+    MonthProperties monthProperties = new MonthProperties();
 
     private DateTime minDate = DateTime.MinValue;
     private DateTime maxDate = DateTime.MaxValue;
@@ -105,7 +106,7 @@ namespace MonthCalendar.Test
       this.calendarProperties.DateTextDecoration = "Underline";
       this.calendarProperties.DateFontStyle = FontStyles.Italic;
       this.calendarProperties.DateFontWeight = FontWeights.Bold;
-      this.calendarProperties.SelectedBackgroundColor = Colors.Pink;
+      this.MonthProperties.SelectedBackgroundColor = Colors.Red;
       this.calendarProperties.SelectedBackgroundColor = Colors.Red;
 
       //this.calendarProperties.BackgroundImage = new BitmapImage(new Uri("pack://application:,,,/Resources/bricks.jpeg", UriKind.Absolute));
@@ -176,6 +177,8 @@ namespace MonthCalendar.Test
   
 
     public FooterProperties FooterProperties => footerProperties;
+
+    public MonthProperties MonthProperties => monthProperties;
 
     public WeeknumberProperties WeeknumberProperties => weeknumberProperties;
 

@@ -45,10 +45,10 @@ namespace Pabo.MonthCalendar
       var itemWidth = this.ActualWidth / this.Cols;
       var itemHeight = this.ActualHeight / this.Rows;
 
-      var row = (pt.Y / itemHeight) +1;
+      var row = (pt.Y / itemHeight) + 1;
       var col = (pt.X / itemWidth) + 1;
 
-      return new Pos((int)col,(int)row);
+      return new Pos((int)col, (int)row);
     }
 
 
@@ -61,10 +61,11 @@ namespace Pabo.MonthCalendar
       int x = (int)(pt.X / itemWidth);
       int y = (int)(pt.Y / itemHeight);
 
-      var panel = Cols > 1 ? 
-        x + (y * this.Rows) + y : 
+      var panel = Cols > 1 ?
+        y * this.Cols + x :
         x + y;
-  
+
+
       return panel;
     }
 

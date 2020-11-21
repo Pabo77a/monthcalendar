@@ -15,6 +15,7 @@ using System.Windows.Media;
 
 namespace Pabo.MonthCalendar
 {
+  [TemplatePart(Name = "PART_Host", Type = typeof(System.Windows.Controls.ItemsControl))]
   [ToolboxItem(false)]
   internal class Weekdays : ItemsControl
   {
@@ -30,11 +31,11 @@ namespace Pabo.MonthCalendar
                typeof(WeekdaysProperties),
                typeof(Weekdays),
                new FrameworkPropertyMetadata(new WeekdaysProperties(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-        
+
     #endregion
 
 
-    public Weekdays() : base(7,1)
+    public Weekdays() : base(7, 1)
     {
 
       this.Click += (sender, e) =>
@@ -96,9 +97,6 @@ namespace Pabo.MonthCalendar
       Setup();
     }
 
-    
-
-
 
     #endregion
 
@@ -117,7 +115,7 @@ namespace Pabo.MonthCalendar
       }
     }
 
-    
+
     internal WeekdaysProperties Properties
     {
       get
@@ -135,7 +133,7 @@ namespace Pabo.MonthCalendar
       }
     }
 
-    
+
 
     internal bool SuspendLayout
     {
@@ -186,8 +184,8 @@ namespace Pabo.MonthCalendar
           Utils.CopyProperties<WeekdaysProperties, CalendarWeekday>(Properties, days[i]);
           days[i].Year = year;
           days[i].Month = month;
-          days[i].Name = Properties.AbbreviatedNames 
-            ? ci.DateTimeFormat.GetAbbreviatedDayName(days[i].DayOfWeek) 
+          days[i].Name = Properties.AbbreviatedNames
+            ? ci.DateTimeFormat.GetAbbreviatedDayName(days[i].DayOfWeek)
             : ci.DateTimeFormat.GetDayName(days[i].DayOfWeek);
 
           var item = items.FirstOrDefault(x => x.Year == year && x.Month == month && x.DayOfWeek == days[i].DayOfWeek);
@@ -196,7 +194,7 @@ namespace Pabo.MonthCalendar
             Utils.CopyProperties<Weekday, CalendarWeekday>(item, days[i]);
           }
         }
-        
+
         this.Days = days.ToList<CalendarWeekday>();
       }
     }
@@ -204,7 +202,7 @@ namespace Pabo.MonthCalendar
     private void Setup()
     {
       this.Height = this.Properties.TextFontSize + 20;
-      SetupDays(this.year, this.month, this.weekdayItems, this.template);
+      //SetupDays(this.year, this.month, this.weekdayItems, this.template);
     }
 
     private void OnWeekdayLeave(CalendarWeekdayEventArgs e)
@@ -287,7 +285,7 @@ namespace Pabo.MonthCalendar
       }
     }
 
-   
+
 
     #endregion
   }

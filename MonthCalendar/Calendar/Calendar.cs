@@ -18,8 +18,7 @@ using System.Windows.Controls.Primitives;
 
 namespace Pabo.MonthCalendar
 {
-  [TemplatePart(Name = "PART_Host", Type = typeof(CalendarWrapPanel))]
-  [TemplatePart(Name = "PART_Tooltip", Type = typeof(Popup))]
+  [TemplatePart(Name = "PART_Host", Type = typeof(System.Windows.Controls.ItemsControl))]
   [ToolboxItem(false)]
   public class Calendar : ItemsControl
   {
@@ -573,7 +572,7 @@ namespace Pabo.MonthCalendar
         {
 
           var disabled = this.disabledDays.FirstOrDefault(x => x == days[i].Date);
-          var selected = this.Days.FirstOrDefault(x => x.Selected && x.Date == days[i].Date);
+          //var selected = this.Days.FirstOrDefault(x => x.Selected && x.Date == days[i].Date);
 
           days[i].Template = this.template;
 

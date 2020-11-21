@@ -64,6 +64,78 @@
       </Setter.Value>
     </Setter>
   </Style>
+  
+  <!-- MonthView -->
+
+  <Style TargetType="{x:Type calendar:MonthView}">
+    <Style.Resources>
+      <converters:ColorToSolidColorBrushConverter x:Key="BrushConverter" />
+      <converters:DateTimeToDayConverter x:Key="DayConverter" />
+      <converters:BoolToVisibilityConverter x:Key="visibilityConverter" />
+      <converters:BorderThicknessConverter x:Key="borderThicknessConverter" />
+      <selectors:MonthTemplateSelector x:Key="MonthTemplateSelector" />
+    </Style.Resources>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type calendar:MonthView}">
+          <Grid DataContext="{TemplateBinding Properties}">
+            <Grid.Background>
+              <ImageBrush ImageSource="{Binding BackgroundImage}" />
+            </Grid.Background>
+            <ItemsControl x:Name="PART_Host"
+                           ItemTemplateSelector="{StaticResource MonthTemplateSelector}"
+                          ItemsSource="{TemplateBinding Months}">
+              <ItemsControl.Resources>
+                <DataTemplate x:Key="MonthDefaultTemplate" DataType="{x:Type model:CalendarMonth}">
+                  <Grid>
+                    <Rectangle>
+                      <Rectangle.Fill>
+                        <SolidColorBrush Color="{Binding BackgroundColor}" />
+                      </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle Visibility="{Binding Selected, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}">
+                      <Rectangle.Fill>
+                        <SolidColorBrush Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:MonthView}},Path=Properties.SelectedOpacity}"
+                                         Color="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:MonthView}},Path=Properties.SelectedBackgroundColor}"  />
+                      </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle Visibility="{Binding MouseOver, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}">
+                      <Rectangle.Fill>
+                        <SolidColorBrush Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:MonthView}},Path=Properties.MouseOverOpacity}"
+                                         Color="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:MonthView}},Path=Properties.MouseOverBackgroundColor}"/>
+                      </Rectangle.Fill>
+                    </Rectangle>
+                    <TextBlock VerticalAlignment="{Binding TextVerticalAlignment}" HorizontalAlignment="{Binding TextHorizontalAlignment}" 
+                               FontSize="{Binding TextFontSize}" 
+                               Foreground="{Binding TextColor, Converter={StaticResource BrushConverter}}"
+                               FontWeight="{Binding TextFontWeight}" 
+                               FontStyle="{Binding TextFontStyle}"
+                               FontFamily="{Binding TextFontFamily}" 
+                               TextDecorations="{Binding TextTextDecoration}"
+                               Text="{Binding Text}" Margin="{Binding TextMargin}" >
+                    </TextBlock>
+                    <Border  BorderThickness="{Binding BorderThickness, Mode=TwoWay}"
+                             BorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:MonthView}},Path=Properties.SelectedBorderColor, Converter={StaticResource BrushConverter}}"
+                             Visibility="{Binding Selected, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}"></Border>
+                  </Grid>
+                  
+                </DataTemplate>
+              </ItemsControl.Resources>
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <controls:CalendarWrapPanel x:Name="PART_Panel" Rows="4" Cols="3"></controls:CalendarWrapPanel>
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+            </ItemsControl>
+            <Border BorderThickness="1 0 1 0" BorderBrush="Black"></Border>
+          </Grid>
+
+        </ControlTemplate>
+
+      </Setter.Value>
+    </Setter>
+  </Style>
+
 
 
   <!-- Calendar -->
@@ -139,11 +211,9 @@
                     </Image>
                     <Border  BorderThickness="{Binding BorderThickness, Mode=TwoWay}"
                              BorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Calendar}},Path=Properties.SelectedBorderColor, Converter={StaticResource BrushConverter}}"
-                             Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" 
                              Visibility="{Binding Selected, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}"></Border>
                     <Border  BorderThickness="1,1,1,1"
                              BorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Calendar}},Path=Properties.MouseOverBorderColor, Converter={StaticResource BrushConverter}}"
-                             Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" 
                              Visibility="{Binding MouseOver, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}"></Border>
                     <Viewbox Stretch="Fill" Visibility="{Binding Disabled, Converter={StaticResource visibilityConverter}, ConverterParameter=Normal}">
                       <Canvas Background="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Calendar}},Path=Properties.DisabledBackgroundColor, Converter={StaticResource BrushConverter}}" 
@@ -348,6 +418,8 @@
 
             <calendar:Calendar Visibility="{TemplateBinding VisualMode, Converter={StaticResource visualModeConverter}, ConverterParameter=Days}" 
               x:Name="PART_Calendar" Grid.Row="2" Grid.Column="1" />
+            <calendar:MonthView Visibility="{TemplateBinding VisualMode, Converter={StaticResource visualModeConverter}, ConverterParameter=Months}" 
+              x:Name="PART_Months" Grid.Row="2" Grid.Column="1" />
 
             <monthcalendar:Weeknumbers x:Name="PART_Weeknumbers" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top"
                                        Height="{Binding Path=ActualHeight, ElementName=PART_Calendar}"

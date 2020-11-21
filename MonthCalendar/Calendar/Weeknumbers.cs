@@ -16,6 +16,7 @@ using System.Diagnostics;
 
 namespace Pabo.MonthCalendar
 {
+  [TemplatePart(Name = "PART_Host", Type = typeof(System.Windows.Controls.ItemsControl))]
   [ToolboxItem(false)]
   internal class Weeknumbers : ItemsControl
   {
@@ -80,6 +81,7 @@ namespace Pabo.MonthCalendar
     public override void OnApplyTemplate()
     {
       base.OnApplyTemplate();
+
       this.Width = this.Properties.TextFontSize + 25;
 
       this.itemsControl = GetTemplateChild("PART_Host") as System.Windows.Controls.ItemsControl;
@@ -95,7 +97,7 @@ namespace Pabo.MonthCalendar
       }
 
     }
- 
+
     #endregion
 
     #region properties
@@ -183,7 +185,7 @@ namespace Pabo.MonthCalendar
       }
 
     }
-    
+
     private void Setup()
     {
       this.SetupWeeks(this.firstDate, this.weekItems, this.template);
@@ -273,7 +275,7 @@ namespace Pabo.MonthCalendar
 
     #endregion
 
-   
+
   }
 
 }
