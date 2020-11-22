@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace Pabo.MonthCalendar.Model
 {
-  public class CalendarDay : Day, INotifyPropertyChanged
+  public class CalendarDay : Day, INotifyPropertyChanged, IPanel
   {
 
 
@@ -21,22 +21,23 @@ namespace Pabo.MonthCalendar.Model
     public CalendarDay(DateTime date) : base(date)
     {
     }
-    
 
 
-    public bool Selected 
-    { 
+
+    public bool Selected
+    {
       get => this.selected && !Disabled;
-      set {
+      set
+      {
         if (value != this.selected)
         {
           this.selected = value;
           OnPropertyChanged(nameof(this.Selected));
         }
       }
-         
+
     }
-   
+
 
     public bool NotCurrentMonth
     {
@@ -95,7 +96,8 @@ namespace Pabo.MonthCalendar.Model
 
     }
 
-  
+    public string Id => this.Date.ToString("yyyy-MM-dd");
+
     public Thickness BorderThickness
     {
       get => this.thickness;
@@ -108,6 +110,6 @@ namespace Pabo.MonthCalendar.Model
         }
       }
     }
-    
+
   }
 }

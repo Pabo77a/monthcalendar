@@ -201,15 +201,19 @@ namespace Pabo.MonthCalendar
 
     #region routed events
 
-    public delegate void SelectionChangedEventHandler(object sender, EventArgs.SelectionChangedEventArgs e);
+    public delegate void DaySelectionChangedEventHandler(object sender, EventArgs.SelectionChangedEventArgs<Day> e);
+    public delegate void MonthSelectionChangedEventHandler(object sender, EventArgs.SelectionChangedEventArgs<Month> e);
 
+    public delegate void MonthEventHandler(object sender, EventArgs.MonthEventArgs e);
     public delegate void DayEventHandler(object sender, EventArgs.DayEventArgs e);
     public delegate void WeekEventHandler(object sender, EventArgs.WeekEventArgs e);
     public delegate void WeekdayEventHandler(object sender, EventArgs.WeekdayEventArgs e);
 
-    public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(
-       "SelectionChanged", RoutingStrategy.Direct, typeof(SelectionChangedEventHandler), typeof(MonthCalendar));
+    public static readonly RoutedEvent DaySelectionChangedEvent = EventManager.RegisterRoutedEvent(
+       "DaySelectionChanged", RoutingStrategy.Direct, typeof(DaySelectionChangedEventHandler), typeof(MonthCalendar));
 
+    public static readonly RoutedEvent MonthSelectionChangedEvent = EventManager.RegisterRoutedEvent(
+       "MonthSelectionChanged", RoutingStrategy.Direct, typeof(MonthSelectionChangedEventHandler), typeof(MonthCalendar));
 
     public static readonly RoutedEvent WeekClickEvent = EventManager.RegisterRoutedEvent(
        "WeekClick", RoutingStrategy.Direct, typeof(WeekEventHandler), typeof(MonthCalendar));
@@ -261,6 +265,19 @@ namespace Pabo.MonthCalendar
        "MonthChanged", RoutingStrategy.Direct, typeof(MonthChangedEventHandler), typeof(MonthCalendar));
 
 
+    public static readonly RoutedEvent MonthClickEvent = EventManager.RegisterRoutedEvent(
+       "MonthClick", RoutingStrategy.Direct, typeof(MonthEventHandler), typeof(MonthCalendar));
+
+    public static readonly RoutedEvent MonthDoubleClickEvent = EventManager.RegisterRoutedEvent(
+       "MonthDoubleClick", RoutingStrategy.Direct, typeof(MonthEventHandler), typeof(MonthCalendar));
+
+    public static readonly RoutedEvent MonthLeaveEvent = EventManager.RegisterRoutedEvent(
+       "MonthLeave", RoutingStrategy.Direct, typeof(MonthEventHandler), typeof(MonthCalendar));
+
+    public static readonly RoutedEvent MonthEnterEvent = EventManager.RegisterRoutedEvent(
+       "MonthEnter", RoutingStrategy.Direct, typeof(MonthEventHandler), typeof(MonthCalendar));
+
+
     #endregion
 
     #region constructor
@@ -278,10 +295,10 @@ namespace Pabo.MonthCalendar
 
     [Category("Calendar")]
     [Browsable(true)]
-    public event SelectionChangedEventHandler SelectionChanged
+    public event DaySelectionChangedEventHandler DaySelectionChanged
     {
-      add { AddHandler(SelectionChangedEvent, value); }
-      remove { RemoveHandler(SelectionChangedEvent, value); }
+      add { AddHandler(DaySelectionChangedEvent, value); }
+      remove { RemoveHandler(DaySelectionChangedEvent, value); }
     }
 
     [Category("Calendar")]
@@ -405,6 +422,46 @@ namespace Pabo.MonthCalendar
       remove { RemoveHandler(WeekEnterEvent, value); }
     }
 
+    [Category("Calendar")]
+    [Browsable(true)]
+    public event MonthSelectionChangedEventHandler MonthSelectionChanged
+    {
+      add { AddHandler(MonthSelectionChangedEvent, value); }
+      remove { RemoveHandler(MonthSelectionChangedEvent, value); }
+    }
+
+    [Category("Calendar")]
+    [Browsable(true)]
+    public event MonthEventHandler MonthClick
+    {
+      add { AddHandler(MonthClickEvent, value); }
+      remove { RemoveHandler(MonthClickEvent, value); }
+    }
+
+    [Category("Calendar")]
+    [Browsable(true)]
+    public event MonthEventHandler MonthDoubleClick
+    {
+      add { AddHandler(MonthDoubleClickEvent, value); }
+      remove { RemoveHandler(MonthDoubleClickEvent, value); }
+    }
+
+    [Category("Calendar")]
+    [Browsable(true)]
+    public event MonthEventHandler MonthLeave
+    {
+      add { AddHandler(MonthLeaveEvent, value); }
+      remove { RemoveHandler(MonthLeaveEvent, value); }
+    }
+
+    [Category("Calendar")]
+    [Browsable(true)]
+    public event MonthEventHandler MonthEnter
+    {
+      add { AddHandler(MonthEnterEvent, value); }
+      remove { RemoveHandler(MonthEnterEvent, value); }
+    }
+
     #endregion
 
     #region private properties
@@ -444,6 +501,11 @@ namespace Pabo.MonthCalendar
       this.monthView = GetTemplateChild("PART_Months") as MonthView;
       if (this.monthView != null)
       {
+        this.monthView.SelectionChanged += MonthView_SelectionChanged;
+        this.monthView.MonthEnter += MonthView_MonthEnter;
+        this.monthView.MonthLeave += MonthView_MonthLeave;
+        this.monthView.MonthClick += MonthView_MonthClick;
+        this.monthView.MonthDoubleClick += MonthView_MonthDoubleClick;
       }
 
 
@@ -468,7 +530,6 @@ namespace Pabo.MonthCalendar
       this.Setup();
 
     }
-
 
     #endregion
 
@@ -968,9 +1029,9 @@ namespace Pabo.MonthCalendar
     }
 
 
-    private void Calendar_SelectionChanged(object sender, EventArgs.CalendarSelectionChangedEventArgs e)
+    private void Calendar_SelectionChanged(object sender, EventArgs.CalendarSelectionChangedEventArgs<Day> e)
     {
-      EventArgs.SelectionChangedEventArgs args = new EventArgs.SelectionChangedEventArgs(SelectionChangedEvent, e.Selected);
+      EventArgs.SelectionChangedEventArgs<Day> args = new EventArgs.SelectionChangedEventArgs<Day>(DaySelectionChangedEvent, e.Selected);
       RaiseEvent(args);
     }
 
@@ -1053,6 +1114,35 @@ namespace Pabo.MonthCalendar
 
     }
 
+    private void MonthView_SelectionChanged(object sender, EventArgs.CalendarSelectionChangedEventArgs<Month> e)
+    {
+      EventArgs.SelectionChangedEventArgs<Month> args = new EventArgs.SelectionChangedEventArgs<Month>(MonthSelectionChangedEvent, e.Selected);
+      RaiseEvent(args);
+    }
+
+    private void MonthView_MonthDoubleClick(object sender, EventArgs.CalendarMonthEventArgs e)
+    {
+      EventArgs.MonthEventArgs args = new EventArgs.MonthEventArgs(MonthDoubleClickEvent, e.Month);
+      RaiseEvent(args);
+    }
+
+    private void MonthView_MonthClick(object sender, EventArgs.CalendarMonthEventArgs e)
+    {
+      EventArgs.MonthEventArgs args = new EventArgs.MonthEventArgs(MonthClickEvent, e.Month);
+      RaiseEvent(args);
+    }
+
+    private void MonthView_MonthLeave(object sender, EventArgs.CalendarMonthEventArgs e)
+    {
+      EventArgs.MonthEventArgs args = new EventArgs.MonthEventArgs(MonthLeaveEvent, e.Month);
+      RaiseEvent(args);
+    }
+
+    private void MonthView_MonthEnter(object sender, EventArgs.CalendarMonthEventArgs e)
+    {
+      EventArgs.MonthEventArgs args = new EventArgs.MonthEventArgs(MonthEnterEvent, e.Month);
+      RaiseEvent(args);
+    }
 
     private void Header_Decrease(object sender, RoutedEventArgs e)
     {

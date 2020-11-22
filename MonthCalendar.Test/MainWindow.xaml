@@ -17,7 +17,7 @@
 
 
     <calendar:MonthCalendar Grid.Row="0"
-                            VisualMode="Months"
+                            VisualMode="Days"
                             Background="White"
                             Name="MyCalendar"
                             Year="2020" Month="8" 
@@ -38,7 +38,8 @@
                             DayOfWeek="{Binding Path=Weekdays, Mode=OneWay}"
                             MinDate="{Binding MinDate}"
                             MaxDate="{Binding MaxDate}"
-                            SelectionChanged="MonthCalendar_SelectionChanged"
+                            DaySelectionChanged="MyCalendar_DaySelectionChanged"
+                            MonthSelectionChanged="MyCalendar_MonthSelectionChanged"
                             FooterEnter="MonthCalendar_FooterEnter"
                             FooterLeave="MonthCalendar_FooterLeave"
                             DayLeave="MonthCalendar_DayLeave"

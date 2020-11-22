@@ -17,7 +17,7 @@ namespace Pabo.MonthCalendar
 {
   [TemplatePart(Name = "PART_Host", Type = typeof(System.Windows.Controls.ItemsControl))]
   [ToolboxItem(false)]
-  internal class Weekdays : ItemsControl
+  internal class Weekdays : ItemsControl<CalendarWeekday>
   {
 
     #region dependency properties
@@ -25,7 +25,7 @@ namespace Pabo.MonthCalendar
     public static readonly DependencyProperty DaysProperty = DependencyProperty.Register("Days",
                typeof(List<CalendarWeekday>),
                typeof(Weekdays),
-               new FrameworkPropertyMetadata(new List<CalendarWeekday>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+               new FrameworkPropertyMetadata(new List<CalendarWeekday>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnDaysChanged));
 
     public static readonly DependencyProperty PropertiesProperty = DependencyProperty.Register("Properties",
                typeof(WeekdaysProperties),
@@ -37,17 +37,13 @@ namespace Pabo.MonthCalendar
 
     public Weekdays() : base(7, 1)
     {
-
+      this.popup = CreatePopup(this.Properties);
       this.Click += (sender, e) =>
       {
-        this.OnWeekdayClick(new CalendarWeekdayEventArgs(clickWeekday));
+        this.OnWeekdayClick(new CalendarWeekdayEventArgs(clickItem));
       };
     }
 
-    private System.Windows.Controls.ItemsControl itemsControl;
-    private CalendarWeekday activeWeekday = null;
-    private CalendarWeekday clickWeekday;
-    private bool suspendLayout = false;
     private int year;
     private int month;
     private List<Weekday> weekdayItems;
@@ -81,18 +77,6 @@ namespace Pabo.MonthCalendar
     public override void OnApplyTemplate()
     {
       base.OnApplyTemplate();
-
-      this.itemsControl = GetTemplateChild("PART_Host") as System.Windows.Controls.ItemsControl;
-      if (this.itemsControl != null)
-      {
-        this.itemsControl.MouseMove += ItemsControl_MouseMove;
-        this.itemsControl.MouseEnter += ItemsControl_MouseEnter;
-        this.itemsControl.MouseLeave += ItemsControl_MouseLeave;
-        this.itemsControl.MouseDown += ItemsControl_MouseDown;
-        this.itemsControl.MouseDoubleClick += ItemsControl_MouseDoubleClick;
-
-        this.popup = CreatePopup(this.Properties);
-      }
 
       Setup();
     }
@@ -134,24 +118,21 @@ namespace Pabo.MonthCalendar
     }
 
 
+    #endregion
 
-    internal bool SuspendLayout
+    private static void OnDaysChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-      get => this.suspendLayout;
-      set
-      {
-        if (value != this.suspendLayout)
-        {
-          this.suspendLayout = value;
-          if (!this.suspendLayout)
-          {
-            this.Setup();
-          }
-        }
-      }
+
+      Weekdays weekdays = d as Weekdays;
+      if (weekdays != null)
+        weekdays.OnDaysChanged(e.NewValue, e.OldValue);
     }
 
-    #endregion
+    protected virtual void OnDaysChanged(object newValue, object oldValue)
+    {
+      base.Items = (List<CalendarWeekday>)newValue;
+    }
+
 
     internal void SetupDays(int year, int month, List<Weekday> items, DataTemplate template)
     {
@@ -199,36 +180,41 @@ namespace Pabo.MonthCalendar
       }
     }
 
-    private void Setup()
+    protected override void Setup()
     {
       this.Height = this.Properties.TextFontSize + 20;
-      //SetupDays(this.year, this.month, this.weekdayItems, this.template);
+      SetupDays(this.year, this.month, this.weekdayItems, this.template);
     }
 
-    private void OnWeekdayLeave(CalendarWeekdayEventArgs e)
+    protected override void OnSelectionChanged()
+    {
+
+    }
+
+    protected override void OnItemLeave(CalendarWeekday item)
     {
       EventHandler<CalendarWeekdayEventArgs> handler = WeekdayLeave;
-      handler?.Invoke(this, e);
-    }
+      handler?.Invoke(this, new CalendarWeekdayEventArgs(item));
 
-    private void OnWeekdayEnter(CalendarWeekdayEventArgs e)
+    }
+    protected override void OnItemEnter(CalendarWeekday item)
     {
       EventHandler<CalendarWeekdayEventArgs> handler = WeekdayEnter;
-      handler?.Invoke(this, e);
+      handler?.Invoke(this, new CalendarWeekdayEventArgs(item));
     }
+
+    protected override void OnItemDoubleClick(CalendarWeekday item)
+    {
+      EventHandler<CalendarWeekdayEventArgs> handler = WeekdayDoubleClick;
+      handler?.Invoke(this, new CalendarWeekdayEventArgs(item));
+    }
+
 
     private void OnWeekdayClick(CalendarWeekdayEventArgs e)
     {
       EventHandler<CalendarWeekdayEventArgs> handler = WeekdayClick;
       handler?.Invoke(this, e);
     }
-
-    private void OnWeekdayDoubleClick(CalendarWeekdayEventArgs e)
-    {
-      EventHandler<CalendarWeekdayEventArgs> handler = WeekdayDoubleClick;
-      handler?.Invoke(this, e);
-    }
-
 
     #region event handlers
 
@@ -237,55 +223,7 @@ namespace Pabo.MonthCalendar
       Setup();
     }
 
-    private void ItemsControl_MouseLeave(object sender, MouseEventArgs e)
-    {
-      if (this.activeWeekday != null)
-      {
-        this.activeWeekday.MouseOver = false;
-        this.OnWeekdayLeave(new CalendarWeekdayEventArgs(this.activeWeekday));
-      }
-      this.activeWeekday = null;
-      this.popup.IsOpen = false;
-    }
-
-    private void ItemsControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-    {
-      e.Handled = true;
-      this.Button_DoubleClick(sender, e);
-      var day = this.Days[GetItem(e.GetPosition(this))];
-      this.OnWeekdayDoubleClick(new CalendarWeekdayEventArgs(day));
-    }
-
-    private void ItemsControl_MouseDown(object sender, MouseButtonEventArgs e)
-    {
-      this.clickWeekday = this.Days[GetItem(e.GetPosition(this))];
-      this.Button_Click(sender, e);
-    }
-
-    private void ItemsControl_MouseEnter(object sender, MouseEventArgs e)
-    {
-      var weekday = this.Days[GetItem(e.GetPosition(this))];
-      this.activeWeekday = weekday;
-      this.activeWeekday.MouseOver = true;
-      this.OnWeekdayEnter(new CalendarWeekdayEventArgs(weekday));
-
-    }
-
-    private void ItemsControl_MouseMove(object sender, MouseEventArgs e)
-    {
-      var weekday = this.Days[GetItem(e.GetPosition(this))];
-      SetTooltip(weekday.Tooltip);
-      if (this.activeWeekday != weekday)
-      {
-        this.activeWeekday.MouseOver = false;
-        this.OnWeekdayLeave(new CalendarWeekdayEventArgs(this.activeWeekday));
-        this.activeWeekday = weekday;
-        this.activeWeekday.MouseOver = true;
-        this.OnWeekdayEnter(new CalendarWeekdayEventArgs(this.activeWeekday));
-      }
-    }
-
-
+ 
 
     #endregion
   }

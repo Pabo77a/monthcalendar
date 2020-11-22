@@ -23,7 +23,7 @@ namespace Pabo.MonthCalendar.Model
 
     public override string ToString()
     {
-      return "("+Col.ToString()+","+Row.ToString()+")";
+      return $"({Col},{Row})";
     }
   }
 }

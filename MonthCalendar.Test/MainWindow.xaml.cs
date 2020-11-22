@@ -184,11 +184,6 @@ namespace MonthCalendar.Test
 
     public WeekdaysProperties WeekdaysProperties => weekdaysProperties;
 
-    private void MonthCalendar_SelectionChanged(object sender, Pabo.MonthCalendar.EventArgs.SelectionChangedEventArgs e)
-    {
-      var  i = 1;
-    }
-
     private void MonthCalendar_MonthChanged(object sender, Pabo.MonthCalendar.EventArgs.MonthChangedEventArgs e)
     {
     }
@@ -284,6 +279,7 @@ namespace MonthCalendar.Test
 
     private void MonthCalendar_DayClick(object sender, Pabo.MonthCalendar.EventArgs.DayEventArgs e)
     {
+      var t = 1;
     }
 
     private void MonthCalendar_DayDoubleClick(object sender, Pabo.MonthCalendar.EventArgs.DayEventArgs e)
@@ -304,6 +300,16 @@ namespace MonthCalendar.Test
 
     private void MonthCalendar_WeekdayDoubleClick(object sender, Pabo.MonthCalendar.EventArgs.WeekdayEventArgs e)
     {
+    }
+
+    private void MyCalendar_DaySelectionChanged(object sender, Pabo.MonthCalendar.EventArgs.SelectionChangedEventArgs<Day> e)
+    {
+      var t = 1;
+    }
+
+    private void MyCalendar_MonthSelectionChanged(object sender, Pabo.MonthCalendar.EventArgs.SelectionChangedEventArgs<Month> e)
+    {
+      var t = 1;
     }
   }
 }

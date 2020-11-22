@@ -3,14 +3,14 @@ using Pabo.MonthCalendar.Model;
 
 namespace Pabo.MonthCalendar.EventArgs
 {
-  internal class CalendarSelectionChangedEventArgs
+  internal class CalendarSelectionChangedEventArgs<T>
   {
     
-    public CalendarSelectionChangedEventArgs(List<Day> selected)
+    public CalendarSelectionChangedEventArgs(List<T> selected)
     {
       this.Selected = selected;
     }
 
-    public List<Day> Selected { get; set; }
+    public List<T> Selected { get; set; }
   }
 }

@@ -20,26 +20,20 @@ namespace Pabo.MonthCalendar
 {
   [TemplatePart(Name = "PART_Host", Type = typeof(System.Windows.Controls.ItemsControl))]
   [ToolboxItem(false)]
-  public class Calendar : ItemsControl
+  public class Calendar : ItemsControl<CalendarDay>
   {
 
     public Calendar() : base(7, 6)
     {
+      this.popup = CreatePopup(this.Properties);
       this.Click += (sender, e) =>
       {
-        this.OnDayClick(new CalendarDayEventArgs(clickDay));
+        this.OnDayClick(new CalendarDayEventArgs(clickItem));
       };
     }
 
     #region private members
 
-    private System.Windows.Controls.ItemsControl itemsControl;
-    private MonthCalendarSelectionMode selectionMode = MonthCalendarSelectionMode.Single;
-
-    private CalendarDay activeDay;
-    private CalendarDay clickDay;
-
-    private bool suspendLayout = false;
     private int year;
     private int month;
     private List<Day> dayItems;
@@ -47,8 +41,6 @@ namespace Pabo.MonthCalendar
     private DateTime minDate;
     private DateTime maxDate;
 
-    private Pos startPos = new Pos();
-    private Pos endPos = new Pos();
     private List<Day> prevSelected = new List<Day>();
 
     private DataTemplate template;
@@ -67,9 +59,10 @@ namespace Pabo.MonthCalendar
 
     #endregion
 
+
     #region events
 
-    internal event EventHandler<CalendarSelectionChangedEventArgs> SelectionChanged;
+    internal event EventHandler<CalendarSelectionChangedEventArgs<Day>> SelectionChanged;
 
     internal event EventHandler<CalendarDayEventArgs> DayLeave;
 
@@ -87,7 +80,7 @@ namespace Pabo.MonthCalendar
     public static readonly DependencyProperty DaysProperty = DependencyProperty.Register("Days",
                typeof(List<CalendarDay>),
                typeof(Calendar),
-               new FrameworkPropertyMetadata(new List<CalendarDay>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+               new FrameworkPropertyMetadata(new List<CalendarDay>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnDaysChanged));
 
     public static readonly DependencyProperty PropertiesProperty = DependencyProperty.Register("Properties",
                typeof(CalendarProperties),
@@ -97,103 +90,8 @@ namespace Pabo.MonthCalendar
 
     #endregion
 
-
-    #region overrides
-
-    public override void OnApplyTemplate()
-    {
-      base.OnApplyTemplate();
-
-      this.itemsControl = GetTemplateChild("PART_Host") as System.Windows.Controls.ItemsControl;
-      if (this.itemsControl != null)
-      {
-        this.itemsControl.MouseDown += Calendar_MouseDown;
-        this.itemsControl.MouseMove += ItemsControl_MouseMove;
-        this.itemsControl.MouseUp += ItemsControl_MouseUp;
-        this.itemsControl.MouseEnter += ItemsControl_MouseEnter;
-        this.itemsControl.MouseLeave += ItemsControl_MouseLeave;
-        this.itemsControl.MouseDoubleClick += ItemsControl_MouseDoubleClick;
-
-        this.popup = CreatePopup(this.Properties);
-      }
-    }
-
-    #endregion
-
     #region event handlers
 
-    private void ItemsControl_MouseLeave(object sender, MouseEventArgs e)
-    {
-      if (this.activeDay != null)
-      {
-        this.activeDay.MouseOver = false;
-        this.OnDayLeave(new CalendarDayEventArgs(this.activeDay));
-      }
-      this.activeDay = null;
-      this.popup.IsOpen = false;
-   
-    }
-
-    private void ItemsControl_MouseEnter(object sender, MouseEventArgs e)
-    {
-      var day = this.Days[GetItem(e.GetPosition(this))];
-      
-      this.activeDay = day;
-      this.activeDay.MouseOver = true;
-      this.OnDayEnter(new CalendarDayEventArgs(day));
-
-    }
-
-    private void ItemsControl_MouseMove(object sender, MouseEventArgs e)
-    {
-      var day = this.Days[GetItem(e.GetPosition(this))];
-      SetTooltip(day.Tooltip);
-  
-      if (this.mouseDown && this.SelectionMode > MonthCalendarSelectionMode.Single)
-      {
-        EndPos = this.GetItemPos(e.GetPosition(this));
-
-      }
-      if (this.activeDay != day)
-      {
-        if ((!this.mouseDown) || (this.SelectionMode == MonthCalendarSelectionMode.Single))
-          this.activeDay.MouseOver = false;
-        this.OnDayLeave(new CalendarDayEventArgs(this.activeDay));
-        this.activeDay = day;
-        if ((!this.mouseDown) || (this.SelectionMode == MonthCalendarSelectionMode.Single))
-          this.activeDay.MouseOver = true;
-        this.OnDayEnter(new CalendarDayEventArgs(this.activeDay));
-      }
-    }
-
-    private void ItemsControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-    {
-      e.Handled = true;
-      this.Button_DoubleClick(sender, e);
-      var day = this.Days[GetItem(e.GetPosition(this))];
-      this.OnDayDoubleClick(new CalendarDayEventArgs(day));
-    }
-
-    private void ItemsControl_MouseUp(object sender, MouseButtonEventArgs e)
-    {
-      if (this.mouseDown)
-      {
-        this.clickDay = this.Days[GetItem(e.GetPosition(this))];
-
-        var selectedDays = this.Days.Where(x => x.Selected).ToList();
-        SelectDays(this.Days.Where(x => x.MouseOver).ToList(), this.clickDay);
-      }
-      this.mouseDown = false;
-    }
-
-
-    private void Calendar_MouseDown(object sender, MouseButtonEventArgs e)
-    {
-      StartPos = GetItemPos(e.GetPosition(this));
-
-      this.mouseDown = true;
-      this.Button_Click(sender, e);
-    }
 
     private void PropertiesChanged(object sender, PropertyChangedEventArgs e)
     {
@@ -204,74 +102,24 @@ namespace Pabo.MonthCalendar
     #endregion
 
 
+    private static void OnDaysChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      Calendar view = d as Calendar;
+      if (view != null)
+        view.OnDaysChanged(e.NewValue, e.OldValue);
+    }
+
+    protected virtual void OnDaysChanged(object newValue, object oldValue)
+    {
+      base.Items = (List<CalendarDay>)newValue;
+    }
+
+
     #region private methods
+    
 
-    private void SelectDays(List<CalendarDay> days, CalendarDay activeDay)
-    {
-
-      var selected = this.Days.Where(x => x.Selected).ToList();
-      var mouseOver = this.Days.Where(x => x.MouseOver).ToList();
-      if (SelectionMode > MonthCalendarSelectionMode.None)
-      {
-        if (SelectionMode == MonthCalendarSelectionMode.Single)
-        {
-          foreach (CalendarDay day in selected)
-          {
-            if (day != activeDay)
-            {
-              day.Selected = false;
-            }
-          }
-          activeDay.Selected = activeDay.Selected ? false : true;
-        }
-        if (SelectionMode > MonthCalendarSelectionMode.Single)
-        {
-          foreach (CalendarDay day in days)
-          {
-            day.Selected =  day == activeDay && activeDay.Selected && mouseOver.Count() == 1 ? false : true;
-            day.MouseOver = false;
-          }
-        }
-        activeDay.MouseOver = true;
-        foreach (CalendarDay sel in this.Days.Where(x => x.Selected))
-        {
-          this.SetupSelectedBorders(sel);
-        }
-        this.OnSelectionChanged();
-      }
-    }
-
-
-    private void SetupSelectedBorders(CalendarDay day)
-    {
-      var index = this.Days.FindIndex(x => x.Date == day.Date);
-      List<string> rightMost = new List<string> { "6", "13", "20", "27", "34", "41" };
-      if (day.Selected)
-      {
-        var left = (index == 0) || (index % 7 == 0) || !this.Days[index - 1].Selected ? 1 : 0;
-        var right = rightMost.IndexOf(index.ToString()) == 0 || index == 41 || !this.Days[index + 1].Selected ? 1 : 0;
-        var top = (index <= 7) || !this.Days[index - 7].Selected ? 1 : 0;
-        var bottom = (index >= 36) || index + 7 > 41 || !this.Days[index + 7].Selected ? 1 : 0;
-
-        day.BorderThickness = new Thickness(left, top, right, bottom);
-      }
-    }
-
-    private void ClearCalendar(bool setupBorders = true)
-    {
-      foreach (CalendarDay day in this.Days)
-      {
-        day.Selected = false;
-        if (setupBorders)
-        {
-          this.SetupSelectedBorders(day);
-        }
-      }
-
-      this.OnSelectionChanged();
-    }
-
-    private void OnSelectionChanged()
+    protected override void OnSelectionChanged()
     {
       var selectedDays = this.Days.Where(x => x.Selected).ToList<Day>();
 
@@ -281,21 +129,27 @@ namespace Pabo.MonthCalendar
       {
         this.prevSelected = selectedDays;
         foreach (CalendarDay day in selectedDays) { this.SetupSelectedBorders(day); };
-        EventHandler<CalendarSelectionChangedEventArgs> handler = SelectionChanged;
-        handler?.Invoke(this, new CalendarSelectionChangedEventArgs(selectedDays));
+        EventHandler<CalendarSelectionChangedEventArgs<Day>> handler = SelectionChanged;
+        handler?.Invoke(this, new CalendarSelectionChangedEventArgs<Day>(selectedDays));
       }
     }
 
-    private void OnDayLeave(CalendarDayEventArgs e)
+    protected override void OnItemLeave(CalendarDay item)
     {
       EventHandler<CalendarDayEventArgs> handler = DayLeave;
-      handler?.Invoke(this, e);
-    }
+      handler?.Invoke(this, new CalendarDayEventArgs(item));
 
-    private void OnDayEnter(CalendarDayEventArgs e)
+    }
+    protected override void OnItemEnter(CalendarDay item)
     {
       EventHandler<CalendarDayEventArgs> handler = DayEnter;
-      handler?.Invoke(this, e);
+      handler?.Invoke(this, new CalendarDayEventArgs(item));
+    }
+
+    protected override void OnItemDoubleClick(CalendarDay item)
+    {
+      EventHandler<CalendarDayEventArgs> handler =DayDoubleClick;
+      handler?.Invoke(this, new CalendarDayEventArgs(item));
     }
 
     private void OnDayClick(CalendarDayEventArgs e)
@@ -305,54 +159,9 @@ namespace Pabo.MonthCalendar
 
     }
 
-    private void OnDayDoubleClick(CalendarDayEventArgs e)
-    {
-      EventHandler<CalendarDayEventArgs> handler = DayDoubleClick;
-      handler?.Invoke(this, e);
-    }
-
-
     #endregion
 
     #region properties
-
-    private Pos StartPos
-    {
-      get => startPos;
-      set
-      {
-        if (value != startPos)
-        {
-          startPos = value;
-        }
-      }
-    }
-
-    private Pos EndPos
-    {
-      get => endPos;
-      set
-      {
-        if (value.Col != endPos.Col || value.Row != endPos.Row)
-        {
-          endPos = value;
-
-          for (int i = 0; i < 42; i++)
-          {
-            this.Days[i].MouseOver = false;
-          }
-
-          for (int c = Math.Min(StartPos.Col, EndPos.Col); c <= Math.Max(EndPos.Col, StartPos.Col); c++)
-          {
-            for (int r = Math.Min(StartPos.Row, EndPos.Row); r <= Math.Max(EndPos.Row, StartPos.Row); r++)
-            {
-              var y = ((r - 1) * 7) + c - 1;
-              this.Days[y].MouseOver = true;
-            }
-          }
-        }
-      }
-    }
 
     internal List<CalendarDay> Days
     {
@@ -365,25 +174,9 @@ namespace Pabo.MonthCalendar
         this.SetValue(DaysProperty, value);
       }
     }
-
-    internal bool SuspendLayout
-    {
-      get => this.suspendLayout;
-      set
-      {
-        if (value != this.suspendLayout)
-        {
-          this.suspendLayout = value;
-          if (!this.suspendLayout)
-          {
-            this.Setup();
-          }
-        }
-      }
-    }
-
+ 
     [Description("")]
-    [Category("Header")]
+    [Category("Calendar")]
     [Browsable(true)]
     internal CalendarProperties Properties
     {
@@ -402,24 +195,7 @@ namespace Pabo.MonthCalendar
       }
     }
 
-    internal MonthCalendarSelectionMode SelectionMode
-    {
-      get => selectionMode;
-      set
-      {
-        if (value != this.selectionMode)
-        {
-          if ((value > MonthCalendarSelectionMode.Single || value == MonthCalendarSelectionMode.None) &&
-              (this.Days.Where(x => x.Selected).ToList().Count > 1))
-          {
-            ClearCalendar();
-
-
-          }
-          this.selectionMode = value;
-        }
-      }
-    }
+    
 
     #endregion
 
@@ -510,7 +286,7 @@ namespace Pabo.MonthCalendar
 
     #region private methods
 
-    private void Setup()
+    protected override void Setup()
     {
       SetupDays(this.year, this.month, this.minDate, this.maxDate, this.dayItems, this.disabledDays, this.template);
     }

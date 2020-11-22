@@ -20,32 +20,23 @@ namespace Pabo.MonthCalendar
 {
   [TemplatePart(Name = "PART_Host", Type = typeof(System.Windows.Controls.ItemsControl))]
   [ToolboxItem(false)]
-  public class MonthView : ItemsControl
+  public class MonthView : ItemsControl<CalendarMonth>
   {
 
     public MonthView() : base(3,4)
     {
+      this.popup = CreatePopup(this.Properties);
       this.Click += (sender, e) =>
       {
-        this.OnMonthClick(new CalendarMonthEventArgs(clickMonth));
+        this.OnMonthClick(new CalendarMonthEventArgs(this.activeItem));
       };
     }
 
     #region private members
-
-    private System.Windows.Controls.ItemsControl itemsControl;
-    private MonthCalendarSelectionMode selectionMode = MonthCalendarSelectionMode.Single;
-
-    private CalendarMonth activeMonth;
-    private CalendarMonth clickMonth;
-
-    private bool suspendLayout = false;
+ 
     private int year;
-
     private List<Month> monthItems;
 
-    private Pos startPos = new Pos();
-    private Pos endPos = new Pos();
     private List<Month> prevSelected = new List<Month>();
 
     private DataTemplate template;
@@ -64,7 +55,7 @@ namespace Pabo.MonthCalendar
 
     #region events
 
-    internal event EventHandler<CalendarSelectionChangedEventArgs> SelectionChanged;
+    internal event EventHandler<CalendarSelectionChangedEventArgs<Month>> SelectionChanged;
 
     internal event EventHandler<CalendarMonthEventArgs> MonthLeave;
 
@@ -82,7 +73,7 @@ namespace Pabo.MonthCalendar
     public static readonly DependencyProperty MonthsProperty = DependencyProperty.Register("Months",
                typeof(List<CalendarMonth>),
                typeof(MonthView),
-               new FrameworkPropertyMetadata(new List<CalendarMonth>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+               new FrameworkPropertyMetadata(new List<CalendarMonth>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnMonthsChanged));
 
     public static readonly DependencyProperty PropertiesProperty = DependencyProperty.Register("Properties",
                typeof(MonthProperties),
@@ -92,103 +83,7 @@ namespace Pabo.MonthCalendar
 
     #endregion
 
-
-    #region overrides
-
-    public override void OnApplyTemplate()
-    {
-      base.OnApplyTemplate();
-
-      this.itemsControl = GetTemplateChild("PART_Host") as System.Windows.Controls.ItemsControl;
-      if (this.itemsControl != null)
-      {
-        this.itemsControl.MouseDown += Calendar_MouseDown;
-        this.itemsControl.MouseMove += ItemsControl_MouseMove;
-        this.itemsControl.MouseUp += ItemsControl_MouseUp;
-        this.itemsControl.MouseEnter += ItemsControl_MouseEnter;
-        this.itemsControl.MouseLeave += ItemsControl_MouseLeave;
-        this.itemsControl.MouseDoubleClick += ItemsControl_MouseDoubleClick;
-
-        this.popup = CreatePopup(this.Properties);
-      }
-    }
-
-    #endregion
-
     #region event handlers
-
-    private void ItemsControl_MouseLeave(object sender, MouseEventArgs e)
-    {
-      if (this.activeMonth != null)
-      {
-        this.activeMonth.MouseOver = false;
-        this.OnMonthLeave(new CalendarMonthEventArgs(this.activeMonth));
-      }
-      this.activeMonth = null;
-      this.popup.IsOpen = false;
-
-    }
-
-    private void ItemsControl_MouseEnter(object sender, MouseEventArgs e)
-    {
-      var month = this.Months[GetItem(e.GetPosition(this))];
-
-      this.activeMonth = month;
-      this.activeMonth.MouseOver = true;
-      this.OnMonthEnter(new CalendarMonthEventArgs(month));
-
-    }
-
-    private void ItemsControl_MouseMove(object sender, MouseEventArgs e)
-    {
-      var day = this.Months[GetItem(e.GetPosition(this))];
-      SetTooltip(day.Tooltip);
-
-      if (this.mouseDown && this.SelectionMode > MonthCalendarSelectionMode.Single)
-      {
-        EndPos = this.GetItemPos(e.GetPosition(this));
-
-      }
-      if (this.activeMonth != day)
-      {
-        if ((!this.mouseDown) || (this.SelectionMode == MonthCalendarSelectionMode.Single))
-          this.activeMonth.MouseOver = false;
-        this.OnMonthLeave(new CalendarMonthEventArgs(this.activeMonth));
-        this.activeMonth = day;
-        if ((!this.mouseDown) || (this.SelectionMode == MonthCalendarSelectionMode.Single))
-          this.activeMonth.MouseOver = true;
-        this.OnMonthEnter(new CalendarMonthEventArgs(this.activeMonth));
-      }
-    }
-
-    private void ItemsControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-    {
-      e.Handled = true;
-      this.Button_DoubleClick(sender, e);
-      var month = this.Months[GetItem(e.GetPosition(this))];
-      this.OnMonthDoubleClick(new CalendarMonthEventArgs(month));
-    }
-
-    private void ItemsControl_MouseUp(object sender, MouseButtonEventArgs e)
-    {
-      if (this.mouseDown)
-      {
-        this.clickMonth = this.Months[GetItem(e.GetPosition(this))];
-
-        var selectedMonths = this.Months.Where(x => x.Selected).ToList();
-        SelectMonths(this.Months.Where(x => x.MouseOver).ToList(), this.clickMonth);
-      }
-      this.mouseDown = false;
-    }
-
-
-    private void Calendar_MouseDown(object sender, MouseButtonEventArgs e)
-    {
-      StartPos = GetItemPos(e.GetPosition(this));
-
-      this.mouseDown = true;
-      this.Button_Click(sender, e);
-    }
 
     private void PropertiesChanged(object sender, PropertyChangedEventArgs e)
     {
@@ -201,71 +96,8 @@ namespace Pabo.MonthCalendar
 
     #region private methods
 
-    private void SelectMonths(List<CalendarMonth> months, CalendarMonth activeMonth)
-    {
-      var selected = this.Months.Where(x => x.Selected).ToList();
-      var mouseOver = this.Months.Where(x => x.MouseOver).ToList();
-      if (SelectionMode > MonthCalendarSelectionMode.None)
-      {
-        if (SelectionMode == MonthCalendarSelectionMode.Single)
-        {
-          foreach (CalendarMonth month in selected)
-          {
-            if (month != activeMonth)
-            {
-              month.Selected = false;
-            }
-          }
-          activeMonth.Selected = activeMonth.Selected ? false : true;
-        }
-        if (SelectionMode > MonthCalendarSelectionMode.Single)
-        {
-          foreach (CalendarMonth month in months)
-          {
-            month.Selected = month == activeMonth && activeMonth.Selected && mouseOver.Count() == 1 ? false : true;
-            month.MouseOver = false;
-          }
-        }
-        activeMonth.MouseOver = true;
-        foreach (CalendarMonth sel in this.Months.Where(x => x.Selected))
-        {
-          this.SetupSelectedBorders(sel);
-        }
-        this.OnSelectionChanged();
-      }
-    }
-
-
-    private void SetupSelectedBorders(CalendarMonth month)
-    {
-        var index = this.Months.FindIndex(x => x.Number == month.Number);
-        List<string> rightMost = new List<string> { "2", "5", "8", "11" };
-        if (month.Selected)
-        {
-          var left = (index == 0) || (index % 3 == 0) || !this.Months[index - 1].Selected ? 1 : 0;
-          var right = rightMost.IndexOf(index.ToString()) == 0 || index == 11 || !this.Months[index + 1].Selected ? 1 : 0;
-          var top = (index <= 3) || !this.Months[index - 3].Selected ? 1 : 0;
-          var bottom = (index >= 9) || index + 3 > 41 || !this.Months[index + 3].Selected ? 1 : 0;
-
-          month.BorderThickness = new Thickness(left, top, right, bottom);
-        }
-    }
-
-    private void ClearCalendar(bool setupBorders = true)
-    {
-      foreach (CalendarMonth month in this.Months)
-      {
-        month.Selected = false;
-        if (setupBorders)
-        {
-          this.SetupSelectedBorders(month);
-        }
-      }
-
-      this.OnSelectionChanged();
-    }
-
-    private void OnSelectionChanged()
+  
+    protected override void OnSelectionChanged()
     {
       var selectedMonths = this.Months.Where(x => x.Selected).ToList<Month>();
 
@@ -276,21 +108,9 @@ namespace Pabo.MonthCalendar
         this.prevSelected = selectedMonths;
         foreach (CalendarMonth month in selectedMonths) { this.SetupSelectedBorders(month); };
         
-        //EventHandler<CalendarSelectionChangedEventArgs> handler = SelectionChanged;
-        //handler?.Invoke(this, new CalendarSelectionChangedEventArgs(selectedDays));
+        EventHandler<CalendarSelectionChangedEventArgs<Month>> handler = SelectionChanged;
+        handler?.Invoke(this, new CalendarSelectionChangedEventArgs<Month>(selectedMonths));
       }
-    }
-
-    private void OnMonthLeave(CalendarMonthEventArgs e)
-    {
-      EventHandler<CalendarMonthEventArgs> handler = MonthLeave;
-      handler?.Invoke(this, e);
-    }
-
-    private void OnMonthEnter(CalendarMonthEventArgs e)
-    {
-      EventHandler<CalendarMonthEventArgs> handler = MonthEnter;
-      handler?.Invoke(this, e);
     }
 
     private void OnMonthClick(CalendarMonthEventArgs e)
@@ -300,55 +120,42 @@ namespace Pabo.MonthCalendar
 
     }
 
-    private void OnMonthDoubleClick(CalendarMonthEventArgs e)
+    protected override void OnItemLeave(CalendarMonth item)
+    {
+      EventHandler<CalendarMonthEventArgs> handler = MonthLeave;
+      handler?.Invoke(this, new CalendarMonthEventArgs(item));
+
+    }
+    protected override void OnItemEnter(CalendarMonth item)
+    {
+      EventHandler<CalendarMonthEventArgs> handler = MonthEnter;
+      handler?.Invoke(this, new CalendarMonthEventArgs(item));
+    }
+
+    protected override void OnItemDoubleClick(CalendarMonth item)
     {
       EventHandler<CalendarMonthEventArgs> handler = MonthDoubleClick;
-      handler?.Invoke(this, e);
+      handler?.Invoke(this, new CalendarMonthEventArgs(item));
     }
 
 
     #endregion
 
+    private static void OnMonthsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+
+      MonthView view = d as MonthView;
+      if (view != null)
+        view.OnMonthsChanged(e.NewValue, e.OldValue);
+    }
+
+    protected virtual void OnMonthsChanged(object newValue, object oldValue)
+    {
+      base.Items = (List<CalendarMonth>)newValue;
+    }
+
     #region properties
-
-    private Pos StartPos
-    {
-      get => startPos;
-      set
-      {
-        if (value != startPos)
-        {
-          startPos = value;
-        }
-      }
-    }
-
-    private Pos EndPos
-    {
-      get => endPos;
-      set
-      {
-        if (value.Col != endPos.Col || value.Row != endPos.Row)
-        {
-          endPos = value;
-
-          for (int i = 0; i < 12; i++)
-          {
-            this.Months[i].MouseOver = false;
-          }
-
-          for (int c = Math.Min(StartPos.Col, EndPos.Col); c <= Math.Max(EndPos.Col, StartPos.Col); c++)
-          {
-            for (int r = Math.Min(StartPos.Row, EndPos.Row); r <= Math.Max(EndPos.Row, StartPos.Row); r++)
-            {
-              var y = ((r - 1) * 3) + c - 1;
-              this.Months[y].MouseOver = true;
-            }
-          }
-        }
-      }
-    }
-
+  
     internal List<CalendarMonth> Months
     {
       get
@@ -358,22 +165,6 @@ namespace Pabo.MonthCalendar
       set
       {
         this.SetValue(MonthsProperty, value);
-      }
-    }
-
-    internal bool SuspendLayout
-    {
-      get => this.suspendLayout;
-      set
-      {
-        if (value != this.suspendLayout)
-        {
-          this.suspendLayout = value;
-          if (!this.suspendLayout)
-          {
-            this.Setup();
-          }
-        }
       }
     }
 
@@ -397,25 +188,6 @@ namespace Pabo.MonthCalendar
       }
     }
 
-    internal MonthCalendarSelectionMode SelectionMode
-    {
-      get => selectionMode;
-      set
-      {
-        if (value != this.selectionMode)
-        {
-          if ((value > MonthCalendarSelectionMode.Single || value == MonthCalendarSelectionMode.None) &&
-              (this.Months.Where(x => x.Selected).ToList().Count > 1))
-          {
-            ClearCalendar();
-
-
-          }
-          this.selectionMode = value;
-        }
-      }
-    }
-
     #endregion
 
 
@@ -425,7 +197,7 @@ namespace Pabo.MonthCalendar
 
     #region private methods
 
-    private void Setup()
+    protected override void Setup()
     {
       SetupMonths(this.year, this.monthItems, this.template);
     }

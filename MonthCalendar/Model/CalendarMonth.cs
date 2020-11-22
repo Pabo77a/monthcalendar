@@ -6,7 +6,7 @@ using System.Windows;
 
 namespace Pabo.MonthCalendar.Model
 {
-  public class CalendarMonth : Month, INotifyPropertyChanged
+  public class CalendarMonth : Month, INotifyPropertyChanged, IPanel
   {
 
     private bool selected = false;
@@ -80,6 +80,8 @@ namespace Pabo.MonthCalendar.Model
         }
       }
     }
+
+    public string Id => $"{this.Year}-{this.Number}";
 
     public override string Text 
     { 
