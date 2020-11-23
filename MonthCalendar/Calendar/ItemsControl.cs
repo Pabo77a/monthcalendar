@@ -20,12 +20,13 @@ namespace Pabo.MonthCalendar
     protected Popup popup;
     protected bool mouseDown = false;
 
-
     private ItemsControl itemsControl;
     private MonthCalendarSelectionMode selectionMode = MonthCalendarSelectionMode.None;
 
     protected T activeItem;
     protected T clickItem;
+
+    private List<T> prevSelected = new List<T>();
 
     protected bool suspendLayout = false;
 
@@ -36,10 +37,10 @@ namespace Pabo.MonthCalendar
     {
       this.Cols = cols;
       this.Rows = rows;
-    
+
       this.MouseMove += ItemsControl_MouseMove;
     }
-   
+
     public int Cols { get; private set; }
 
     public int Rows { get; private set; }
@@ -134,7 +135,7 @@ namespace Pabo.MonthCalendar
         this.itemsControl.MouseDoubleClick += ItemsControl_MouseDoubleClick;
       }
     }
-  
+
     private void ItemsControl_MouseLeave(object sender, MouseEventArgs e)
     {
       if (this.activeItem != null)
@@ -203,11 +204,10 @@ namespace Pabo.MonthCalendar
       if (this.mouseDown)
       {
         this.clickItem = this.Items[GetItem(e.GetPosition(this))];
+        SelectItems(this.Items.Where(x => x.MouseOver).ToList(), this.clickItem);
 
-        var selectedDays = this.Items.Where(x => x.Selected).ToList();
-        SelectDays(this.Items.Where(x => x.MouseOver).ToList(), this.clickItem);
+        this.mouseDown = false;
       }
-      this.mouseDown = false;
     }
 
     private void ItemsControl_MouseDown(object sender, MouseButtonEventArgs e)
@@ -218,7 +218,7 @@ namespace Pabo.MonthCalendar
       this.Button_Click(sender, e);
     }
 
-    private void SelectDays(List<T> items, T activeItem)
+    private void SelectItems(List<T> items, T activeItem)
     {
 
       var selected = this.Items.Where(x => x.Selected).ToList();
@@ -249,7 +249,7 @@ namespace Pabo.MonthCalendar
         {
           this.SetupSelectedBorders(sel);
         }
-        this.OnSelectionChanged();
+        this.CheckIfSelectionChanged();
       }
     }
 
@@ -288,7 +288,7 @@ namespace Pabo.MonthCalendar
       var index = this.Items.FindIndex(x => x.Id == item.Id);
       List<string> rightMost = new List<string>();
       var t = -1;
-      for (int i =0;i< this.Rows; i++)
+      for (int i = 0; i < this.Rows; i++)
       {
         t += this.Cols;
         rightMost.Add(t.ToString());
@@ -297,8 +297,8 @@ namespace Pabo.MonthCalendar
       {
         var left = (index == 0) || (index % this.Cols == 0) || !this.Items[index - 1].Selected ? 1 : 0;
         var right = rightMost.IndexOf(index.ToString()) == 0 || index == (this.Cols * this.Rows) - 1 || !this.Items[index + 1].Selected ? 1 : 0;
-        var top = (index <= this.Cols-1) || !this.Items[index - this.Cols].Selected ? 1 : 0;
-        var bottom = (index > this.Cols * (this.Rows-1)) || index + this.Cols > (this.Cols * this.Rows)-1 || !this.Items[index + this.Cols].Selected ? 1 : 0;
+        var top = (index <= this.Cols - 1) || !this.Items[index - this.Cols].Selected ? 1 : 0;
+        var bottom = (index > this.Cols * (this.Rows - 1)) || index + this.Cols > (this.Cols * this.Rows) - 1 || !this.Items[index + this.Cols].Selected ? 1 : 0;
 
         item.BorderThickness = new Thickness(left, top, right, bottom);
       }
@@ -315,12 +315,30 @@ namespace Pabo.MonthCalendar
         }
       }
 
-      this.OnSelectionChanged();
+      this.CheckIfSelectionChanged();
     }
+
+    protected void CheckIfSelectionChanged()
+    {
+      var selectedItems = this.Items.Where(x => x.Selected).ToList<T>();
+
+      var diff1 = selectedItems.Except(this.prevSelected).ToList();
+      var diff2 = this.prevSelected.Except(selectedItems).ToList();
+      if (diff1.Count() > 0 || diff2.Count > 0)
+      {
+        this.prevSelected = selectedItems;
+        foreach (T item in selectedItems) { this.SetupSelectedBorders(item); };
+
+        this.OnSelectionChanged(selectedItems);
+
+      }
+    }
+
+
 
     protected abstract void Setup();
 
-    protected abstract void OnSelectionChanged();
+    protected abstract void OnSelectionChanged(List<T> selected);
 
     protected abstract void OnItemLeave(T item);
     protected abstract void OnItemEnter(T item);

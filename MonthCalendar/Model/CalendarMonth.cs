@@ -11,7 +11,7 @@ namespace Pabo.MonthCalendar.Model
 
     private bool selected = false;
     private bool mouseOver = false;
-
+    private string name = string.Empty;
     private bool disabled = false;
 
     private Thickness thickness = new Thickness(1, 1, 1, 1);
@@ -83,9 +83,24 @@ namespace Pabo.MonthCalendar.Model
 
     public string Id => $"{this.Year}-{this.Number}";
 
+    public string Name
+    {
+      get => name;
+      set
+      {
+        if (value != name)
+        {
+          this.name = value;
+          OnPropertyChanged();
+          OnPropertyChanged(nameof(this.Text));
+        }
+      }
+    }
+
+
     public override string Text 
     { 
-      get => !string.IsNullOrEmpty(this.text) ? this.text : new DateTime(this.Year, this.Number, 1).ToString("MMM"); 
+      get => !string.IsNullOrEmpty(this.text) ? this.text : Name; 
       set => base.Text = value; 
     }
 

@@ -166,7 +166,7 @@ namespace Pabo.MonthCalendar
 
     }
 
-    protected override void OnSelectionChanged()
+    protected override void OnSelectionChanged(List<CalendarWeek> selected)
     {
     }
 

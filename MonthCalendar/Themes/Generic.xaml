@@ -42,20 +42,22 @@
               </Rectangle.Fill>
             </Rectangle>
             <Button x:Name="PART_Left" Margin="10,10,0,10" Width="20" Height="20" Grid.Row="0" Foreground="Black" Grid.Column="0" Focusable="False"
-                    IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Header}},Path=CanDecreaseMonth}">
+                    IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Header}},Path=CanDecrease}">
               <Button.Content>
                 <Rectangle Width="16" Height="5" Fill="{StaticResource brush.scroll.left}" />
               </Button.Content>
             </Button>
             <Button x:Name="PART_Right" Margin="0,10,10,10" Width="20" Height="20" Grid.Row="0" Grid.Column="2"  Focusable="False"
-                    IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Header}},Path=CanIncreaseMonth}">
+                    IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:Header}},Path=CanIncrease}">
               <Button.Content>
                 <Rectangle Width="16" Height="5" Fill="{StaticResource brush.scroll.right}" />
               </Button.Content>
             </Button>
             <TextBlock Grid.Column="1" Grid.Row="0" DataContext="{TemplateBinding Properties}"
-                       VerticalAlignment="Center" HorizontalAlignment="Center" 
-                       FontSize="{Binding FontSize}" FontWeight="{Binding FontWeight}" FontStyle="{Binding FontStyle}" FontFamily="{Binding FontFamily}" TextDecorations="{Binding TextDecoration}"
+                       VerticalAlignment="{Binding TextVerticalAlignment}" HorizontalAlignment="{Binding TextHorizontalAlignment}" 
+                       FontSize="{Binding TextFontSize}" FontWeight="{Binding TextFontWeight}" 
+                       FontStyle="{Binding TextFontStyle}" FontFamily="{Binding TextFontFamily}" 
+                       TextDecorations="{Binding TextTextDecoration}" Margin="{Binding TextMargin}"
                        x:Name="PART_Text" Text="{Binding Text}" Foreground="{Binding TextColor, Converter={StaticResource BrushConverter}}"></TextBlock>
           </Grid>
 
@@ -266,11 +268,12 @@
                 <SolidColorBrush  Color="{Binding BackgroundColor}"></SolidColorBrush>
               </Rectangle.Fill>
             </Rectangle>
-            <TextBlock DataContext="{TemplateBinding Properties}" FontSize="{Binding FontSize}"
-                       FontWeight="{Binding FontWeight}" FontStyle="{Binding FontStyle}" FontFamily="{Binding FontFamily}" 
-                       TextDecorations="{Binding TextDecoration}"
-                       VerticalAlignment="Center" HorizontalAlignment="Left" Margin="1,1,0,1"
-                       x:Name="PART_Text" Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" Foreground="{Binding TextColor, Converter={StaticResource BrushConverter}}"></TextBlock>
+            <TextBlock DataContext="{TemplateBinding Properties}" 
+                       FontSize="{Binding TextFontSize}"
+                       FontWeight="{Binding TextFontWeight}" FontStyle="{Binding TextFontStyle}" FontFamily="{Binding TextFontFamily}" 
+                       TextDecorations="{Binding TextTextDecoration}"
+                       VerticalAlignment="{Binding TextVerticalAlignment}" HorizontalAlignment="{Binding TextHorizontalAlignment}" Margin="{Binding TextMargin}"
+                       x:Name="PART_Text" Text="{Binding Text}" Foreground="{Binding TextColor, Converter={StaticResource BrushConverter}}"></TextBlock>
             <Border BorderThickness="1 0 1 1" BorderBrush="Black"></Border>
 
           </Grid>

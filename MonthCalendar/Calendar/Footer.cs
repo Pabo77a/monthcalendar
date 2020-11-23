@@ -58,7 +58,7 @@ namespace Pabo.MonthCalendar
 
     
     [Description("")]
-    [Category("Header")]
+    [Category("Footer")]
     [Browsable(true)]
     internal FooterProperties Properties
     {

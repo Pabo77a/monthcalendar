@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pabo.MonthCalendar.Common;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -12,18 +13,22 @@ namespace Pabo.MonthCalendar.Properties
 
     private string text = string.Empty;
     private string dateFormat = "MMMM yyyy";
-
-
-    public HeaderProperties()
+ 
+    public HeaderProperties() : base()
     {
       this.Month = 1;
       this.Year = 1990;
+      this.TextFontSize = 16;
+      this.TextVerticalAlignment = VerticalAlignment.Center;
+      this.TextHorizontalAlignment = HorizontalAlignment.Center;
     }
 
 
     internal int Month { get; set; }
 
-    internal int Year {  get; set; }
+    internal int Year { get; set; }
+
+    internal VisualMode VisualMode {get; set;}
 
     public string DateFormat
     {
@@ -33,7 +38,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != dateFormat)
         {
           dateFormat = value;
-          OnPropertyChanged(nameof(this.Text));
+          OnPropertyChanged();
         }
       }
     }
@@ -43,14 +48,15 @@ namespace Pabo.MonthCalendar.Properties
     {
       get
       {
-        return !string.IsNullOrEmpty(this.text) ? this.text : new DateTime(this.Year, this.Month, 1).ToString(this.DateFormat); 
+        return !string.IsNullOrEmpty(this.text) ? this.text : 
+          VisualMode == VisualMode.Days ? new DateTime(this.Year, this.Month, 1).ToString(this.DateFormat) : this.Year.ToString(); 
       }
       set
       {
         if (value != text)
         {
           text = value;
-          OnPropertyChanged(nameof(this.Text));
+          OnPropertyChanged();
         }
       }
     }

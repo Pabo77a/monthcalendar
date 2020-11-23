@@ -13,6 +13,8 @@ namespace Pabo.MonthCalendar.Properties
     private Color selectedBackgroundColor = Colors.LightBlue;
     private Color selectedBorderColor = Colors.Blue;
     private double selectedOpacity = .25;
+    
+    private bool abbreviatedNames = true;
 
     // Disabled
     private Color disabledBackgroundColor = Colors.LightGray;
@@ -31,6 +33,19 @@ namespace Pabo.MonthCalendar.Properties
       this.MouseOverBorderColor = Colors.Transparent;
       this.MouseOverOpacity = .25;
 
+    }
+
+    public bool AbbreviatedNames
+    {
+      get => this.abbreviatedNames;
+      set
+      {
+        if (abbreviatedNames != value)
+        {
+          this.abbreviatedNames = value;
+          OnPropertyChanged();
+        }
+      }
     }
 
     #region Selected

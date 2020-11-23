@@ -67,7 +67,7 @@ namespace MonthCalendar.Test
         Text = "BIDEN",
         Tooltip = "This is a test.",
         TextColor = Colors.White,
-        TextFontSize = 36 //,
+        TextFontSize = 36//, //,
         //Template = (DataTemplate)Application.Current.FindResource("myDayTemplate2")
     });
       this.days.Add(new Day() { Date = new DateTime(2020, 8, 16), Tooltip = "Make america great again!", 
@@ -98,7 +98,7 @@ namespace MonthCalendar.Test
       //this.HeaderProperties.DateText = "jjj"; // .Text = "TEST TEST TEST";
 
       //this.weekdaysProperties.AbbreviatedNames = false;
-
+       
       this.calendarProperties.ShowNotCurrentMonth = true;
 
       this.calendarProperties.DateFontSize = 24;
@@ -113,6 +113,10 @@ namespace MonthCalendar.Test
 
       this.calendarProperties.NotCurrentMonthBackgroundColor = Colors.Gray;
       this.calendarProperties.NotCurrentMonthDateColor = Colors.White;
+
+      this.monthProperties.AbbreviatedNames = false;
+
+
       MyCalendar.DataContext = this;
       
     }
@@ -279,7 +283,6 @@ namespace MonthCalendar.Test
 
     private void MonthCalendar_DayClick(object sender, Pabo.MonthCalendar.EventArgs.DayEventArgs e)
     {
-      var t = 1;
     }
 
     private void MonthCalendar_DayDoubleClick(object sender, Pabo.MonthCalendar.EventArgs.DayEventArgs e)
@@ -304,12 +307,10 @@ namespace MonthCalendar.Test
 
     private void MyCalendar_DaySelectionChanged(object sender, Pabo.MonthCalendar.EventArgs.SelectionChangedEventArgs<Day> e)
     {
-      var t = 1;
     }
 
     private void MyCalendar_MonthSelectionChanged(object sender, Pabo.MonthCalendar.EventArgs.SelectionChangedEventArgs<Month> e)
     {
-      var t = 1;
     }
   }
 }

@@ -97,20 +97,11 @@ namespace Pabo.MonthCalendar
     #region private methods
 
   
-    protected override void OnSelectionChanged()
+    protected override void OnSelectionChanged(List<CalendarMonth> selected)
     {
-      var selectedMonths = this.Months.Where(x => x.Selected).ToList<Month>();
+      EventHandler<CalendarSelectionChangedEventArgs<Month>> handler = SelectionChanged;
+      handler?.Invoke(this, new CalendarSelectionChangedEventArgs<Month>(selected.ToList<Month>()));
 
-      var diff1 = selectedMonths.Except(this.prevSelected).ToList();
-      var diff2 = this.prevSelected.Except(selectedMonths).ToList();
-      if (diff1.Count() > 0 || diff2.Count > 0)
-      {
-        this.prevSelected = selectedMonths;
-        foreach (CalendarMonth month in selectedMonths) { this.SetupSelectedBorders(month); };
-        
-        EventHandler<CalendarSelectionChangedEventArgs<Month>> handler = SelectionChanged;
-        handler?.Invoke(this, new CalendarSelectionChangedEventArgs<Month>(selectedMonths));
-      }
     }
 
     private void OnMonthClick(CalendarMonthEventArgs e)
@@ -225,6 +216,8 @@ namespace Pabo.MonthCalendar
           months[i].Selected = this.Months.FirstOrDefault(x => x.Selected && x.Year == months[i].Year && x.Number == months[i].Number) != null;
           //months[i].Disabled = disabled; 
 
+          months[i].Name = new DateTime(year, i + 1, 1).ToString(Properties.AbbreviatedNames ? "MMM" : "MMMM");
+    
           if (months[i].Selected)
             this.SetupSelectedBorders(months[i]);
 

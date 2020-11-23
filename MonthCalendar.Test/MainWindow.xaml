@@ -17,10 +17,11 @@
 
 
     <calendar:MonthCalendar Grid.Row="0"
-                            VisualMode="Days"
+                            VisualMode="Months"
                             Background="White"
                             Name="MyCalendar"
-                            Year="2020" Month="8" 
+                            Year="2020" Month="8"
+                            MaxYear="2023"
                             Header="true"
                             Footer="true" 
                             Weekdays="true"
@@ -54,8 +55,16 @@
                             WeekdayClick="MonthCalendar_WeekdayClick"
                             WeekdayDoubleClick="MonthCalendar_WeekdayDoubleClick"
                             WeekDoubleClick="MonthCalendar_WeekDoubleClick"
-                            MonthChanged="MonthCalendar_MonthChanged" Grid.RowSpan="2" >
+                            MonthChanged="MonthCalendar_MonthChanged" Grid.RowSpan="1"  >
+      <calendar:MonthCalendar.RenderTransform>
+        <TransformGroup>
+          <ScaleTransform/>
+          <SkewTransform AngleX="0.101"/>
+          <RotateTransform Angle="-0.021"/>
+          <TranslateTransform X="0.665"/>
+        </TransformGroup>
+      </calendar:MonthCalendar.RenderTransform>
     </calendar:MonthCalendar>
-    <Button Grid.Row="1" Click="Button_Click">TEST</Button>
+    <Button Click="Button_Click" Grid.Row="1" Grid.RowSpan="1">TEST</Button>
   </Grid>
 </Window>

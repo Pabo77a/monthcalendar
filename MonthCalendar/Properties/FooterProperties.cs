@@ -17,6 +17,9 @@ namespace Pabo.MonthCalendar.Properties
       this.TextColor = Colors.Black;
       this.BackgroundColor = Colors.White;
       this.Text = string.Empty;
+      this.TextVerticalAlignment = VerticalAlignment.Center;
+      this.TextHorizontalAlignment = HorizontalAlignment.Left;
+      this.TextMargin = new Thickness(1, 1, 0, 1);
     }
 
     public string Text
@@ -30,7 +33,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != text)
         {
           text = value;
-          OnPropertyChanged(nameof(this.Text));
+          OnPropertyChanged();
         }
       }
     }

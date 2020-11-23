@@ -119,19 +119,10 @@ namespace Pabo.MonthCalendar
     #region private methods
     
 
-    protected override void OnSelectionChanged()
+    protected override void OnSelectionChanged(List<CalendarDay> selected)
     {
-      var selectedDays = this.Days.Where(x => x.Selected).ToList<Day>();
-
-      var diff1 = selectedDays.Except(this.prevSelected).ToList();
-      var diff2 = this.prevSelected.Except(selectedDays).ToList();
-      if (diff1.Count() > 0 || diff2.Count > 0)
-      {
-        this.prevSelected = selectedDays;
-        foreach (CalendarDay day in selectedDays) { this.SetupSelectedBorders(day); };
-        EventHandler<CalendarSelectionChangedEventArgs<Day>> handler = SelectionChanged;
-        handler?.Invoke(this, new CalendarSelectionChangedEventArgs<Day>(selectedDays));
-      }
+      EventHandler<CalendarSelectionChangedEventArgs<Day>> handler = SelectionChanged;
+      handler?.Invoke(this, new CalendarSelectionChangedEventArgs<Day>(selected.ToList<Day>()));
     }
 
     protected override void OnItemLeave(CalendarDay item)
@@ -213,7 +204,7 @@ namespace Pabo.MonthCalendar
         }
       }
 
-      this.OnSelectionChanged();
+      this.CheckIfSelectionChanged();
     }
 
     public void Deselect(List<DateTime> dates)
@@ -227,7 +218,7 @@ namespace Pabo.MonthCalendar
         }
       }
 
-      this.OnSelectionChanged();
+      this.CheckIfSelectionChanged();
     }
 
     public void SelectWeek(int week)
@@ -240,7 +231,7 @@ namespace Pabo.MonthCalendar
         }
       }
 
-      this.OnSelectionChanged();
+      this.CheckIfSelectionChanged();
     }
 
     public void DeselectWeek(int week)
@@ -253,7 +244,7 @@ namespace Pabo.MonthCalendar
         }
       }
 
-      this.OnSelectionChanged();
+      this.CheckIfSelectionChanged();
     }
 
     public void SelectWeekday(DayOfWeek weekday)
@@ -266,7 +257,7 @@ namespace Pabo.MonthCalendar
         }
       }
 
-      this.OnSelectionChanged();
+      this.CheckIfSelectionChanged();
     }
 
     public void DeselectWeekday(DayOfWeek weekday)
@@ -279,7 +270,7 @@ namespace Pabo.MonthCalendar
         }
       }
 
-      this.OnSelectionChanged();
+      this.CheckIfSelectionChanged();
     }
 
     #endregion

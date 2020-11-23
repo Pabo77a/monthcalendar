@@ -14,7 +14,7 @@ namespace Pabo.MonthCalendar.Properties
     private FontWeight textFontWeight = FontWeights.Normal;
     private FontStyle textFontStyle = FontStyles.Normal;
     private FontFamily textFontFamily = new FontFamily(string.Empty);
-    private String textTextDecoration = string.Empty;
+    private string textTextDecoration = string.Empty;
     private Color textColor = Colors.White;
     private Color backgroundColor = Colors.Blue;
     private VerticalAlignment textVerticalAlignment = VerticalAlignment.Center;
@@ -49,7 +49,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != textColor)
         {
           textColor = value;
-          OnPropertyChanged(nameof(this.TextColor));
+          OnPropertyChanged();
         }
       }
     }
@@ -62,7 +62,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != textMargin)
         {
           textMargin = value;
-          OnPropertyChanged(nameof(this.TextMargin));
+          OnPropertyChanged();
         }
       }
     }
@@ -75,7 +75,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != backgroundColor)
         {
           backgroundColor = value;
-          OnPropertyChanged(nameof(this.BackgroundColor));
+          OnPropertyChanged();
         }
       }
     }
@@ -88,7 +88,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != textFontSize)
         {
           textFontSize = value;
-          OnPropertyChanged(nameof(this.TextFontSize));
+          OnPropertyChanged();
         }
       }
     }
@@ -101,11 +101,11 @@ namespace Pabo.MonthCalendar.Properties
         if (value != textTextDecoration)
         {
           textTextDecoration = value;
-          OnPropertyChanged(nameof(this.TextTextDecoration));
+          OnPropertyChanged();
         }
       }
     }
-
+  
     public FontFamily TextFontFamily
     {
       get => textFontFamily;
@@ -114,7 +114,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != textFontFamily)
         {
           textFontFamily = value;
-          OnPropertyChanged(nameof(this.TextFontFamily));
+          OnPropertyChanged();
         }
       }
     }
@@ -127,7 +127,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != textFontWeight)
         {
           textFontWeight = value;
-          OnPropertyChanged(nameof(this.TextFontWeight));
+          OnPropertyChanged();
         }
       }
     }
@@ -140,7 +140,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != textFontStyle)
         {
           textFontStyle = value;
-          OnPropertyChanged(nameof(this.TextFontStyle));
+          OnPropertyChanged();
         }
       }
     }
@@ -153,7 +153,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != textVerticalAlignment)
         {
           textVerticalAlignment = value;
-          OnPropertyChanged(nameof(this.TextVerticalAlignment));
+          OnPropertyChanged();
         }
       }
     }
@@ -166,7 +166,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != textHorizontalAlignment)
         {
           textHorizontalAlignment = value;
-          OnPropertyChanged(nameof(this.TextHorizontalAlignment));
+          OnPropertyChanged();
         }
       }
     }
@@ -183,7 +183,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != mouseOverBackgroundColor)
         {
           mouseOverBackgroundColor = value;
-          OnPropertyChanged(nameof(this.MouseOverBackgroundColor));
+          OnPropertyChanged();
         }
       }
     }
@@ -196,7 +196,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != mouseOverBorderColor)
         {
           mouseOverBorderColor = value;
-          OnPropertyChanged(nameof(this.MouseOverBorderColor));
+          OnPropertyChanged();
         }
       }
     }
@@ -209,7 +209,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != mouseOverOpacity)
         {
           mouseOverOpacity = value;
-          OnPropertyChanged(nameof(this.MouseOverOpacity));
+          OnPropertyChanged();
         }
       }
     }
@@ -227,7 +227,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != tooltipTextColor)
         {
           tooltipTextColor = value;
-          OnPropertyChanged(nameof(this.TooltipTextColor));
+          OnPropertyChanged();
         }
       }
     }
@@ -240,7 +240,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != tooltipBackgroundColor)
         {
           tooltipBackgroundColor = value;
-          OnPropertyChanged(nameof(this.TooltipBackgroundColor));
+          OnPropertyChanged();
         }
       }
     }
@@ -253,7 +253,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != tooltipBorderColor)
         {
           tooltipBorderColor = value;
-          OnPropertyChanged(nameof(this.TooltipBorderColor));
+          OnPropertyChanged();
         }
       }
     }
@@ -266,7 +266,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != tooltipFontSize)
         {
           tooltipFontSize = value;
-          OnPropertyChanged(nameof(this.TooltipFontSize));
+          OnPropertyChanged();
         }
       }
     }
@@ -279,7 +279,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != tooltipFontFamily)
         {
           tooltipFontFamily = value;
-          OnPropertyChanged(nameof(this.TooltipFontFamily));
+          OnPropertyChanged();
         }
       }
     }
@@ -292,7 +292,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != tooltipFontWeight)
         {
           tooltipFontWeight = value;
-          OnPropertyChanged(nameof(this.TooltipFontWeight));
+          OnPropertyChanged();
         }
       }
     }
@@ -305,7 +305,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != tooltipFontStyle)
         {
           tooltipFontStyle = value;
-          OnPropertyChanged(nameof(this.TooltipFontStyle));
+          OnPropertyChanged();
         }
       }
     }

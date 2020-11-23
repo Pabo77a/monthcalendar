@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.ComponentModel;
 using Pabo.MonthCalendar.Properties;
+using Pabo.MonthCalendar.Common;
 
 namespace Pabo.MonthCalendar
 {
@@ -20,6 +21,8 @@ namespace Pabo.MonthCalendar
 
     private DateTime minDate;
     private DateTime maxDate;
+    private int minYear;
+    private int maxYear;
  
    
     #endregion
@@ -92,8 +95,6 @@ namespace Pabo.MonthCalendar
       }
     }
 
-
-
     #endregion
 
 
@@ -115,19 +116,25 @@ namespace Pabo.MonthCalendar
       }
     }
 
-    public bool CanDecreaseMonth
+    public bool CanDecrease
     {
       get
       {
-        return this.minDate.ToString("MMMM yyyy") != new DateTime(this.Properties.Year, this.Properties.Month, 1).ToString("MMMM yyyy");
+        if (this.Properties.VisualMode == VisualMode.Days)
+          return this.minDate.ToString("MMMM yyyy") != new DateTime(this.Properties.Year, this.Properties.Month, 1).ToString("MMMM yyyy");
+
+        return this.Properties.Year -1 >= this.minYear;
       }
     }
 
-    public bool CanIncreaseMonth
+    public bool CanIncrease
     {
       get
       {
-        return this.maxDate.ToString("MMMM yyyy") != new DateTime(this.Properties.Year, this.Properties.Month, 1).ToString("MMMM yyyy");
+        if (this.Properties.VisualMode == VisualMode.Days)
+          return this.maxDate.ToString("MMMM yyyy") != new DateTime(this.Properties.Year, this.Properties.Month, 1).ToString("MMMM yyyy");
+
+        return this.Properties.Year + 1 <= this.maxYear;
       }
     }
 
@@ -157,15 +164,18 @@ namespace Pabo.MonthCalendar
 
     #region methods
 
-    public void Setup(DateTime minDate, DateTime maxDate, int year, int month)
+    public void Setup(DateTime minDate, DateTime maxDate, int year, int month, int minYear, int maxYear, VisualMode mode)
     {
       this.minDate = minDate;
       this.maxDate = maxDate;
-    
+      this.minYear = minYear;
+      this.maxYear = maxYear;
+
+      this.Properties.VisualMode = mode;
       this.Properties.SetDate(year, month);
 
-      OnPropertyChanged(nameof(this.CanDecreaseMonth));
-      OnPropertyChanged(nameof(this.CanIncreaseMonth));
+      OnPropertyChanged(nameof(this.CanDecrease));
+      OnPropertyChanged(nameof(this.CanIncrease));
     }
 
     #endregion

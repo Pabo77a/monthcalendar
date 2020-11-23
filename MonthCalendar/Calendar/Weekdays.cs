@@ -186,7 +186,7 @@ namespace Pabo.MonthCalendar
       SetupDays(this.year, this.month, this.weekdayItems, this.template);
     }
 
-    protected override void OnSelectionChanged()
+    protected override void OnSelectionChanged(List<CalendarWeekday> selected)
     {
 
     }
