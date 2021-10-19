@@ -114,7 +114,7 @@ namespace MonthCalendar.Test
       this.calendarProperties.NotCurrentMonthBackgroundColor = Colors.Gray;
       this.calendarProperties.NotCurrentMonthDateColor = Colors.White;
 
-      this.monthProperties.AbbreviatedNames = false;
+      this.monthProperties.AbbreviatedNames = true;
 
 
       MyCalendar.DataContext = this;
@@ -312,5 +312,11 @@ namespace MonthCalendar.Test
     private void MyCalendar_MonthSelectionChanged(object sender, Pabo.MonthCalendar.EventArgs.SelectionChangedEventArgs<Month> e)
     {
     }
+
+    private void MyCalendar_MonthClick(object sender, Pabo.MonthCalendar.EventArgs.MonthEventArgs e)
+    {
+    }
+
+    
   }
 }

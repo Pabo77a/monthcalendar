@@ -69,6 +69,11 @@ namespace Pabo.MonthCalendar.Controls
         child.Measure(tileSize);
       }
 
+      if (availableSize.Width == double.PositiveInfinity || availableSize.Height == double.PositiveInfinity)
+      {
+        return Size.Empty;
+      }
+
       return availableSize;
     }
 

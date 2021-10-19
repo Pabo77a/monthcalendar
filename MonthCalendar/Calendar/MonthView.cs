@@ -28,7 +28,7 @@ namespace Pabo.MonthCalendar
       this.popup = CreatePopup(this.Properties);
       this.Click += (sender, e) =>
       {
-        this.OnMonthClick(new CalendarMonthEventArgs(this.activeItem));
+        this.OnMonthClick(new CalendarMonthEventArgs(this.clickItem));
       };
     }
 
