@@ -28,6 +28,7 @@ namespace MonthCalendar.Test
   public partial class MainWindow : Window, INotifyPropertyChanged
   {
     TrulyObservableCollection<Day> days = new TrulyObservableCollection<Day>();
+    TrulyObservableCollection<Month> months = new TrulyObservableCollection<Month>();
     ObservableCollection<DateTime> disabledDays = new ObservableCollection<DateTime>();
     TrulyObservableCollection<Week> weeks = new TrulyObservableCollection<Week>();
     TrulyObservableCollection<Weekday> weekdays = new TrulyObservableCollection<Weekday>();
@@ -70,10 +71,10 @@ namespace MonthCalendar.Test
         TextFontSize = 36//, //,
         //Template = (DataTemplate)Application.Current.FindResource("myDayTemplate2")
     });
-      this.days.Add(new Day() { Date = new DateTime(2020, 8, 16), Tooltip = "Make america great again!", 
+    /*  this.days.Add(new Day() { Date = new DateTime(2020, 8, 16), Tooltip = "Make america great again!", 
         BackgroundColor = Colors.Linen, DateColor = Colors.DarkOrange, Text = "TRUMP", TextColor = Colors.Ivory, TextFontSize = 22 });
 
-      this.days.Add(new Day() { Date = new DateTime(2020, 7, 28), DateColor = Colors.Red, Text = "yyy", TextColor = Colors.Black });
+      this.days.Add(new Day() { Date = new DateTime(2020, 7, 28), DateColor = Colors.Red, Text = "yyy" });*/
 
 
       this.weeks.Add(new Week() { TextColor = Colors.White, BackgroundColor = Colors.Green, TextFontWeight = FontWeights.Bold, 
@@ -102,6 +103,7 @@ namespace MonthCalendar.Test
       this.calendarProperties.ShowNotCurrentMonth = true;
 
       this.calendarProperties.DateFontSize = 24;
+      this.calendarProperties.TextColor = Colors.HotPink;
       this.calendarProperties.DateColor = Colors.Green;
       this.calendarProperties.DateTextDecoration = "Underline";
       this.calendarProperties.DateFontStyle = FontStyles.Italic;
@@ -115,13 +117,30 @@ namespace MonthCalendar.Test
       this.calendarProperties.NotCurrentMonthDateColor = Colors.White;
 
       this.monthProperties.AbbreviatedNames = true;
+      this.calendarProperties.TextColor = Colors.Pink;
 
+      this.days.Add(new Day() { Date = new DateTime(2020, 7, 28), DateColor = Colors.Red, Text = "yyy" });
+
+      this.months.Add(new Month()
+      {
+        Number = 10,
+        Year = 2021,
+        Image = new BitmapImage(new Uri("pack://application:,,,/Resources/star.png", UriKind.Absolute)),
+      });
+      this.months.Add(new Month()
+      {
+        Number = 6,
+        Year = 2021,
+        BackgroundColor = Colors.Beige
+      });
 
       MyCalendar.DataContext = this;
       
     }
 
     public TrulyObservableCollection<Day> Days => days;
+
+    public TrulyObservableCollection<Month> Months => months;
 
     public ObservableCollection<DateTime> DisabledDays
     {

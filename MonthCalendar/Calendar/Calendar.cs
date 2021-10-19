@@ -370,6 +370,7 @@ namespace Pabo.MonthCalendar
           days[i].ImageHorizontalAlignment = Properties.ImageHorizontalAlignment;
 
 
+          days[i].TextColor = Properties.TextColor;
           days[i].TextFontFamily = Properties.TextFontFamily;
           days[i].TextFontSize = Properties.TextFontSize;
           days[i].TextFontStyle = Properties.TextFontStyle;
@@ -378,7 +379,7 @@ namespace Pabo.MonthCalendar
           days[i].TextMargin = Properties.TextMargin;
           days[i].TextVerticalAlignment = Properties.TextVerticalAlignment;
           days[i].TextHorizontalAlignment = Properties.TextHorizontalAlignment;
-
+        
           if (days[i].Selected)
             this.SetupSelectedBorders(days[i]);
         }

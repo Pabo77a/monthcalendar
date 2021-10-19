@@ -16,7 +16,7 @@
     </Grid.ColumnDefinitions>
 
     <calendar:MonthCalendar Grid.Row="0"
-                            VisualMode="Months"
+                            VisualMode="Days"
                             Background="White"
                             Name="MyCalendar"
                             Year="2020" Month="8"
@@ -34,6 +34,7 @@
                             MonthProperties="{Binding MonthProperties, Mode=OneWay}"
                             DisabledDays="{Binding DisabledDays, Mode=OneWay}"
                             Days="{Binding Path=Days, Mode=OneWay}"
+                            Months="{Binding Path=Months, Mode=OneWay}"
                             Weeks="{Binding Path=Weeks, Mode=OneWay}"
                             DayOfWeek="{Binding Path=Weekdays, Mode=OneWay}"
                             MinDate="{Binding MinDate}"

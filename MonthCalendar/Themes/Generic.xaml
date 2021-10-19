@@ -116,6 +116,10 @@
                                TextDecorations="{Binding TextTextDecoration}"
                                Text="{Binding Text}" Margin="{Binding TextMargin}" >
                     </TextBlock>
+                    <Image Source="{Binding Image}" Stretch="{Binding ImageStretch}" VerticalAlignment="{Binding ImageVerticalAlignment}" 
+                           HorizontalAlignment="{Binding ImageHorizontalAlignment}"  Margin="{Binding ImageMargin}">
+
+                    </Image>
                     <Border  BorderThickness="{Binding BorderThickness, Mode=TwoWay}"
                              BorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type calendar:MonthView}},Path=Properties.SelectedBorderColor, Converter={StaticResource BrushConverter}}"
                              Visibility="{Binding Selected, Mode=TwoWay, Converter={StaticResource visibilityConverter},ConverterParameter=Normal}"></Border>
