@@ -6,6 +6,13 @@
     <RootNamespace>Pabo.MonthCalendar</RootNamespace>
     <AssemblyName>Pabo.MonthCalendar</AssemblyName>
     <Nullable>disable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/Pabo77a/monthcalendar</PackageProjectUrl>
+    <Description>A custom monthcalendar control for WPF</Description>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Authors>Pabo77a</Authors>
+    <Copyright>Copyright (c) Patrik Bohman 2022</Copyright>
   </PropertyGroup>
 
 </Project>
