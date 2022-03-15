@@ -8,6 +8,9 @@
 
   <ItemGroup>
     <None Remove="Resources\bricks.jpeg" />
+    <None Remove="Resources\pizza.png" />
+    <None Remove="Resources\present.png" />
+    <None Remove="Resources\soccer.png" />
     <None Remove="Resources\star.png" />
   </ItemGroup>
 
@@ -17,6 +20,15 @@
 
   <ItemGroup>
     <Resource Include="Resources\bricks.jpeg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\pizza.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\present.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\soccer.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\star.png">
