@@ -65,7 +65,7 @@ namespace Pabo.MonthCalendar.Properties
     {
       this.Month = month;
       this.Year = year;
-      OnPropertyChanged(nameof(this.Text));
+      OnPropertyChanged();
 
     }
   }

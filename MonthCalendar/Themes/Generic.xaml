@@ -108,6 +108,7 @@
                       </Rectangle.Fill>
                     </Rectangle>
                     <TextBlock VerticalAlignment="{Binding TextVerticalAlignment}" HorizontalAlignment="{Binding TextHorizontalAlignment}" 
+                               Background="{Binding TextBackgrundColor, Converter={StaticResource BrushConverter}}"
                                FontSize="{Binding TextFontSize}" 
                                Foreground="{Binding TextColor, Converter={StaticResource BrushConverter}}"
                                FontWeight="{Binding TextFontWeight}" 
@@ -206,6 +207,7 @@
                     <TextBlock VerticalAlignment="{Binding TextVerticalAlignment}" HorizontalAlignment="{Binding TextHorizontalAlignment}" 
                                FontSize="{Binding TextFontSize}" 
                                Foreground="{Binding TextColor, Converter={StaticResource BrushConverter}}"
+                               Background="{Binding TextBackgroundColor, Converter={StaticResource BrushConverter}}"
                                FontWeight="{Binding TextFontWeight}" 
                                FontStyle="{Binding TextFontStyle}"
                                FontFamily="{Binding TextFontFamily}" 

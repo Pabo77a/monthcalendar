@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -66,7 +63,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != image)
         {
           image = value;
-          OnPropertyChanged(nameof(this.Image));
+          OnPropertyChanged();
         }
       }
     }
@@ -79,7 +76,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != imageVerticalAlignment)
         {
           imageVerticalAlignment = value;
-          OnPropertyChanged(nameof(this.ImageVerticalAlignment));
+          OnPropertyChanged();
         }
       }
     }
@@ -92,7 +89,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != imageStretch)
         {
           imageStretch = value;
-          OnPropertyChanged(nameof(this.ImageStretch));
+          OnPropertyChanged();
         }
       }
     }
@@ -105,7 +102,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != imageMargin)
         {
           imageMargin = value;
-          OnPropertyChanged(nameof(this.ImageMargin));
+          OnPropertyChanged();
         }
       }
     }
@@ -118,7 +115,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != imageHorizontalAlignment)
         {
           imageHorizontalAlignment = value;
-          OnPropertyChanged(nameof(this.ImageHorizontalAlignment));
+          OnPropertyChanged();
         }
       }
     }

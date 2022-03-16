@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 
 namespace Pabo.MonthCalendar.Properties
@@ -16,6 +13,8 @@ namespace Pabo.MonthCalendar.Properties
     private FontFamily textFontFamily = new FontFamily(string.Empty);
     private string textTextDecoration = string.Empty;
     private Color textColor = Colors.White;
+    private Color textBackgroundColor = Colors.Transparent;
+
     private Color backgroundColor = Colors.Blue;
     private VerticalAlignment textVerticalAlignment = VerticalAlignment.Center;
     private HorizontalAlignment textHorizontalAlignment = HorizontalAlignment.Center;
@@ -49,6 +48,19 @@ namespace Pabo.MonthCalendar.Properties
         if (value != textColor)
         {
           textColor = value;
+          OnPropertyChanged();
+        }
+      }
+    }
+
+    public Color TextBackgroundColor
+    {
+      get => textBackgroundColor;
+      set
+      {
+        if (value != textBackgroundColor)
+        {
+          textBackgroundColor = value;
           OnPropertyChanged();
         }
       }

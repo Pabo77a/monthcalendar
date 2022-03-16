@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace Pabo.MonthCalendar.Model
 {
   public class Pos

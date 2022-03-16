@@ -62,7 +62,7 @@ namespace MonthCalendar.Test
       this.days.Add(new Day() { Date = new DateTime(year, month, 6), BackgroundColor = Colors.LightGreen, Text = "Dentist",
         Image = new BitmapImage(new Uri("pack://application:,,,/Resources/star.png", UriKind.Absolute))
       });
-      this.days.Add(new Day() { Date = new DateTime(year, month, 21), Text = "Party!!",
+      this.days.Add(new Day() { Date = new DateTime(year, month, 21), Text = "Party!!", TextColor = Colors.White, TextBackgroundColor = Colors.Purple,
         Image = new BitmapImage(new Uri("pack://application:,,,/Resources/present.png", UriKind.Absolute))
       });
       this.days.Add(new Day() { Date = new DateTime(year, month, 11), BackgroundColor = Colors.Orange, Text = "Pizza", 

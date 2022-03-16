@@ -2,18 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.ComponentModel;
 using Pabo.MonthCalendar.Common;
 
 using Pabo.MonthCalendar.Model;
 using Pabo.MonthCalendar.Properties;
-using System.Windows.Media;
-using System.Diagnostics;
 using System.Collections.ObjectModel;
 using Pabo.MonthCalendar.Controls;
-using System.Collections.Specialized;
 
 namespace Pabo.MonthCalendar
 {

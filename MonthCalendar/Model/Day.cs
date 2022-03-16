@@ -1,8 +1,4 @@
-﻿using Pabo.MonthCalendar.Common;
-using System;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Drawing.Printing;
+﻿using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -52,7 +48,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != date)
         {
           this.date = value;
-          OnPropertyChanged(nameof(this.Date));
+          OnPropertyChanged();
         }
       }
     }
@@ -65,7 +61,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != dateMargin)
         {
           dateMargin = value;
-          OnPropertyChanged(nameof(this.DateMargin));
+          OnPropertyChanged();
         }
       }
     }
@@ -78,7 +74,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != dateFontFamily)
         {
           this.dateFontFamily = value;
-          OnPropertyChanged(nameof(this.DateFontFamily));
+          OnPropertyChanged();
         }
       }
     }
@@ -91,7 +87,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != dateTextDecoration)
         {
           this.dateTextDecoration = value;
-          OnPropertyChanged(nameof(this.DateTextDecoration));
+          OnPropertyChanged();
         }
       }
     }
@@ -104,7 +100,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != dateColor)
         {
           this.dateColor = value;
-          OnPropertyChanged(nameof(this.DateColor));
+          OnPropertyChanged();
         }
       }
     }
@@ -117,7 +113,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != dateFontSize)
         {
           this.dateFontSize = value;
-          OnPropertyChanged(nameof(this.DateFontSize));
+          OnPropertyChanged();
         }
       }
     }
@@ -130,7 +126,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != dateFontWeight)
         {
           this.dateFontWeight = value;
-          OnPropertyChanged(nameof(this.DateFontWeight));
+          OnPropertyChanged();
         }
       }
     }
@@ -143,7 +139,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != dateFontStyle)
         {
           this.dateFontStyle = value;
-          OnPropertyChanged(nameof(this.DateFontStyle));
+          OnPropertyChanged();
         }
       }
     }
@@ -156,7 +152,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != dateVerticalAlignment)
         {
           this.dateVerticalAlignment = value;
-          OnPropertyChanged(nameof(this.DateVerticalAlignment));
+          OnPropertyChanged();
         }
       }
     }
@@ -169,7 +165,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != dateHorizontalAlignment)
         {
           this.dateHorizontalAlignment = value;
-          OnPropertyChanged(nameof(this.DateHorizontalAlignment));
+          OnPropertyChanged();
         }
       }
     }
@@ -187,7 +183,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != image)
         {
           image = value;
-          OnPropertyChanged(nameof(this.Image));
+          OnPropertyChanged();
         }
       }
     }
@@ -200,7 +196,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != imageVerticalAlignment)
         {
           imageVerticalAlignment = value;
-          OnPropertyChanged(nameof(this.ImageVerticalAlignment));
+          OnPropertyChanged();
         }
       }
     }
@@ -213,7 +209,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != imageStretch)
         {
           imageStretch = value;
-          OnPropertyChanged(nameof(this.ImageStretch));
+          OnPropertyChanged();
         }
       }
     }
@@ -226,7 +222,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != imageMargin)
         {
           imageMargin = value;
-          OnPropertyChanged(nameof(this.ImageMargin));
+          OnPropertyChanged();
         }
       }
     }
@@ -239,7 +235,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != imageHorizontalAlignment)
         {
           imageHorizontalAlignment = value;
-          OnPropertyChanged(nameof(this.ImageHorizontalAlignment));
+          OnPropertyChanged();
         }
       }
     }

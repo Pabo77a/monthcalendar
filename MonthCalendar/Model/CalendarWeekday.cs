@@ -1,7 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Globalization;
-using System.Threading;
 using System.Windows;
 
 namespace Pabo.MonthCalendar.Model
@@ -32,7 +30,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != this.selected)
         {
           this.selected = value;
-          OnPropertyChanged(nameof(this.Selected));
+          OnPropertyChanged();
         }
       }
 
@@ -46,7 +44,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != this.disabled)
         {
           this.disabled = value;
-          OnPropertyChanged(nameof(this.Disabled));
+          OnPropertyChanged();
         }
       }
 
@@ -60,7 +58,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != this.thickness)
         {
           this.thickness = value;
-          OnPropertyChanged(nameof(this.BorderThickness));
+          OnPropertyChanged();
         }
       }
     }
@@ -74,7 +72,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != this.mouseOver)
         {
           this.mouseOver = value;
-          OnPropertyChanged(nameof(this.MouseOver));
+          OnPropertyChanged();
         }
       }
 
@@ -106,7 +104,7 @@ namespace Pabo.MonthCalendar.Model
         if (this.text != value)
         {
           this.text = value;
-          OnPropertyChanged(nameof(this.text));
+          OnPropertyChanged();
         }
       }
 

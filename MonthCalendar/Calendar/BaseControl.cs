@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using System.Diagnostics;
 using System.Windows;
-using System.Windows.Controls.Primitives;
-using System.Windows.Media;
-using Pabo.MonthCalendar.Properties;
 
 namespace Pabo.MonthCalendar
 {

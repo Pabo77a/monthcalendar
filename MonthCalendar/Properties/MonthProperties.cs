@@ -58,7 +58,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != selectedBackgroundColor)
         {
           selectedBackgroundColor = value;
-          OnPropertyChanged(nameof(this.SelectedBackgroundColor));
+          OnPropertyChanged();
         }
       }
     }
@@ -71,7 +71,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != selectedBorderColor)
         {
           selectedBorderColor = value;
-          OnPropertyChanged(nameof(this.SelectedBorderColor));
+          OnPropertyChanged();
         }
       }
     }
@@ -84,7 +84,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != selectedOpacity)
         {
           selectedOpacity = value;
-          OnPropertyChanged(nameof(this.SelectedOpacity));
+          OnPropertyChanged();
         }
       }
     }
@@ -101,7 +101,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != disabledBackgroundColor)
         {
           disabledBackgroundColor = value;
-          OnPropertyChanged(nameof(this.DisabledBackgroundColor));
+          OnPropertyChanged();
         }
       }
     }
@@ -114,7 +114,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != disabledColor)
         {
           disabledColor = value;
-          OnPropertyChanged(nameof(this.DisabledColor));
+          OnPropertyChanged();
         }
       }
     }
@@ -127,7 +127,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != disabledOpacity)
         {
           disabledOpacity = value;
-          OnPropertyChanged(nameof(this.DisabledOpacity));
+          OnPropertyChanged();
         }
       }
     }

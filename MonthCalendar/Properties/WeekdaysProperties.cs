@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 
 namespace Pabo.MonthCalendar.Properties
@@ -35,7 +31,7 @@ namespace Pabo.MonthCalendar.Properties
         if (abbreviatedNames != value)
         {
           this.abbreviatedNames = value;
-          OnPropertyChanged(nameof(this.AbbreviatedNames));
+          OnPropertyChanged();
         }
       }
     }

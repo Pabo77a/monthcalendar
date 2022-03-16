@@ -32,7 +32,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != this.selected)
         {
           this.selected = value;
-          OnPropertyChanged(nameof(this.Selected));
+          OnPropertyChanged();
         }
       }
 
@@ -47,7 +47,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != this.notCurrentMonth)
         {
           this.notCurrentMonth = value;
-          OnPropertyChanged(nameof(this.NotCurrentMonth));
+          OnPropertyChanged();
         }
       }
 
@@ -62,7 +62,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != this.disabled)
         {
           this.disabled = value;
-          OnPropertyChanged(nameof(this.Disabled));
+          OnPropertyChanged();
         }
       }
 
@@ -76,7 +76,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != this.visible)
         {
           this.visible = value;
-          OnPropertyChanged(nameof(this.Visible));
+          OnPropertyChanged();
         }
       }
 
@@ -106,7 +106,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != this.thickness)
         {
           this.thickness = value;
-          OnPropertyChanged(nameof(this.BorderThickness));
+          OnPropertyChanged();
         }
       }
     }

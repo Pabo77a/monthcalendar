@@ -1,9 +1,4 @@
-﻿using Pabo.MonthCalendar.Common;
-using System;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Media;
+﻿using System;
 
 namespace Pabo.MonthCalendar.Model
 {
@@ -23,7 +18,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != dayOfWeek)
         {
           this.dayOfWeek = value;
-          OnPropertyChanged(nameof(this.DayOfWeek));
+          OnPropertyChanged();
         }
       }
     }
@@ -36,7 +31,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != year)
         {
           this.year = value;
-          OnPropertyChanged(nameof(this.Year));
+          OnPropertyChanged();
         }
       }
     }
@@ -49,7 +44,7 @@ namespace Pabo.MonthCalendar.Model
         if (value != month)
         {
           this.month = value;
-          OnPropertyChanged(nameof(this.Month));
+          OnPropertyChanged();
         }
       }
     }

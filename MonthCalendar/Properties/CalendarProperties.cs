@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+﻿using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -72,7 +67,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != backgroundImage)
         {
           backgroundImage = value;
-          OnPropertyChanged(nameof(this.BackgroundImage));
+          OnPropertyChanged();
         }
       }
     }
@@ -85,7 +80,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != notCurrentMonthBackgroundColor)
         {
           notCurrentMonthBackgroundColor = value;
-          OnPropertyChanged(nameof(this.NotCurrentMonthBackgroundColor));
+          OnPropertyChanged();
         }
       }
     }
@@ -98,7 +93,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != notCurrentMonthDateColor)
         {
           notCurrentMonthDateColor = value;
-          OnPropertyChanged(nameof(this.NotCurrentMonthDateColor));
+          OnPropertyChanged();
         }
       }
     }
@@ -111,7 +106,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != showNotCurrentMonth)
         {
           showNotCurrentMonth = value;
-          OnPropertyChanged(nameof(this.ShowNotCurrentMonth));
+          OnPropertyChanged();
         }
       }
     }
@@ -126,7 +121,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != dateVerticalAlignment)
         {
           dateVerticalAlignment = value;
-          OnPropertyChanged(nameof(this.DateVerticalAlignment));
+          OnPropertyChanged();
         }
       }
     }
@@ -139,7 +134,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != dateHorizontalAlignment)
         {
           dateHorizontalAlignment = value;
-          OnPropertyChanged(nameof(this.DateHorizontalAlignment));
+          OnPropertyChanged();
         }
       }
     }
@@ -152,7 +147,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != dateTextDecoration)
         {
           dateTextDecoration = value;
-          OnPropertyChanged(nameof(this.DateTextDecoration));
+          OnPropertyChanged();
         }
       }
     }
@@ -165,7 +160,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != dateMargin)
         {
           dateMargin = value;
-          OnPropertyChanged(nameof(this.DateMargin));
+          OnPropertyChanged();
         }
       }
     }
@@ -178,7 +173,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != dateFontFamily)
         {
           dateFontFamily = value;
-          OnPropertyChanged(nameof(this.DateFontFamily));
+          OnPropertyChanged();
         }
       }
     }
@@ -191,7 +186,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != dateFontWeight)
         {
           dateFontWeight = value;
-          OnPropertyChanged(nameof(this.dateFontWeight));
+          OnPropertyChanged();
         }
       }
     }
@@ -204,7 +199,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != dateFontStyle)
         {
           dateFontStyle = value;
-          OnPropertyChanged(nameof(this.DateFontStyle));
+          OnPropertyChanged();
         }
       }
     }
@@ -219,7 +214,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != dateColor)
         {
           dateColor = value;
-          OnPropertyChanged(nameof(this.DateColor));
+          OnPropertyChanged();
         }
       }
     }
@@ -232,7 +227,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != dateFontSize)
         {
           dateFontSize = value;
-          OnPropertyChanged(nameof(this.DateFontSize));
+          OnPropertyChanged();
         }
       }
     }
@@ -249,7 +244,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != imageMargin)
         {
           imageMargin = value;
-          OnPropertyChanged(nameof(this.ImageMargin));
+          OnPropertyChanged();
         }
       }
     }
@@ -262,7 +257,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != imageVerticalAlignment)
         {
           imageVerticalAlignment = value;
-          OnPropertyChanged(nameof(this.ImageVerticalAlignment));
+          OnPropertyChanged();
         }
       }
     }
@@ -275,7 +270,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != imageHorizontalAlignment)
         {
           imageHorizontalAlignment = value;
-          OnPropertyChanged(nameof(this.ImageHorizontalAlignment));
+          OnPropertyChanged();
         }
       }
     }
@@ -292,7 +287,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != selectedBackgroundColor)
         {
           selectedBackgroundColor = value;
-          OnPropertyChanged(nameof(this.SelectedBackgroundColor));
+          OnPropertyChanged();
         }
       }
     }
@@ -305,7 +300,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != selectedBorderColor)
         {
           selectedBorderColor = value;
-          OnPropertyChanged(nameof(this.SelectedBorderColor));
+          OnPropertyChanged();
         }
       }
     }
@@ -318,7 +313,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != selectedOpacity)
         {
           selectedOpacity = value;
-          OnPropertyChanged(nameof(this.SelectedOpacity));
+          OnPropertyChanged();
         }
       }
     }
@@ -335,7 +330,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != disabledBackgroundColor)
         {
           disabledBackgroundColor = value;
-          OnPropertyChanged(nameof(this.DisabledBackgroundColor));
+          OnPropertyChanged();
         }
       }
     }
@@ -348,7 +343,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != disabledColor)
         {
           disabledColor = value;
-          OnPropertyChanged(nameof(this.DisabledColor));
+          OnPropertyChanged();
         }
       }
     }
@@ -361,7 +356,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != disabledOpacity)
         {
           disabledOpacity = value;
-          OnPropertyChanged(nameof(this.DisabledOpacity));
+          OnPropertyChanged();
         }
       }
     }

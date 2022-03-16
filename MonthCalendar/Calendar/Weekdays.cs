@@ -8,10 +8,7 @@ using Pabo.MonthCalendar.Model;
 using Pabo.MonthCalendar.Properties;
 using Pabo.MonthCalendar.Common;
 using Pabo.MonthCalendar.EventArgs;
-using System.Windows.Controls;
-using System.Windows.Input;
 using System.Threading;
-using System.Windows.Media;
 
 namespace Pabo.MonthCalendar
 {
