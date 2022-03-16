@@ -77,14 +77,14 @@ namespace Pabo.MonthCalendar
     public static readonly DependencyProperty MonthProperty = DependencyProperty.Register("Month",
                typeof(int),
                typeof(MonthCalendar),
-               new FrameworkPropertyMetadata(default(int), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+               new FrameworkPropertyMetadata(DateTime.Now.Month, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                    OnMonthChanged,
                    OnCoerceMonthChanged, false, UpdateSourceTrigger.PropertyChanged));
 
     public static readonly DependencyProperty YearProperty = DependencyProperty.Register("Year",
                typeof(int),
                typeof(MonthCalendar),
-               new FrameworkPropertyMetadata(default(int), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+               new FrameworkPropertyMetadata(DateTime.Now.Year, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                    OnYearChanged,
                    OnCoerceYearChanged, false, UpdateSourceTrigger.PropertyChanged));
 
