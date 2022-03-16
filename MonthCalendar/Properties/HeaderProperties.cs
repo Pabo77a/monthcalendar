@@ -38,7 +38,7 @@ namespace Pabo.MonthCalendar.Properties
         if (value != dateFormat)
         {
           dateFormat = value;
-          OnPropertyChanged();
+          OnPropertyChanged(nameof(this.VisualMode));
         }
       }
     }
@@ -65,7 +65,7 @@ namespace Pabo.MonthCalendar.Properties
     {
       this.Month = month;
       this.Year = year;
-      OnPropertyChanged();
+      OnPropertyChanged(nameof(this.Text));
 
     }
   }

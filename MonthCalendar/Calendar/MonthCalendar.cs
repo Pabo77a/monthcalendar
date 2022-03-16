@@ -1720,7 +1720,7 @@ namespace Pabo.MonthCalendar
     {
       if (this.calendar != null)
       {
-
+        this.SetupHeader();
       }
     }
 
